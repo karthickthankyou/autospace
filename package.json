@@ -1,5 +1,5 @@
 {
-  "name": "@autospace-org",
+  "name": "autospace",
   "version": "1.0.0",
   "license": "MIT",
   "private": "true",
@@ -8,5 +8,15 @@
       "apps/*",
       "libs/*"
     ]
+  },
+  "devDependencies": {
+    "nx": "16.1.4",
+    "nx-cloud": "latest",
+    "prettier": "^2.8.8"
+  },
+  "scripts": {
+    "prettier": "prettier  \"{apps,libs}/**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
+    "format:check": "yarn prettier --check",
+    "format:write": "yarn prettier --write"
   }
 }
