@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Customer {
+    uid         String    @id
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    displayName String?
+    bookings    Booking[]
+    reviews     Review[]
+}
+
+model Manager {
+    uid         String   @id
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    displayName String?
+    companyId   Int?     @unique
+    company     Company? @relation(fields: [companyId], references: [id])
+}
+
+model Company {
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    displayName String?
+    garages     Garage[]
+    manager     Manager?
+}
+
+model Garage {
+    id           Int           @id @default(autoincrement())
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+    displayName  String?
+    companyId    Int
+    description  String?
+    imageUrl     String?
+    address      Address?
+    company      Company       @relation(fields: [companyId], references: [id])
+    reviews      Review[]
+    slots        Slot[]
+    verification Verification?
+}
+
+model Address {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    garageId  Int?     @unique
+    address   String
+    lat       Float
+    lng       Float
+    garage    Garage?  @relation(fields: [garageId], references: [id])
+}
+
+model Slot {
+    id           Int       @id @default(autoincrement())
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+    displayName  String?
+    pricePerHour Float
+    type         SlotType  @default(CAR)
+    length       Int?
+    width        Int?
+    height       Int?
+    garageId     Int
+    bookings     Booking[]
+    garage       Garage    @relation(fields: [garageId], references: [id])
+}
+
+model Booking {
+    id            Int      @id @default(autoincrement())
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    pricePerHour  Float?
+    totalPrice    Float?
+    startTime     DateTime
+    endTime       DateTime
+    slotId        Int
+    customerId    String
+    vehicleNumber String
+    phoneNumber   String?
+    passcode      String?
+    customer      Customer @relation(fields: [customerId], references: [uid])
+    slot          Slot     @relation(fields: [slotId], references: [id])
+
+    @@index([startTime, endTime])
+}
+
+model Admin {
+    uid         String   @id
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    displayName String?
+
+    verifications Verification[]
+}
+
+model Review {
+    id         Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    garageId   Int
+    customerId String
+    rating     Int      @default(0)
+    comment    String?
+    customer   Customer @relation(fields: [customerId], references: [uid])
+    garage     Garage   @relation(fields: [garageId], references: [id])
+}
+
+model Verification {
+    garageId  Int      @id
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    verified  Boolean  @default(false)
+    adminId   String
+    admin     Admin    @relation(fields: [adminId], references: [uid])
+    garage    Garage   @relation(fields: [garageId], references: [id])
+}
+
+enum SlotType {
+    CAR
+    HEAVY
+    BIKE
+    BICYCLE
+}
