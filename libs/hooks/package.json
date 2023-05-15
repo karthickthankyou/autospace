@@ -1,0 +1,14 @@
+{
+  "name": "@autospace-org/hooks",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@autospace-org/network": "*",
+    "@autospace-org/store": "*",
+    "@autospace-org/hooks": "*"
+  },
+  "scripts": {
+    "tsc": "tsc"
+  }
+}

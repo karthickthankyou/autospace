@@ -10,6 +10,8 @@ export type GetUserType = {
   roles: Role[]
 }
 
+export type MenuItem = { label: string; href: string; loggedIn: boolean }
+
 export type NotificationType = {
   id: string
   message: ReactNode
