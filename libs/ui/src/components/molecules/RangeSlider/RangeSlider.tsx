@@ -7,11 +7,11 @@ const RangeSlider = (props: SliderProps) => (
       classes={{
         root: `h-0.5 w-full border-0 `,
         thumb:
-          'rounded-none border-black border w-4 h-4 bg-white hover:shadow-none hover:border-black hover:bg-gray-50 focus:bg-gray-50',
+          'rounded-none border w-4 h-4 after:active:bg-black/10 after:w-8 after:h-8 after:rounded-none bg-white hover:shadow-none hover:border-black hover:bg-gray-50 focus:bg-gray-50',
         track: 'text-gray-800',
         rail: 'bg-gray-400',
         valueLabel:
-          'text-black py-0 px-0.5 backdrop-blur-sm text-sm shadow-md bg-white/20 border before:border-b before:border-r active:shadow-none',
+          'text-black rounded-none py-0 px-0.5 text-sm bg-white/20  before:border-b before:border-r before:border-black active:shadow-none',
       }}
       {...props}
     />

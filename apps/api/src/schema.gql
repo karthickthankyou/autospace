@@ -3,13 +3,13 @@
 # ------------------------------------------------------
 
 type Address {
+  lat: Float!
+  lng: Float!
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   garageId: Int!
   address: String!
-  lat: Int!
-  lng: Int!
   garage: Garage!
 }
 
@@ -836,17 +836,17 @@ enum RoleEnum {
 }
 
 input CreateAddressInput {
+  lat: Float!
+  lng: Float!
   garageId: Int!
   address: String!
-  lat: Int!
-  lng: Int!
 }
 
 input UpdateAddressInput {
+  lat: Float
+  lng: Float
   garageId: Int
   address: String
-  lat: Int
-  lng: Int
   id: Int!
 }
 
@@ -910,9 +910,9 @@ input CreateGarageInput {
 }
 
 input CreateAddressInputWithoutGarageId {
+  lat: Float!
+  lng: Float!
   address: String!
-  lat: Int!
-  lng: Int!
 }
 
 input CreateMultipleSlotInputWithoutGarageId {

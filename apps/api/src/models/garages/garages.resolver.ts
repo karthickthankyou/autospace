@@ -62,12 +62,11 @@ export class GaragesResolver {
     const currentDate = new Date()
 
     if (startDate.getTime() < currentDate.getTime()) {
-      //   throw new Error('Start date must be after current date')
+      // Set startDate as current time
       startDate = new Date()
     }
     if (startDate.getTime() > endDate.getTime()) {
-      console.log(startDate.getTime(), endDate.getTime())
-      const updatedEndDate = new Date()
+      const updatedEndDate = new Date(startDate)
       updatedEndDate.setSeconds(updatedEndDate.getSeconds() + 3600)
       endDate = updatedEndDate
       //   throw new Error('Start date must be before end date')

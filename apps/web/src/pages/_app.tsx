@@ -1,4 +1,6 @@
 import '@/styles/globals.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
+
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
 import { Layout } from '@autospace-org/ui/src/components/templates/Layout'

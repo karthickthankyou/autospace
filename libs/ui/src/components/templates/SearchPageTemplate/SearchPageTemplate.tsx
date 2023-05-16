@@ -1,8 +1,6 @@
 import { Map } from '../../organisms/Map'
-import { useRouter } from 'next/router'
 import { SearchPlaceBox } from '../../organisms/SearchPlaceBox'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { stringify } from 'querystring'
+import { useEffect, useState } from 'react'
 
 import {
   LocationInfo,
@@ -13,27 +11,19 @@ import {
   IconCurrentLocation,
   IconExclamationCircle,
   IconFilter,
+  IconLetterP,
   IconRefresh,
 } from '@tabler/icons-react'
-import { useFormContext, useWatch } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 import { PulsingDot } from '../../atoms/Dot/Dot'
-import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 
-import {
-  FormProviderSearchGarage,
-  FormTypeSearchGarage,
-} from '@autospace-org/forms/src/searchGarages'
-import { searchFormAdapter } from '@autospace-org/forms/src/adapters/searchFormAdapter'
-import { Container } from '../../atoms/Container'
+import { FormTypeSearchGarage } from '@autospace-org/forms/src/searchGarages'
+import { useConvertSearchFormToVariables } from '@autospace-org/forms/src/adapters/searchFormAdapter'
 import { FilterSidebar } from '../../organisms/FilterSidebar'
 import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
-import {
-  SearchGaragesQueryVariables,
-  SlotType,
-  useSearchGaragesQuery,
-} from '@autospace-org/network/src/generated'
+import { useSearchGaragesLazyQuery } from '@autospace-org/network/src/generated'
 import { Marker } from '../../organisms/Map/MapMarker'
 import { Popup } from '../../organisms/Map/Popup'
 import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
@@ -52,31 +42,47 @@ export interface ISearchPageTemplateProps {
   }
 }
 
-export const SearchPageTemplate = () => {
-  const [openFilter, setOpenFilter] = useState(false)
-
-  const {
-    register,
-    setValue,
-    formState: { errors, dirtyFields },
-  } = useFormContext<FormTypeSearchGarage>()
+export const CurrentLocationButton = () => {
+  const { setValue } = useFormContext<FormTypeSearchGarage>()
 
   const { setCurrentLocation } = useCurrentLocation({
     setLocationInfo: (currentLocation: LocationInfo) =>
       setValue('locationInfo', currentLocation),
   })
+  return (
+    <Button
+      variant="text"
+      className="hover:bg-gray-200"
+      onClick={() => {
+        setCurrentLocation()
+      }}
+    >
+      <IconCurrentLocation className="stroke-1.5" />
+    </Button>
+  )
+}
+
+export const SearchPageTemplate = () => {
+  const {
+    register,
+    setValue,
+    formState: { errors },
+  } = useFormContext<FormTypeSearchGarage>()
 
   return (
     <div>
       <Map>
-        <MapInitialPosition
-          lng={80.2707}
-          lat={13.0827}
-          onMoveEnd={({ lat, lng }) => {
+        <MapPositionManager
+          //   lng={80.2707}
+          //   lat={13.0827}
+          onMoveEnd={({ lat, lng, locationFilter }) => {
             setValue('locationInfo.lat', lat)
             setValue('locationInfo.lng', lng)
+            setValue('locationFilter', locationFilter)
           }}
         />
+        {/* Query and display garages */}
+        <ShowMarkers />
         <Panel position="left-top" className="bg-white/50">
           <div className="flex flex-col items-stretch gap-2 py-2">
             <SearchBox
@@ -105,93 +111,69 @@ export const SearchPageTemplate = () => {
           </div>
         </Panel>
         <Panel position="right-top">
-          <FilterSidebar open={openFilter} setOpen={setOpenFilter} />
-
-          <div className="flex ">
-            <Button
-              variant="text"
-              className="hover:bg-gray-200"
-              onClick={() => {
-                setCurrentLocation()
-              }}
-            >
-              <IconCurrentLocation className="stroke-1.5" />
-            </Button>
-            <Button
-              variant="text"
-              onClick={() => setOpenFilter(true)}
-              className=" hover:bg-gray-200"
-            >
-              <IconFilter className="stroke-1.5 " />
-              {dirtyFields.length ? <PulsingDot /> : null}
-            </Button>
+          <div className="flex">
+            <CurrentLocationButton />
+            <FilterSidebar />
           </div>
         </Panel>
         <Panel position="right-center">
           <DefaultZoomControls />
         </Panel>
-        {errors.length ? (
+        {Object.entries(errors).length ? (
           <Panel position="center-bottom">
             {Object.entries(errors).map(([key, value]) => (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 p-2 border border-red">
                 <IconExclamationCircle />
-                <div className="font-bold">
+                <div className="font-medium">
                   {key}: {value.message}
                 </div>
               </div>
             ))}
           </Panel>
         ) : null}
-
-        <ShowMarkers />
       </Map>
     </div>
   )
 }
 
-export const useConvertSearchFormToVariables = () => {
-  const [variables, setVariables] =
-    useState<SearchGaragesQueryVariables | null>(null)
-
-  const {
-    setError,
-    formState: { dirtyFields },
-  } = useFormContext<FormTypeSearchGarage>()
-  const formState = useWatch<FormTypeSearchGarage>()
-
-  const debouncedForm = useDebouncedValue(formState, 500)
-
-  useEffect(() => {
-    setVariables(searchFormAdapter(dirtyFields, debouncedForm, setError))
-  }, [debouncedForm])
-
-  // Convert form data to query variables
-  return { variables }
-}
-
-export const MapInitialPosition = ({
-  lat,
-  lng,
+export const MapPositionManager = ({
   onMoveEnd,
 }: {
-  lat: number
-  lng: number
-  onMoveEnd: ({ lat, lng }: { lat: number; lng: number }) => void
+  onMoveEnd: ({
+    lat,
+    lng,
+    locationFilter,
+  }: {
+    lat: number
+    lng: number
+    locationFilter: FormTypeSearchGarage['locationFilter']
+  }) => void
 }) => {
   const { current: map } = useMap()
 
   useEffect(() => {
-    map?.flyTo({ center: { lat, lng }, zoom: 12 })
-  }, [lat, lng, map])
-
-  useEffect(() => {
     const handleMoveEnd = () => {
-      const center = map?.getCenter()
+      if (!map) {
+        return
+      }
+      const center = map.getCenter()
       if (!center) {
         return
       }
-      console.log(`Map moved to lat: ${center?.lat}, lng: ${center?.lng}`)
-      onMoveEnd({ lat: center?.lat, lng: center?.lng })
+      const bounds = map.getBounds()
+
+      const locationFilter = {
+        nw_lat: bounds?.getNorthWest().lat || 0,
+        nw_lng: bounds?.getNorthWest().lng || 0,
+        se_lat: bounds?.getSouthEast().lat || 0,
+        se_lng: bounds?.getSouthEast().lng || 0,
+      }
+
+      console.log(
+        `Map moved to lat: ${center?.lat}, lng: ${center?.lng}.`,
+        locationFilter,
+      )
+      onMoveEnd({ lat: center?.lat, lng: center?.lng, locationFilter })
     }
 
     map?.on('moveend', handleMoveEnd)
@@ -206,26 +188,36 @@ export const MapInitialPosition = ({
 }
 
 export const ShowMarkers = () => {
+  const [searchGarages, { loading, data }] = useSearchGaragesLazyQuery()
+
   const { variables } = useConvertSearchFormToVariables()
 
-  const { loading, data } = useSearchGaragesQuery({
-    variables: variables!,
-  })
+  useEffect(() => {
+    if (variables) {
+      searchGarages({ variables })
+    }
+  }, [variables])
 
   return (
     <div>
-      <Panel position="center-bottom">
-        <IconRefresh className="animate-spin-reverse" />
-      </Panel>
+      {loading ? (
+        <Panel position="center-bottom">
+          <IconRefresh className="animate-spin-reverse" />
+        </Panel>
+      ) : null}
       {data?.searchGarages.map((garage) => (
         <Marker
           key={garage.id}
           latitude={garage.address.lat}
           longitude={garage.address.lng}
+          anchor="top"
         >
           <Popup longitude={garage.address.lng} latitude={garage.address.lat}>
             <BookSlotPopup garage={garage} />
           </Popup>
+          <div className="flex items-center justify-center w-6 h-6 text-lg font-bold border border-black shadow-lg bg-yellow shadow-black/30">
+            P
+          </div>
         </Marker>
       ))}
     </div>

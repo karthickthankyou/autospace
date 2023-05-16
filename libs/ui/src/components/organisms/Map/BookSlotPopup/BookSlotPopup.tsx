@@ -62,7 +62,7 @@ const BookSlotPopup = memo(
     }, [garage])
 
     return (
-      <div className="flex gap-2 text-left border-t-2 border-white shadow-lg bg-white/50 backdrop-blur-sm">
+      <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
         <Form
           onSubmit={handleSubmit(async (data) => {
             if (!uid) {

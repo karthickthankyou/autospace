@@ -1,136 +1,42 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Brand } from '../../atoms/Brand'
 import { Button } from '../../atoms/Button'
 import { RangeSlider } from '../../molecules/RangeSlider'
 import { FilterHeading } from '../../molecules/FilterHeading'
 import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
-import { Sidebar } from '../Sidebar'
 import {
   FormTypeSearchGarage,
   formDefaultValuesSearchGarages,
 } from '@autospace-org/forms/src/searchGarages'
+import { Dialog } from '../../atoms/Dialog'
+import { IconFilter } from '@tabler/icons-react'
+import { PulsingDot } from '../../atoms/Dot'
 
 export interface IFilterSidebarProps {}
 
-export const FilterSidebar = ({
-  open,
-  setOpen,
-}: {
-  open: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-}) => {
-  const { control, reset, getValues } = useFormContext<FormTypeSearchGarage>()
+export const FilterSidebar = () => {
+  const [open, setOpen] = useState(false)
+
+  const {
+    control,
+    reset,
+    getValues,
+    formState: { dirtyFields },
+  } = useFormContext<FormTypeSearchGarage>()
   return (
-    <Sidebar open={open} setOpen={setOpen}>
-      <Sidebar.Header>
-        <Brand shortForm />
-      </Sidebar.Header>
-      <Sidebar.Body>
-        <div className="flex flex-col items-start space-y-1">
-          <Controller
-            name="pricePerHour"
-            control={control}
-            render={({
-              field: { value, onChange },
-              fieldState: { isDirty },
-              formState: { defaultValues },
-            }) => {
-              return (
-                <>
-                  <FilterHeading dirty={isDirty} title="Price per hour" />
-                  <RangeSlider
-                    min={defaultValues?.pricePerHour?.[0]}
-                    max={defaultValues?.pricePerHour?.[1]}
-                    // max={200}
-                    value={value}
-                    onChange={onChange}
-                    valueLabelFormat={(sliderValue) =>
-                      `Rs.${sliderValue.toLocaleString()}`
-                    }
-                    step={5}
-                  />
-                </>
-              )
-            }}
-          />
-          <Controller
-            name="width"
-            control={control}
-            render={({
-              field: { value, onChange },
-              fieldState: { isDirty },
-              formState: { defaultValues },
-            }) => {
-              return (
-                <>
-                  <FilterHeading dirty={isDirty} title="Width" />
-                  <RangeSlider
-                    min={defaultValues?.width?.[0]}
-                    max={defaultValues?.width?.[1]}
-                    value={value}
-                    onChange={onChange}
-                    valueLabelFormat={(sliderValue) =>
-                      `${sliderValue.toLocaleString()} ft`
-                    }
-                    step={2}
-                  />
-                </>
-              )
-            }}
-          />
-          <Controller
-            name="height"
-            control={control}
-            render={({
-              field: { value, onChange },
-              fieldState: { isDirty },
-              formState: { defaultValues },
-            }) => {
-              return (
-                <>
-                  <FilterHeading dirty={isDirty} title="Height" />
-                  <RangeSlider
-                    min={defaultValues?.height?.[0]}
-                    max={defaultValues?.height?.[1]}
-                    value={value}
-                    onChange={onChange}
-                    valueLabelFormat={(sliderValue) =>
-                      `${sliderValue.toLocaleString()} ft`
-                    }
-                    step={2}
-                  />
-                </>
-              )
-            }}
-          />
-          <Controller
-            name="length"
-            control={control}
-            render={({
-              field: { value, onChange },
-              fieldState: { isDirty },
-              formState: { defaultValues },
-            }) => {
-              return (
-                <>
-                  <FilterHeading dirty={isDirty} title="Length" />
-                  <RangeSlider
-                    min={defaultValues?.length?.[0]}
-                    max={defaultValues?.length?.[1]}
-                    value={value}
-                    onChange={onChange}
-                    valueLabelFormat={(sliderValue) =>
-                      `${sliderValue.toLocaleString()} ft`
-                    }
-                    step={5}
-                  />
-                </>
-              )
-            }}
-          />
+    <>
+      <Button
+        variant="text"
+        onClick={() => setOpen(true)}
+        className=" hover:bg-gray-200"
+      >
+        <IconFilter className="stroke-1.5 " />
+        {dirtyFields.length ? <PulsingDot /> : null}
+      </Button>
+      <Dialog open={open} setOpen={setOpen} title={'Filter'}>
+        <div className="flex flex-col items-start gap-3">
           <Controller
             name="type"
             control={control}
@@ -140,15 +46,14 @@ export const FilterSidebar = ({
               formState: { defaultValues, errors },
             }) => {
               return (
-                <>
+                <div>
                   <FilterHeading dirty={isDirty} title="Vehicle type" />
-
                   <ToggleButtonGroup
                     value={value}
                     onChange={(event, value) => {
                       onChange(value.sort())
                     }}
-                    classes={{ root: 'block' }}
+                    classes={{ root: 'block mt-2' }}
                     aria-label="text formatting"
                   >
                     {defaultValues?.type?.map((val) => {
@@ -171,21 +76,122 @@ export const FilterSidebar = ({
                       )
                     })}
                   </ToggleButtonGroup>
-                </>
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="pricePerHour"
+            control={control}
+            render={({
+              field: { value, onChange },
+              fieldState: { isDirty },
+              formState: { defaultValues },
+            }) => {
+              return (
+                <div className="w-full">
+                  <FilterHeading dirty={isDirty} title="Price per hour" />
+                  <RangeSlider
+                    min={defaultValues?.pricePerHour?.[0]}
+                    max={defaultValues?.pricePerHour?.[1]}
+                    // max={200}
+                    value={value}
+                    onChange={onChange}
+                    valueLabelFormat={(sliderValue) =>
+                      `Rs.${sliderValue.toLocaleString()}`
+                    }
+                    step={5}
+                  />
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="width"
+            control={control}
+            render={({
+              field: { value, onChange },
+              fieldState: { isDirty },
+              formState: { defaultValues },
+            }) => {
+              return (
+                <div className="w-full">
+                  <FilterHeading dirty={isDirty} title="Width" />
+                  <RangeSlider
+                    min={defaultValues?.width?.[0]}
+                    max={defaultValues?.width?.[1]}
+                    value={value}
+                    onChange={onChange}
+                    valueLabelFormat={(sliderValue) =>
+                      `${sliderValue.toLocaleString()} ft`
+                    }
+                    step={2}
+                  />
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="height"
+            control={control}
+            render={({
+              field: { value, onChange },
+              fieldState: { isDirty },
+              formState: { defaultValues },
+            }) => {
+              return (
+                <div className="w-full">
+                  <FilterHeading dirty={isDirty} title="Height" />
+                  <RangeSlider
+                    min={defaultValues?.height?.[0]}
+                    max={defaultValues?.height?.[1]}
+                    value={value}
+                    onChange={onChange}
+                    valueLabelFormat={(sliderValue) =>
+                      `${sliderValue.toLocaleString()} ft`
+                    }
+                    step={2}
+                  />
+                </div>
+              )
+            }}
+          />
+          <Controller
+            name="length"
+            control={control}
+            render={({
+              field: { value, onChange },
+              fieldState: { isDirty },
+              formState: { defaultValues },
+            }) => {
+              return (
+                <div className="w-full">
+                  <FilterHeading dirty={isDirty} title="Length" />
+                  <RangeSlider
+                    min={defaultValues?.length?.[0]}
+                    max={defaultValues?.length?.[1]}
+                    value={value}
+                    onChange={onChange}
+                    valueLabelFormat={(sliderValue) =>
+                      `${sliderValue.toLocaleString()} ft`
+                    }
+                    step={5}
+                  />
+                </div>
               )
             }}
           />
         </div>
-      </Sidebar.Body>
-      <Sidebar.Footer>
-        <Button
-          onClick={() =>
-            reset({ ...getValues(), ...formDefaultValuesSearchGarages })
-          }
-        >
-          Reset
-        </Button>
-      </Sidebar.Footer>
-    </Sidebar>
+        <div className="mt-4">
+          <Button
+            onClick={() =>
+              reset({ ...getValues(), ...formDefaultValuesSearchGarages })
+            }
+          >
+            Reset
+          </Button>
+        </div>
+      </Dialog>
+    </>
   )
 }
