@@ -10,10 +10,15 @@ import {
 } from '@autospace-org/util/date'
 import { FormTypeSearchGarage } from '@autospace-org/forms/src/searchGarages'
 
-export interface IDateRangeBookingInfoProps {}
+export interface IDateRangeBookingInfoProps {
+  startTime?: string
+  endTime?: string
+}
 
-export const DateRangeBookingInfo = ({}: IDateRangeBookingInfoProps) => {
-  const { startTime, endTime } = useWatch<FormTypeSearchGarage>()
+export const DateRangeBookingInfo = ({
+  startTime,
+  endTime,
+}: IDateRangeBookingInfoProps) => {
   const [duration, setDuration] = useState<string | null>(null)
 
   useEffect(() => {

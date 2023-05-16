@@ -4,7 +4,9 @@ import { Manager } from '@autospace-org/ui/src/components/templates/Manager'
 export default function Home() {
   return (
     <main>
-      <Manager />
+      <Container>
+        <Manager />
+      </Container>
     </main>
   )
 }

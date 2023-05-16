@@ -81,8 +81,6 @@ export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
 export const ShowMenuItems = ({ menuItems }: INavSidebarProps) => {
   const uid = useUserStore((state) => state.uid)
 
-  console.log('ShowMenuItems ', uid)
-
   if (!uid) return null
   return (
     <div className="items-center hidden ml-auto lg:flex lg:gap-10">

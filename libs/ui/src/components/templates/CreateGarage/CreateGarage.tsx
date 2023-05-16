@@ -55,7 +55,6 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
   } = useFormContext<FormTypeCreateGarage>()
 
   const daata = useWatch<FormTypeCreateGarage>()
-  console.log('daata ', daata, errors)
 
   const [createGarage, { loading }] = useCreateGarageMutation()
 

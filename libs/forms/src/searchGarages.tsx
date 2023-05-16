@@ -30,7 +30,6 @@ export const formSchemaSearchGarage = z.object({
   skip: z.number().optional(),
   take: z.number().optional(),
 
-  garageId: z.number(),
   vehicleNumber: z.string().min(1, { message: 'Vehicle number is required' }),
   selectedType: z.nativeEnum(SlotType, {
     required_error: 'Slot type is required',

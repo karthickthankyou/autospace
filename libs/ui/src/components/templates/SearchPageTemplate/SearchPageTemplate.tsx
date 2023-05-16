@@ -1,5 +1,4 @@
 import { Map } from '../../organisms/Map'
-import { motion } from 'framer-motion'
 
 import { useEffect, useState } from 'react'
 
@@ -14,7 +13,7 @@ import {
   IconInfoCircle,
   IconRefresh,
 } from '@tabler/icons-react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 
 import { FormTypeSearchGarage } from '@autospace-org/forms/src/searchGarages'
 import { useConvertSearchFormToVariables } from '@autospace-org/forms/src/adapters/searchFormAdapter'
@@ -37,6 +36,8 @@ import React from 'react'
 import { Autocomplete } from '../../atoms/Autocomplete'
 import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
 import { Transition } from '@headlessui/react'
+import { createPortal } from 'react-dom'
+import { Dialog } from '../../atoms/Dialog'
 
 export interface ISearchPageTemplateProps {
   initialProps: {
@@ -59,7 +60,7 @@ export const CurrentLocationButton = () => {
       onClick={() => {
         navigator.geolocation.getCurrentPosition(
           ({ coords: { latitude, longitude } }) => {
-            map?.flyTo({ center: { lat: latitude, lng: longitude } })
+            map?.flyTo({ center: { lat: latitude, lng: longitude }, zoom: 10 })
           },
           (error) => {
             console.error(error)
@@ -154,26 +155,33 @@ export const MarkerWithPopup = ({
 }: {
   marker: SearchGaragesQuery['searchGarages'][number]
 }) => {
+  //   const [open, setOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   useKeypress(['Escape'], () => setShowPopup(false))
 
+  const { startTime, endTime } = useWatch<FormTypeSearchGarage>()
+
   return (
     <>
-      <Popup
+      <Dialog title="outside" open={showPopup} setOpen={setShowPopup}>
+        <BookSlotPopup dateRange={{ endTime, startTime }} garage={marker} />
+      </Dialog>
+
+      {/* <Popup
         show={showPopup}
         setShow={setShowPopup}
         latitude={marker.address.lat}
         longitude={marker.address.lng}
       >
-        <BookSlotPopup garage={marker} />
-      </Popup>
+        <Button onClick={() => setOpen(true)}>Click</Button>
+      </Popup> */}
 
       <Marker
         latitude={marker.address.lat}
         longitude={marker.address.lng}
         onClick={(e) => {
           e.originalEvent.stopPropagation()
-          console.log(' show popup ', showPopup)
+
           setShowPopup((state) => !state)
         }}
       >

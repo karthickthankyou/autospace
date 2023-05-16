@@ -52,7 +52,6 @@ export const RegisterForm = ({ className }: { className?: string }) => {
       onSubmit={handleSubmit(async (data) => {
         const { email, password } = data
         const user = await callAsyncFn({ email, password })
-        console.log('Login data: ', data, user)
       })}
     >
       <HtmlLabel title="Email" error={errors.email?.message}>

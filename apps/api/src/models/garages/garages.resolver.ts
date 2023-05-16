@@ -176,7 +176,7 @@ export class GaragesResolver {
         },
       },
     })
-    console.log('groupBySlots', groupBySlots, startDate, endDate)
+
     return groupBySlots.map(({ _count, type, _min }) => ({
       type,
       count: _count.type,

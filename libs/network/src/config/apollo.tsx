@@ -31,11 +31,16 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
     // return the headers to the context so httpLink can read them
     const decoded: any = jwtDecode(user.token || '')
 
+    const currentTime = new Date()
+    const expirytime = new Date(decoded?.exp * 1000)
+
     console.log(
       'Auth running...',
       'Implement refetcting???',
       decoded,
-      new Date(decoded?.exp * 1000),
+      currentTime,
+      expirytime,
+      currentTime.getTime() < expirytime.getTime(),
     )
 
     return {

@@ -13,6 +13,8 @@ import {
 import { Dialog } from '../../atoms/Dialog'
 import { IconFilter } from '@tabler/icons-react'
 import { PulsingDot } from '../../atoms/Dot'
+import { Sidebar } from '../Sidebar'
+import { Brand } from '../../atoms/Brand'
 
 export interface IFilterSidebarProps {}
 
@@ -35,8 +37,11 @@ export const FilterSidebar = () => {
         <IconFilter className="stroke-1.5 " />
         {dirtyFields.length ? <PulsingDot /> : null}
       </Button>
-      <Dialog open={open} setOpen={setOpen} title={'Filter'}>
-        <div className="flex flex-col items-start gap-3">
+      <Sidebar open={open} setOpen={setOpen}>
+        <Sidebar.Header>
+          <Brand shortForm />
+        </Sidebar.Header>{' '}
+        <Sidebar.Body className="flex flex-col items-start gap-3">
           <Controller
             name="type"
             control={control}
@@ -181,8 +186,8 @@ export const FilterSidebar = () => {
               )
             }}
           />
-        </div>
-        <div className="mt-4">
+        </Sidebar.Body>
+        <Sidebar.Footer>
           <Button
             onClick={() =>
               reset({ ...getValues(), ...formDefaultValuesSearchGarages })
@@ -190,8 +195,8 @@ export const FilterSidebar = () => {
           >
             Reset
           </Button>
-        </div>
-      </Dialog>
+        </Sidebar.Footer>
+      </Sidebar>
     </>
   )
 }
