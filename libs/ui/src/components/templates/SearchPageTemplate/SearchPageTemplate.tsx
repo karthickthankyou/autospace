@@ -1,6 +1,7 @@
 import { Map } from '../../organisms/Map'
+import { motion } from 'framer-motion'
+
 import { useEffect, useState } from 'react'
-import { useTransition, animated, config } from 'react-spring'
 
 import {
   LocationInfo,
@@ -35,6 +36,7 @@ import { ParkingIcon } from '../../atoms/ParkingIcon'
 import React from 'react'
 import { Autocomplete } from '../../atoms/Autocomplete'
 import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
+import { Transition } from '@headlessui/react'
 
 export interface ISearchPageTemplateProps {
   initialProps: {
@@ -93,7 +95,7 @@ export const SearchPageTemplate = () => {
   }
 
   return (
-    <Map onZoomEnd={handleMapChange} onDragEnd={handleMapChange}>
+    <Map pitch={30} onZoomEnd={handleMapChange} onDragEnd={handleMapChange}>
       {/* Query and display garages */}
       <ShowMarkers />
       <Panel position="left-top" className="bg-white/50">
@@ -147,53 +149,6 @@ export const SearchPageTemplate = () => {
   )
 }
 
-export const MapPositionManager = ({
-  onMoveEnd,
-}: {
-  onMoveEnd: ({
-    lat,
-    lng,
-    locationFilter,
-  }: {
-    lat: number
-    lng: number
-    locationFilter: FormTypeSearchGarage['locationFilter']
-  }) => void
-}) => {
-  const { current: map } = useMap()
-
-  useEffect(() => {
-    const handleMoveEnd = () => {
-      if (!map) {
-        return
-      }
-      const center = map.getCenter()
-      if (!center) {
-        return
-      }
-      const bounds = map.getBounds()
-
-      const locationFilter = {
-        nw_lat: bounds?.getNorthWest().lat || 0,
-        nw_lng: bounds?.getNorthWest().lng || 0,
-        se_lat: bounds?.getSouthEast().lat || 0,
-        se_lng: bounds?.getSouthEast().lng || 0,
-      }
-
-      onMoveEnd({ lat: center?.lat, lng: center?.lng, locationFilter })
-    }
-
-    map?.on('moveend', handleMoveEnd)
-
-    // cleanup
-    return () => {
-      map?.off('moveend', handleMoveEnd)
-    }
-  }, [map])
-
-  return null
-}
-
 export const MarkerWithPopup = ({
   marker,
 }: {
@@ -204,6 +159,15 @@ export const MarkerWithPopup = ({
 
   return (
     <>
+      <Popup
+        show={showPopup}
+        setShow={setShowPopup}
+        latitude={marker.address.lat}
+        longitude={marker.address.lng}
+      >
+        <BookSlotPopup garage={marker} />
+      </Popup>
+
       <Marker
         latitude={marker.address.lat}
         longitude={marker.address.lng}
@@ -215,14 +179,6 @@ export const MarkerWithPopup = ({
       >
         <ParkingIcon />
       </Marker>
-      <Popup
-        show={showPopup}
-        setShow={setShowPopup}
-        latitude={marker.address.lat}
-        longitude={marker.address.lng}
-      >
-        <BookSlotPopup garage={marker} />
-      </Popup>
     </>
   )
 }
@@ -236,27 +192,17 @@ export const ShowMarkers = () => {
   const { variables } = useConvertSearchFormToVariables()
 
   useEffect(() => {
-    console.log('variables ', variables)
     if (variables) {
       searchGarages({ variables })
     }
   }, [variables])
   useEffect(() => {
     if (data?.searchGarages) {
-      setGarages(data?.searchGarages || [])
+      setGarages(data.searchGarages || [])
     }
   }, [data?.searchGarages])
 
-  const markersTransitions = useTransition(garages || [], {
-    keys: (garage) => garage.id,
-    from: { opacity: 0, transform: 'translateY(-6px)' },
-    enter: { opacity: 1, transform: 'translateY(0px)' },
-    leave: { opacity: 0 },
-    trail: 50,
-    config: config.molasses,
-  })
-
-  if (markersTransitions.length === 0) {
+  if (data?.searchGarages.length === 0) {
     return (
       <Panel position="center-center" className="bg-white/50">
         <div className="flex items-center justify-center gap-2 ">
@@ -267,18 +213,16 @@ export const ShowMarkers = () => {
   }
 
   return (
-    <div>
+    <>
       {loading ? (
         <Panel position="center-bottom">
           <IconRefresh className="animate-spin-reverse" />
         </Panel>
       ) : null}
-      {markersTransitions((style, garage) => (
-        <animated.div key={garage.id} style={style}>
-          <MarkerWithPopup marker={garage} />
-        </animated.div>
+      {garages.map((garage) => (
+        <MarkerWithPopup key={garage.id} marker={garage} />
       ))}
-    </div>
+    </>
   )
 }
 
@@ -303,7 +247,7 @@ export const SearchBox = () => {
       onChange={(_, v) => {
         if (v) {
           const { latLng, placeName } = v
-          map?.flyTo({ center: { lat: latLng[0], lng: latLng[1] } })
+          map?.flyTo({ center: { lat: latLng[0], lng: latLng[1] }, zoom: 10 })
         }
       }}
     />
