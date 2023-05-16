@@ -23,13 +23,20 @@ import { useConvertSearchFormToVariables } from '@autospace-org/forms/src/adapte
 import { FilterSidebar } from '../../organisms/FilterSidebar'
 import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
-import { useSearchGaragesLazyQuery } from '@autospace-org/network/src/generated'
+import {
+  SearchGaragesQuery,
+  useSearchGaragesLazyQuery,
+} from '@autospace-org/network/src/generated'
 import { Marker } from '../../organisms/Map/MapMarker'
 import { Popup } from '../../organisms/Map/Popup'
 import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { useMap } from 'react-map-gl'
+import { PopupContent } from '../../organisms/Map/Popup/Popup'
+import { useKeypress } from '@autospace-org/util'
+import { useUserStore } from '@autospace-org/store/user'
+import { ParkingIcon } from '../../atoms/ParkingIcon'
 
 export interface ISearchPageTemplateProps {
   initialProps: {
@@ -187,6 +194,40 @@ export const MapPositionManager = ({
   return null
 }
 
+export const MarkerWithPopup = ({
+  marker,
+}: {
+  marker: SearchGaragesQuery['searchGarages'][number]
+}) => {
+  const [showPopup, setShowPopup] = useState(true)
+  useKeypress(['Escape'], () => setShowPopup(false))
+
+  return (
+    <>
+      <Marker
+        latitude={marker.address.lat}
+        longitude={marker.address.lng}
+        onClick={(e) => {
+          e.originalEvent.stopPropagation()
+
+          console.log(' show popup ', showPopup)
+          setShowPopup((state) => !state)
+        }}
+      >
+        <ParkingIcon />
+      </Marker>
+      <Popup
+        show={showPopup}
+        setShow={setShowPopup}
+        latitude={marker.address.lat}
+        longitude={marker.address.lng}
+      >
+        <BookSlotPopup garage={marker} />
+      </Popup>
+    </>
+  )
+}
+
 export const ShowMarkers = () => {
   const [searchGarages, { loading, data }] = useSearchGaragesLazyQuery()
 
@@ -206,19 +247,7 @@ export const ShowMarkers = () => {
         </Panel>
       ) : null}
       {data?.searchGarages.map((garage) => (
-        <Marker
-          key={garage.id}
-          latitude={garage.address.lat}
-          longitude={garage.address.lng}
-          anchor="top"
-        >
-          <Popup longitude={garage.address.lng} latitude={garage.address.lat}>
-            <BookSlotPopup garage={garage} />
-          </Popup>
-          <div className="flex items-center justify-center w-6 h-6 text-lg font-bold border border-black shadow-lg bg-yellow shadow-black/30">
-            P
-          </div>
-        </Marker>
+        <MarkerWithPopup marker={garage} />
       ))}
     </div>
   )

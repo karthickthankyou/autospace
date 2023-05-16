@@ -92,9 +92,9 @@ export const SearchPlaceBox = ({
         setSearchText(v)
       }}
       loading={loading}
-      isOptionEqualToValue={(option, value) =>
-        option.placeName === value.placeName
-      }
+      isOptionEqualToValue={(option, value) => {
+        return option.placeName === value.placeName
+      }}
       onChange={(_, v) => {
         if (v) {
           const { latLng, placeName } = v

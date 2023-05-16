@@ -16,12 +16,12 @@ const Autocomplete = <
     <MuiAutocomplete
       autoSelect
       classes={{
-        root: 'border text-xl font-light ',
+        root: 'border text-lg font-light ',
         input: 'p-2',
         noOptions: 'bg-white/50 backdrop-filter backdrop-blur',
         loading: 'bg-white/50 backdrop-filter backdrop-blur',
         listbox:
-          'p-0 bg-white/50 backdrop-filter backdrop-blur max-h-64 text-xl',
+          'p-0 bg-white/50 backdrop-filter backdrop-blur max-h-64 text-lg',
         option: 'hover:bg-white bg-opacity-100',
         paper:
           ' shadow-md border border-white mt-1 bg-transparent rounded-none',

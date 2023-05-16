@@ -85,20 +85,12 @@ const BookSlotPopup = memo(
                 },
               },
             })
-            const res = await createBookingSession(
-              uid!,
-              'http://localhost:3001',
-              totalPrice,
-            )
           })}
         >
           <div className="mb-2 font-bold">{garage.displayName}</div>
           <div className="mb-2">{garage.address.address}</div>
 
           <DateRangeBookingInfo />
-          {/* It gets reset on submitting. */}
-          {/* <FormError error={{ message: errors.endTime?.message, type: '' }} />
-        <FormError error={{ message: errors.startTime?.message, type: '' }} /> */}
 
           <div className="flex flex-wrap gap-2 mt-2">
             <HtmlLabel

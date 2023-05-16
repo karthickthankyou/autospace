@@ -13,19 +13,18 @@ type IMapProps = MapProps & { height?: string }
 
 export const Map = ({ height = 'calc(100vh - 4rem)', ...props }: IMapProps) => {
   return (
-    <div className="overflow-hidden rounded shadow-inner">
-      <MapGl
-        {...props}
-        projection={'globe'}
-        mapStyle="mapbox://styles/iamkarthick/clebahxqe001701mo1i1adtw3"
-        mapboxAccessToken="pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ"
-        style={{ height }}
-        scrollZoom={false}
-      >
-        <StyleMap />
-        {props.children}
-      </MapGl>
-    </div>
+    <MapGl
+      {...props}
+      projection={'globe'}
+      mapStyle="mapbox://styles/iamkarthick/clebahxqe001701mo1i1adtw3"
+      mapboxAccessToken="pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ"
+      style={{ height }}
+      pitch={45}
+      scrollZoom={false}
+    >
+      <StyleMap />
+      {props.children}
+    </MapGl>
   )
 }
 

@@ -12,7 +12,13 @@ const Template: ComponentStory<typeof Popup> = () => {
   const [open, setOpen] = useState(true)
 
   return (
-    <Popup latitude={36} longitude={-122} onClose={() => setOpen(false)}>
+    <Popup
+      show={open}
+      setShow={setOpen}
+      latitude={36}
+      longitude={-122}
+      onClose={() => setOpen(false)}
+    >
       <div className="p-3">Some text</div>
     </Popup>
   )
@@ -23,14 +29,26 @@ const MultipleTemplate: ComponentStory<typeof Popup> = () => {
   return (
     <>
       <ShowHide show={open}>
-        <Popup latitude={36} longitude={-122} onClose={() => setOpen(false)}>
+        <Popup
+          show={open}
+          setShow={setOpen}
+          latitude={36}
+          longitude={-122}
+          onClose={() => setOpen(false)}
+        >
           <div className="max-w-sm p-3">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
           </div>
         </Popup>
       </ShowHide>
       <ShowHide show={open2}>
-        <Popup latitude={42} longitude={-112} onClose={() => setOpen2(false)}>
+        <Popup
+          show={open}
+          setShow={setOpen}
+          latitude={42}
+          longitude={-112}
+          onClose={() => setOpen2(false)}
+        >
           <div className="max-w-sm p-3">
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim id
             tempore quia sit adipisci facilis, error laudantium nisi consectetur
