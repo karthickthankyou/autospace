@@ -1,15 +1,9 @@
-import { boolean } from 'zod'
-
 import { CustomerBookingCard } from '../../organisms/BookingCard/BookingCard'
 import { useUserStore } from '@autospace-org/store/user'
 import {
-  BookingWhereInput,
+  SortOrder,
   useBookingsLazyQuery,
-  useBookingsQuery,
 } from '@autospace-org/network/src/generated'
-import { LoaderPanel } from '../../molecules/Loader'
-import { AlertSection } from '../../organisms/AlertSection'
-import { HeaderText } from '../../molecules/HeaderText'
 import { useEffect, useState } from 'react'
 import { ShowData } from '../../organisms/ShowData'
 import { Tab, Tabs } from '../../molecules/Tabs'
@@ -27,15 +21,15 @@ export const CustomerBookings = ({}: ICustomerBookingsProps) => {
         onChange={(e, v) => setValue(v)}
         aria-label="bookings"
       >
-        <Tab label={BookingType[BookingTypes.ONGOING].title} />
         <Tab label={BookingType[BookingTypes.UPCOMING].title} />
+        <Tab label={BookingType[BookingTypes.ONGOING].title} />
         <Tab label={BookingType[BookingTypes.PAST].title} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <ShowBookings type={BookingTypes.ONGOING} />
+        <ShowBookings type={BookingTypes.UPCOMING} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ShowBookings type={BookingTypes.UPCOMING} />
+        <ShowBookings type={BookingTypes.ONGOING} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <ShowBookings type={BookingTypes.PAST} />
@@ -90,6 +84,9 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
           where: {
             customerId: { equals: uid },
             ...condition.where,
+          },
+          orderBy: {
+            startTime: SortOrder.Asc,
           },
         },
       })

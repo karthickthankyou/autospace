@@ -113,6 +113,7 @@ export const bookings = gql`
       vehicleNumber
       passcode
       slot {
+        displayName
         garage {
           address {
             address

@@ -1439,6 +1439,7 @@ export type BookingsQuery = {
     passcode?: string | null
     slot: {
       __typename?: 'Slot'
+      displayName?: string | null
       garage: {
         __typename?: 'Garage'
         address: {
@@ -1980,6 +1981,7 @@ export const BookingsDocument = /*#__PURE__*/ gql`
       vehicleNumber
       passcode
       slot {
+        displayName
         garage {
           address {
             address

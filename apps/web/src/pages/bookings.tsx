@@ -1,8 +1,13 @@
 import Head from 'next/head'
 import { CustomerBookings } from '@autospace-org/ui/src/components/templates/CustomerBookings'
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
+import { useUserStore } from '@autospace-org/store/user'
+import { AlertSection } from '@autospace-org/ui/src/components/organisms/AlertSection'
+import Link from 'next/link'
 
 export default function Bookings() {
+  const uid = useUserStore((state) => state.uid)
+
   return (
     <>
       <Head>
@@ -13,7 +18,13 @@ export default function Bookings() {
       </Head>
       <main className="bg-gray-50">
         <Container className="min-h-[90vh]">
-          <CustomerBookings />
+          {uid ? (
+            <CustomerBookings />
+          ) : (
+            <AlertSection title="You are not logged in.">
+              <Link href="/login">Login</Link>
+            </AlertSection>
+          )}
         </Container>
       </main>
     </>

@@ -1,17 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-
 import { IconDoorExit, IconMenu2 } from '@tabler/icons-react'
-
 import { Sidebar } from '../Sidebar'
-
 import { Brand } from '../../atoms/Brand'
-
 import { Button } from '../../atoms/Button'
-
-import { useLogoutMutation } from '@autospace-org/network/src/generated'
 import { useUserStore } from '@autospace-org/store/user'
 import { MenuItem } from '@autospace-org/types'
+import { signOut } from '@autospace-org/network/src/auth'
 
 export interface INavSidebarProps {
   menuItems: MenuItem[]
@@ -20,12 +15,9 @@ export interface INavSidebarProps {
 export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
   const [open, setOpen] = useState(false)
 
-  const { uid, resetUser } = useUserStore((state) => ({
+  const { uid } = useUserStore((state) => ({
     uid: state.uid,
-    resetUser: state.resetUser,
   }))
-
-  const [logout, { loading }] = useLogoutMutation()
 
   return (
     <>
@@ -73,11 +65,7 @@ export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
             <>
               <Button
                 variant="text"
-                loading={loading}
-                onClick={async () => {
-                  await logout()
-                  resetUser()
-                }}
+                onClick={signOut}
                 className="flex items-center gap-2"
               >
                 Log out <IconDoorExit />

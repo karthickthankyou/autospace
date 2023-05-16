@@ -4,7 +4,6 @@ import TabMui, { TabProps } from '@mui/material/Tab'
 export const Tabs = (props: TabsProps) => {
   return (
     <TabsMui
-      disableRipple
       classes={{
         indicator: 'bg-black',
         flexContainer: 'gap-4',

@@ -12,12 +12,12 @@ import { Header } from '@autospace-org/ui/src/components/organisms/Header'
 import { MenuItem } from '@autospace-org/types'
 
 const MENUITEMS: MenuItem[] = [
+  { label: 'About', href: '/about', loggedIn: false },
   { label: 'Search', href: '/search', loggedIn: true },
-  { label: 'Profile', href: '/profile', loggedIn: true },
+  { label: 'Bookings', href: '/bookings', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,
-  { label: 'About', href: '/about', loggedIn: false },
   { label: 'Contact', href: '/contact', loggedIn: false },
   { label: 'FAQs', href: '/faqs', loggedIn: false },
   { label: 'How it works', href: '/how-it-works', loggedIn: false },

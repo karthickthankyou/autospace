@@ -25,8 +25,13 @@ export const CustomerBookingCard = ({ booking }: IBookingCardProps) => {
           lng={booking.slot.garage.address.lng}
         />
       </div>
-      <div className="p-4">
-        <div className="mt-2">{booking.vehicleNumber}</div>
+      <div className="flex flex-col items-center gap-1 p-4 ">
+        <div className="text-sm">{booking.vehicleNumber}</div>
+        <div className="px-1 font-semibold border border-black">
+          {booking.slot.displayName}
+        </div>
+      </div>
+      <div className="p-4 ">
         <Reveal secret={booking.passcode || ''} />
       </div>
     </div>
