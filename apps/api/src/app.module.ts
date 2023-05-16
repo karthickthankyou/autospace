@@ -18,6 +18,7 @@ import { SlotsModule } from './models/slots/slots.module'
 import { VerificationsModule } from './models/verifications/verifications.module'
 import { FirebaseModule } from './common/firebase/firebase.module'
 import { AuthModule } from './common/auth/auth.module'
+import { StripeModule } from './models/stripe/stripe.module'
 
 @Module({
   imports: [
@@ -35,6 +36,8 @@ import { AuthModule } from './common/auth/auth.module'
     PrismaModule,
     FirebaseModule,
     AuthModule,
+
+    StripeModule,
 
     AddressesModule,
     AdminsModule,

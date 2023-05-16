@@ -89,41 +89,6 @@ export const createBooking = gql`
     }
   }
 `
-export const bookings = gql`
-  query bookings(
-    $distinct: [BookingScalarFieldEnum!]
-    $skip: Int
-    $take: Int
-    $cursor: BookingWhereUniqueInput
-    $orderBy: [BookingOrderByWithRelationInput!]
-    $where: BookingWhereInput
-  ) {
-    bookings(
-      distinct: $distinct
-      skip: $skip
-      take: $take
-      cursor: $cursor
-      orderBy: $orderBy
-      where: $where
-    ) {
-      id
-      pricePerHour
-      endTime
-      startTime
-      vehicleNumber
-      passcode
-      slot {
-        garage {
-          address {
-            address
-            lat
-            lng
-          }
-        }
-      }
-    }
-  }
-`
 
 export const login = gql`
   mutation Login($credentials: LoginInput!) {

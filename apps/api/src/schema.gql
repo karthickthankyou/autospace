@@ -335,18 +335,18 @@ type Admin {
 }
 
 type Booking {
+  pricePerHour: Int
+  totalPrice: Int
+  phoneNumber: String
+  passcode: String
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
-  pricePerHour: Int!
-  totalPrice: Int!
   startTime: DateTime!
   endTime: DateTime!
   slotId: Int!
   customerId: String!
   vehicleNumber: String!
-  phoneNumber: String!
-  passcode: String!
   slot: Slot!
   customer: Customer!
 }
@@ -865,6 +865,7 @@ input CreateBookingInput {
   endTime: DateTime!
   customerId: String!
   vehicleNumber: String!
+  phoneNumber: String
   type: SlotType!
   garageId: Int!
 }
@@ -874,6 +875,7 @@ input UpdateBookingInput {
   endTime: DateTime
   customerId: String
   vehicleNumber: String
+  phoneNumber: String
   type: SlotType
   garageId: Int
   id: Int!

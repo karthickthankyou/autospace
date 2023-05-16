@@ -30,10 +30,7 @@ export const formSchemaSearchGarage = z.object({
     })
     .optional(),
 
-  type: z
-    .nativeEnum(SlotType)
-    .array()
-    .min(1, { message: 'At least one slot type is required' }),
+  type: z.nativeEnum(SlotType).array(),
 
   pricePerHour: minMaxTuple.optional(),
   height: minMaxTuple.optional(),

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { FindManyBookingArgs, FindUniqueBookingArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateBookingInput } from './dto/create-booking.input'
@@ -9,19 +9,42 @@ import { SlotType } from '@prisma/client'
 @Injectable()
 export class BookingsService {
   constructor(private readonly prisma: PrismaService) {}
-  async create(createBookingInput: CreateBookingInput) {
+  async create({
+    customerId,
+    endTime,
+    garageId,
+    startTime,
+    type,
+    vehicleNumber,
+    phoneNumber,
+  }: CreateBookingInput) {
     const passcode = generateSixDigitNumber().toString()
 
     const slot = await this.getFreeSlot({
-      endTime: createBookingInput.endTime,
-      startTime: createBookingInput.startTime,
-      garageId: createBookingInput.garageId,
-      type: createBookingInput.type,
+      endTime,
+      startTime,
+      garageId,
+      type,
     })
+    console.log('s;pt ', slot)
 
-    return this.prisma.booking.create({
-      data: { ...createBookingInput, passcode, slotId: slot.id },
+    if (!slot?.id) {
+      throw new NotFoundException('No slots found.')
+    }
+
+    const booking = await this.prisma.booking.create({
+      data: {
+        endTime,
+        startTime,
+        vehicleNumber,
+        customerId,
+        phoneNumber,
+        passcode,
+        slotId: slot.id,
+      },
     })
+    console.log('booking ', booking)
+    return booking
   }
 
   findAll(args: FindManyBookingArgs) {

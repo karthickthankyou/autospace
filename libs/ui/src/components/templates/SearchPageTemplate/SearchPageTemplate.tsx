@@ -11,6 +11,7 @@ import {
   IconCurrentLocation,
   IconExclamationCircle,
   IconFilter,
+  IconInfoCircle,
   IconLetterP,
   IconRefresh,
 } from '@tabler/icons-react'
@@ -209,7 +210,6 @@ export const MarkerWithPopup = ({
         longitude={marker.address.lng}
         onClick={(e) => {
           e.originalEvent.stopPropagation()
-
           console.log(' show popup ', showPopup)
           setShowPopup((state) => !state)
         }}
@@ -238,6 +238,16 @@ export const ShowMarkers = () => {
       searchGarages({ variables })
     }
   }, [variables])
+
+  if (data?.searchGarages.length === 0) {
+    return (
+      <Panel position="center-center" className="bg-white/50">
+        <div className="flex items-center justify-center gap-2 ">
+          <IconInfoCircle /> <div>No parking slots found in this area.</div>
+        </div>
+      </Panel>
+    )
+  }
 
   return (
     <div>

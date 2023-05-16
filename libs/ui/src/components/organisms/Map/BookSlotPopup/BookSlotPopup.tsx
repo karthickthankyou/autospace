@@ -35,14 +35,13 @@ const BookSlotPopup = memo(
   ({ garage }: { garage: SearchGaragesQuery['searchGarages'][0] }) => {
     const uid = useUserStore((state) => state.uid)
 
-    const [createBooking, { loading }] = useCreateBookingMutation()
+    const [createBooking, { loading, error }] = useCreateBookingMutation()
 
     const {
       control,
       register,
       handleSubmit,
       setValue,
-
       formState: { errors },
     } = useFormContext<FormTypeSearchGarage>()
 
@@ -65,6 +64,7 @@ const BookSlotPopup = memo(
       <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
         <Form
           onSubmit={handleSubmit(async (data) => {
+            console.log('data ', data)
             if (!uid) {
               notification$.next({ message: 'You are not logged in.' })
               return
@@ -73,18 +73,34 @@ const BookSlotPopup = memo(
               notification$.next({ message: 'Select the type.' })
               return
             }
-            await createBooking({
-              variables: {
-                createBookingInput: {
-                  customerId: uid,
-                  endTime,
-                  startTime,
-                  type: selectedType,
-                  garageId: data.garageId,
-                  vehicleNumber: data.vehicleNumber,
+
+            try {
+              const { errors } = await createBooking({
+                variables: {
+                  createBookingInput: {
+                    phoneNumber: data.phoneNumber,
+                    customerId: uid,
+                    endTime,
+                    startTime,
+                    type: selectedType,
+                    garageId: data.garageId,
+                    vehicleNumber: data.vehicleNumber,
+                  },
                 },
-              },
-            })
+              })
+              if (errors?.length) {
+                errors.map((error) =>
+                  notification$.next({ message: error.message }),
+                )
+              }
+              const res = await createBookingSession(
+                uid!,
+                'http://localhost:3001',
+                totalPrice,
+              )
+            } catch (error) {
+              console.error(error)
+            }
           })}
         >
           <div className="mb-2 font-bold">{garage.displayName}</div>
@@ -93,10 +109,7 @@ const BookSlotPopup = memo(
           <DateRangeBookingInfo />
 
           <div className="flex flex-wrap gap-2 mt-2">
-            <HtmlLabel
-              title="Slot type"
-              error={errors.selectedType?.message?.toString()}
-            >
+            <HtmlLabel title="Slot type" error={errors.selectedType?.message}>
               <Controller
                 name="selectedType"
                 control={control}
@@ -118,7 +131,7 @@ const BookSlotPopup = memo(
                                 className={`cursor-default border-2 p-2 ${
                                   checked
                                     ? 'border-yellow-500 shadow-md'
-                                    : 'border-white'
+                                    : 'border-gray-200'
                                 }`}
                               >
                                 <div className="flex items-center gap-2">
@@ -148,17 +161,14 @@ const BookSlotPopup = memo(
           <div className="mt-2 space-y-2">
             <HtmlLabel
               title="Vehicle number"
-              error={errors.vehicleNumber?.message?.toString()}
+              error={errors.vehicleNumber?.message}
             >
               <HtmlInput
                 placeholder="KA01AB1234"
                 {...register('vehicleNumber')}
               />
             </HtmlLabel>
-            <HtmlLabel
-              title="Phone number"
-              error={errors.phoneNumber?.message?.toString()}
-            >
+            <HtmlLabel title="Phone number" error={errors.phoneNumber?.message}>
               <HtmlInput
                 placeholder="+910000000000"
                 {...register('phoneNumber')}
@@ -171,12 +181,7 @@ const BookSlotPopup = memo(
               <div className="text-lg font-bold">Rs. {totalPrice}</div>
             </div>
           ) : null}
-          <Button
-            type="submit"
-            loading={loading}
-            disabled={!totalPrice}
-            className="w-full mt-2"
-          >
+          <Button type="submit" loading={loading} className="w-full mt-2">
             Book now
           </Button>
         </Form>

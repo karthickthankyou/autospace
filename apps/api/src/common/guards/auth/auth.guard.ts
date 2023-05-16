@@ -46,7 +46,8 @@ export class AuthGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context)
     const req = ctx.getContext().req
 
-    const accessToken = req.cookies.authToken
+    const bearerHeader = req.headers.authorization
+    const accessToken = bearerHeader && bearerHeader.split(' ')[1]
 
     const user = await authorizeUsingAccesstoken(
       accessToken,

@@ -9,6 +9,8 @@ export class CreateBookingInput extends PickType(
   ['customerId', 'endTime', 'startTime', 'vehicleNumber'],
   InputType,
 ) {
+  @Field(() => String, { nullable: true })
+  phoneNumber: string
   garageId: Garage['id']
   @Field(() => SlotType)
   type: SlotType

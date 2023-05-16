@@ -14,6 +14,12 @@ import { UpdateBookingInput } from './dto/update-booking.input'
 import { Slot } from '../slots/entities/slot.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Customer } from '../customers/entities/customer.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@autospace-org/types'
+import { checkRowLevelPermission } from 'src/common/guards'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -22,8 +28,20 @@ export class BookingsResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Booking)
-  createBooking(@Args('createBookingInput') args: CreateBookingInput) {
+  async createBooking(
+    @Args('createBookingInput') args: CreateBookingInput,
+    @GetUser() user: GetUserType,
+  ) {
+    checkRowLevelPermission(user, args.customerId)
+    const customer = await this.prisma.customer.findUnique({
+      where: { uid: args.customerId },
+    })
+
+    if (!customer?.uid) {
+      await this.prisma.customer.create({ data: { uid: args.customerId } })
+    }
     return this.bookingsService.create(args)
   }
 

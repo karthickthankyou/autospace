@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import * as cookieParser from 'cookie-parser'
+// import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -11,11 +11,12 @@ async function bootstrap() {
       'http://localhost:3003',
       'https://studio.apollographql.com',
     ],
-    credentials: true,
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+    // credentials: true,
+    allowedHeaders:
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     methods: 'POST,OPTIONS',
   })
-  app.use(cookieParser())
+  //   app.use(cookieParser())
 
   await app.listen(3000)
 }

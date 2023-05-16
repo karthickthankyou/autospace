@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client'
-import * as Apollo from '@apollo/client'
+/* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -11,7 +11,6 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>
 }
-const defaultOptions = {} as const
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -1411,42 +1410,6 @@ export type CreateBookingMutation = {
   }
 }
 
-export type BookingsQueryVariables = Exact<{
-  distinct?: InputMaybe<Array<BookingScalarFieldEnum> | BookingScalarFieldEnum>
-  skip?: InputMaybe<Scalars['Int']>
-  take?: InputMaybe<Scalars['Int']>
-  cursor?: InputMaybe<BookingWhereUniqueInput>
-  orderBy?: InputMaybe<
-    Array<BookingOrderByWithRelationInput> | BookingOrderByWithRelationInput
-  >
-  where?: InputMaybe<BookingWhereInput>
-}>
-
-export type BookingsQuery = {
-  __typename?: 'Query'
-  bookings: Array<{
-    __typename?: 'Booking'
-    id: number
-    pricePerHour?: number | null
-    endTime: any
-    startTime: any
-    vehicleNumber: string
-    passcode?: string | null
-    slot: {
-      __typename?: 'Slot'
-      garage: {
-        __typename?: 'Garage'
-        address: {
-          __typename?: 'Address'
-          address: string
-          lat: number
-          lng: number
-        }
-      }
-    }
-  }>
-}
-
 export type LoginMutationVariables = Exact<{
   credentials: LoginInput
 }>
@@ -1573,922 +1536,1098 @@ export type AdminsQuery = {
   adminsCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
-export const namedOperations = {
-  Query: {
-    Garages: 'Garages',
-    SearchGarages: 'SearchGarages',
-    bookings: 'bookings',
-    getManager: 'getManager',
-    myCompany: 'myCompany',
-    admins: 'admins',
-  },
-  Mutation: {
-    CreateManager: 'CreateManager',
-    CreateCustomer: 'CreateCustomer',
-    logout: 'logout',
-    createBooking: 'createBooking',
-    Login: 'Login',
-    register: 'register',
-    createCompany: 'createCompany',
-    createManySlots: 'createManySlots',
-    createGarage: 'createGarage',
-  },
-}
-
-export const CreateManagerDocument = /*#__PURE__*/ gql`
-  mutation CreateManager($createManagerInput: CreateManagerInput!) {
-    createManager(createManagerInput: $createManagerInput) {
-      uid
-    }
-  }
-`
-export type CreateManagerMutationFn = Apollo.MutationFunction<
+export const CreateManagerDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateManager' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createManagerInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateManagerInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createManager' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createManagerInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createManagerInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
   CreateManagerMutation,
   CreateManagerMutationVariables
 >
-
-/**
- * __useCreateManagerMutation__
- *
- * To run a mutation, you first call `useCreateManagerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateManagerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createManagerMutation, { data, loading, error }] = useCreateManagerMutation({
- *   variables: {
- *      createManagerInput: // value for 'createManagerInput'
- *   },
- * });
- */
-export function useCreateManagerMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateManagerMutation,
-    CreateManagerMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateManagerMutation,
-    CreateManagerMutationVariables
-  >(CreateManagerDocument, options)
-}
-export type CreateManagerMutationHookResult = ReturnType<
-  typeof useCreateManagerMutation
->
-export type CreateManagerMutationResult =
-  Apollo.MutationResult<CreateManagerMutation>
-export type CreateManagerMutationOptions = Apollo.BaseMutationOptions<
-  CreateManagerMutation,
-  CreateManagerMutationVariables
->
-export const CreateCustomerDocument = /*#__PURE__*/ gql`
-  mutation CreateCustomer($createCustomerInput: CreateCustomerInput!) {
-    createCustomer(createCustomerInput: $createCustomerInput) {
-      uid
-    }
-  }
-`
-export type CreateCustomerMutationFn = Apollo.MutationFunction<
+export const CreateCustomerDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateCustomer' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createCustomerInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateCustomerInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCustomer' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createCustomerInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createCustomerInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
   CreateCustomerMutation,
   CreateCustomerMutationVariables
 >
-
-/**
- * __useCreateCustomerMutation__
- *
- * To run a mutation, you first call `useCreateCustomerMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCustomerMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCustomerMutation, { data, loading, error }] = useCreateCustomerMutation({
- *   variables: {
- *      createCustomerInput: // value for 'createCustomerInput'
- *   },
- * });
- */
-export function useCreateCustomerMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateCustomerMutation,
-    CreateCustomerMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateCustomerMutation,
-    CreateCustomerMutationVariables
-  >(CreateCustomerDocument, options)
-}
-export type CreateCustomerMutationHookResult = ReturnType<
-  typeof useCreateCustomerMutation
->
-export type CreateCustomerMutationResult =
-  Apollo.MutationResult<CreateCustomerMutation>
-export type CreateCustomerMutationOptions = Apollo.BaseMutationOptions<
-  CreateCustomerMutation,
-  CreateCustomerMutationVariables
->
-export const LogoutDocument = /*#__PURE__*/ gql`
-  mutation logout {
-    logout
-  }
-`
-export type LogoutMutationFn = Apollo.MutationFunction<
-  LogoutMutation,
-  LogoutMutationVariables
->
-
-/**
- * __useLogoutMutation__
- *
- * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLogoutMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
- *   variables: {
- *   },
- * });
- */
-export function useLogoutMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LogoutMutation,
-    LogoutMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(
-    LogoutDocument,
-    options,
-  )
-}
-export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>
-export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>
-export type LogoutMutationOptions = Apollo.BaseMutationOptions<
-  LogoutMutation,
-  LogoutMutationVariables
->
-export const GaragesDocument = /*#__PURE__*/ gql`
-  query Garages(
-    $orderBy: [GarageOrderByWithRelationInput!]
-    $where: GarageWhereInput
-    $cursor: GarageWhereUniqueInput
-    $take: Int
-    $skip: Int
-    $distinct: [GarageScalarFieldEnum!]
-  ) {
-    garages(
-      orderBy: $orderBy
-      where: $where
-      cursor: $cursor
-      take: $take
-      skip: $skip
-      distinct: $distinct
-    ) {
-      id
-      displayName
-      imageUrl
-      address {
-        address
-      }
-    }
-    garagesCount(where: $where) {
-      count
-    }
-  }
-`
-
-/**
- * __useGaragesQuery__
- *
- * To run a query within a React component, call `useGaragesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGaragesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGaragesQuery({
- *   variables: {
- *      orderBy: // value for 'orderBy'
- *      where: // value for 'where'
- *      cursor: // value for 'cursor'
- *      take: // value for 'take'
- *      skip: // value for 'skip'
- *      distinct: // value for 'distinct'
- *   },
- * });
- */
-export function useGaragesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GaragesQuery, GaragesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GaragesQuery, GaragesQueryVariables>(
-    GaragesDocument,
-    options,
-  )
-}
-export function useGaragesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GaragesQuery,
-    GaragesQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GaragesQuery, GaragesQueryVariables>(
-    GaragesDocument,
-    options,
-  )
-}
-export type GaragesQueryHookResult = ReturnType<typeof useGaragesQuery>
-export type GaragesLazyQueryHookResult = ReturnType<typeof useGaragesLazyQuery>
-export type GaragesQueryResult = Apollo.QueryResult<
-  GaragesQuery,
-  GaragesQueryVariables
->
-export const SearchGaragesDocument = /*#__PURE__*/ gql`
-  query SearchGarages(
-    $dateFilter: DateFilterInput!
-    $locationFilter: LocationFilterInput!
-    $garageFilter: GarageFilter
-    $slotsFilter: SlotWhereInput
-  ) {
-    searchGarages(
-      dateFilter: $dateFilter
-      locationFilter: $locationFilter
-      garageFilter: $garageFilter
-      slotsFilter: $slotsFilter
-    ) {
-      id
-      address {
-        lat
-        lng
-        address
-      }
-      displayName
-      availableSlots(slotsFilter: $slotsFilter, dateFilter: $dateFilter) {
-        type
-        count
-        pricePerHour
-      }
-    }
-  }
-`
-
-/**
- * __useSearchGaragesQuery__
- *
- * To run a query within a React component, call `useSearchGaragesQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchGaragesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchGaragesQuery({
- *   variables: {
- *      dateFilter: // value for 'dateFilter'
- *      locationFilter: // value for 'locationFilter'
- *      garageFilter: // value for 'garageFilter'
- *      slotsFilter: // value for 'slotsFilter'
- *   },
- * });
- */
-export function useSearchGaragesQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    SearchGaragesQuery,
-    SearchGaragesQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<SearchGaragesQuery, SearchGaragesQueryVariables>(
-    SearchGaragesDocument,
-    options,
-  )
-}
-export function useSearchGaragesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    SearchGaragesQuery,
-    SearchGaragesQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<SearchGaragesQuery, SearchGaragesQueryVariables>(
-    SearchGaragesDocument,
-    options,
-  )
-}
-export type SearchGaragesQueryHookResult = ReturnType<
-  typeof useSearchGaragesQuery
->
-export type SearchGaragesLazyQueryHookResult = ReturnType<
-  typeof useSearchGaragesLazyQuery
->
-export type SearchGaragesQueryResult = Apollo.QueryResult<
-  SearchGaragesQuery,
-  SearchGaragesQueryVariables
->
-export const CreateBookingDocument = /*#__PURE__*/ gql`
-  mutation createBooking($createBookingInput: CreateBookingInput!) {
-    createBooking(createBookingInput: $createBookingInput) {
-      id
-      passcode
-    }
-  }
-`
-export type CreateBookingMutationFn = Apollo.MutationFunction<
+export const LogoutDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'logout' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          { kind: 'Field', name: { kind: 'Name', value: 'logout' } },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LogoutMutation, LogoutMutationVariables>
+export const GaragesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Garages' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'GarageOrderByWithRelationInput' },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'GarageWhereInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'cursor' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'GarageWhereUniqueInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'distinct' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'GarageScalarFieldEnum' },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'garages' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'cursor' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'cursor' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'distinct' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'distinct' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'imageUrl' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'address' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'address' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'garagesCount' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GaragesQuery, GaragesQueryVariables>
+export const SearchGaragesDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'SearchGarages' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'dateFilter' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'DateFilterInput' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'locationFilter' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'LocationFilterInput' },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'garageFilter' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'GarageFilter' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'slotsFilter' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'SlotWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'searchGarages' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'dateFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'dateFilter' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'locationFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'locationFilter' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'garageFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'garageFilter' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'slotsFilter' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'slotsFilter' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'address' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'lat' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'lng' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'address' },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'availableSlots' },
+                  arguments: [
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'slotsFilter' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'slotsFilter' },
+                      },
+                    },
+                    {
+                      kind: 'Argument',
+                      name: { kind: 'Name', value: 'dateFilter' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'dateFilter' },
+                      },
+                    },
+                  ],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'pricePerHour' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<SearchGaragesQuery, SearchGaragesQueryVariables>
+export const CreateBookingDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createBooking' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createBookingInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateBookingInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createBooking' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createBookingInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createBookingInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'passcode' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
   CreateBookingMutation,
   CreateBookingMutationVariables
 >
-
-/**
- * __useCreateBookingMutation__
- *
- * To run a mutation, you first call `useCreateBookingMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateBookingMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createBookingMutation, { data, loading, error }] = useCreateBookingMutation({
- *   variables: {
- *      createBookingInput: // value for 'createBookingInput'
- *   },
- * });
- */
-export function useCreateBookingMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateBookingMutation,
-    CreateBookingMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateBookingMutation,
-    CreateBookingMutationVariables
-  >(CreateBookingDocument, options)
-}
-export type CreateBookingMutationHookResult = ReturnType<
-  typeof useCreateBookingMutation
->
-export type CreateBookingMutationResult =
-  Apollo.MutationResult<CreateBookingMutation>
-export type CreateBookingMutationOptions = Apollo.BaseMutationOptions<
-  CreateBookingMutation,
-  CreateBookingMutationVariables
->
-export const BookingsDocument = /*#__PURE__*/ gql`
-  query bookings(
-    $distinct: [BookingScalarFieldEnum!]
-    $skip: Int
-    $take: Int
-    $cursor: BookingWhereUniqueInput
-    $orderBy: [BookingOrderByWithRelationInput!]
-    $where: BookingWhereInput
-  ) {
-    bookings(
-      distinct: $distinct
-      skip: $skip
-      take: $take
-      cursor: $cursor
-      orderBy: $orderBy
-      where: $where
-    ) {
-      id
-      pricePerHour
-      endTime
-      startTime
-      vehicleNumber
-      passcode
-      slot {
-        garage {
-          address {
-            address
-            lat
-            lng
-          }
-        }
-      }
-    }
-  }
-`
-
-/**
- * __useBookingsQuery__
- *
- * To run a query within a React component, call `useBookingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useBookingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useBookingsQuery({
- *   variables: {
- *      distinct: // value for 'distinct'
- *      skip: // value for 'skip'
- *      take: // value for 'take'
- *      cursor: // value for 'cursor'
- *      orderBy: // value for 'orderBy'
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useBookingsQuery(
-  baseOptions?: Apollo.QueryHookOptions<BookingsQuery, BookingsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<BookingsQuery, BookingsQueryVariables>(
-    BookingsDocument,
-    options,
-  )
-}
-export function useBookingsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    BookingsQuery,
-    BookingsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<BookingsQuery, BookingsQueryVariables>(
-    BookingsDocument,
-    options,
-  )
-}
-export type BookingsQueryHookResult = ReturnType<typeof useBookingsQuery>
-export type BookingsLazyQueryHookResult = ReturnType<
-  typeof useBookingsLazyQuery
->
-export type BookingsQueryResult = Apollo.QueryResult<
-  BookingsQuery,
-  BookingsQueryVariables
->
-export const LoginDocument = /*#__PURE__*/ gql`
-  mutation Login($credentials: LoginInput!) {
-    login(credentials: $credentials) {
-      refreshToken
-      localId
-      kind
-      idToken
-      expiresIn
-      email
-      displayName
-    }
-  }
-`
-export type LoginMutationFn = Apollo.MutationFunction<
-  LoginMutation,
-  LoginMutationVariables
->
-
-/**
- * __useLoginMutation__
- *
- * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLoginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [loginMutation, { data, loading, error }] = useLoginMutation({
- *   variables: {
- *      credentials: // value for 'credentials'
- *   },
- * });
- */
-export function useLoginMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    LoginMutation,
-    LoginMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument,
-    options,
-  )
-}
-export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>
-export type LoginMutationResult = Apollo.MutationResult<LoginMutation>
-export type LoginMutationOptions = Apollo.BaseMutationOptions<
-  LoginMutation,
-  LoginMutationVariables
->
-export const RegisterDocument = /*#__PURE__*/ gql`
-  mutation register($credentials: RegisterInput!) {
-    register(credentials: $credentials) {
-      refreshToken
-      localId
-      kind
-      idToken
-      expiresIn
-      email
-      displayName
-    }
-  }
-`
-export type RegisterMutationFn = Apollo.MutationFunction<
-  RegisterMutation,
-  RegisterMutationVariables
->
-
-/**
- * __useRegisterMutation__
- *
- * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRegisterMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [registerMutation, { data, loading, error }] = useRegisterMutation({
- *   variables: {
- *      credentials: // value for 'credentials'
- *   },
- * });
- */
-export function useRegisterMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    RegisterMutation,
-    RegisterMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(
-    RegisterDocument,
-    options,
-  )
-}
-export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>
-export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>
-export type RegisterMutationOptions = Apollo.BaseMutationOptions<
-  RegisterMutation,
-  RegisterMutationVariables
->
-export const GetManagerDocument = /*#__PURE__*/ gql`
-  query getManager($where: ManagerWhereUniqueInput!) {
-    manager(where: $where) {
-      uid
-      createdAt
-      updatedAt
-      displayName
-    }
-  }
-`
-
-/**
- * __useGetManagerQuery__
- *
- * To run a query within a React component, call `useGetManagerQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetManagerQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetManagerQuery({
- *   variables: {
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useGetManagerQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetManagerQuery,
-    GetManagerQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<GetManagerQuery, GetManagerQueryVariables>(
-    GetManagerDocument,
-    options,
-  )
-}
-export function useGetManagerLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetManagerQuery,
-    GetManagerQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<GetManagerQuery, GetManagerQueryVariables>(
-    GetManagerDocument,
-    options,
-  )
-}
-export type GetManagerQueryHookResult = ReturnType<typeof useGetManagerQuery>
-export type GetManagerLazyQueryHookResult = ReturnType<
-  typeof useGetManagerLazyQuery
->
-export type GetManagerQueryResult = Apollo.QueryResult<
-  GetManagerQuery,
-  GetManagerQueryVariables
->
-export const CreateCompanyDocument = /*#__PURE__*/ gql`
-  mutation createCompany($createCompanyInput: CreateCompanyInput!) {
-    createCompany(createCompanyInput: $createCompanyInput) {
-      id
-    }
-  }
-`
-export type CreateCompanyMutationFn = Apollo.MutationFunction<
+export const LoginDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Login' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'credentials' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'LoginInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'login' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'credentials' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'credentials' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'refreshToken' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'localId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'kind' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'idToken' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresIn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'email' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>
+export const RegisterDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'register' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'credentials' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'RegisterInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'register' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'credentials' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'credentials' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'refreshToken' },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'localId' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'kind' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'idToken' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresIn' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'email' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RegisterMutation, RegisterMutationVariables>
+export const GetManagerDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'getManager' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'ManagerWhereUniqueInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'manager' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetManagerQuery, GetManagerQueryVariables>
+export const CreateCompanyDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createCompany' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createCompanyInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateCompanyInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createCompany' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createCompanyInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createCompanyInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
   CreateCompanyMutation,
   CreateCompanyMutationVariables
 >
-
-/**
- * __useCreateCompanyMutation__
- *
- * To run a mutation, you first call `useCreateCompanyMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateCompanyMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createCompanyMutation, { data, loading, error }] = useCreateCompanyMutation({
- *   variables: {
- *      createCompanyInput: // value for 'createCompanyInput'
- *   },
- * });
- */
-export function useCreateCompanyMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateCompanyMutation,
-    CreateCompanyMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateCompanyMutation,
-    CreateCompanyMutationVariables
-  >(CreateCompanyDocument, options)
-}
-export type CreateCompanyMutationHookResult = ReturnType<
-  typeof useCreateCompanyMutation
->
-export type CreateCompanyMutationResult =
-  Apollo.MutationResult<CreateCompanyMutation>
-export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<
-  CreateCompanyMutation,
-  CreateCompanyMutationVariables
->
-export const CreateManySlotsDocument = /*#__PURE__*/ gql`
-  mutation createManySlots($slots: [CreateSlotInput!]!) {
-    createManySlots(slots: $slots) {
-      count
-    }
-  }
-`
-export type CreateManySlotsMutationFn = Apollo.MutationFunction<
+export const CreateManySlotsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createManySlots' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'slots' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'CreateSlotInput' },
+                },
+              },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createManySlots' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'slots' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'slots' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
   CreateManySlotsMutation,
   CreateManySlotsMutationVariables
 >
-
-/**
- * __useCreateManySlotsMutation__
- *
- * To run a mutation, you first call `useCreateManySlotsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateManySlotsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createManySlotsMutation, { data, loading, error }] = useCreateManySlotsMutation({
- *   variables: {
- *      slots: // value for 'slots'
- *   },
- * });
- */
-export function useCreateManySlotsMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateManySlotsMutation,
-    CreateManySlotsMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateManySlotsMutation,
-    CreateManySlotsMutationVariables
-  >(CreateManySlotsDocument, options)
-}
-export type CreateManySlotsMutationHookResult = ReturnType<
-  typeof useCreateManySlotsMutation
->
-export type CreateManySlotsMutationResult =
-  Apollo.MutationResult<CreateManySlotsMutation>
-export type CreateManySlotsMutationOptions = Apollo.BaseMutationOptions<
-  CreateManySlotsMutation,
-  CreateManySlotsMutationVariables
->
-export const MyCompanyDocument = /*#__PURE__*/ gql`
-  query myCompany {
-    myCompany {
-      id
-      garages {
-        displayName
-        id
-        description
-        address {
-          id
-          address
-          lat
-          lng
-        }
-      }
-      createdAt
-      displayName
-    }
-  }
-`
-
-/**
- * __useMyCompanyQuery__
- *
- * To run a query within a React component, call `useMyCompanyQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyCompanyQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyCompanyQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMyCompanyQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    MyCompanyQuery,
-    MyCompanyQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<MyCompanyQuery, MyCompanyQueryVariables>(
-    MyCompanyDocument,
-    options,
-  )
-}
-export function useMyCompanyLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    MyCompanyQuery,
-    MyCompanyQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<MyCompanyQuery, MyCompanyQueryVariables>(
-    MyCompanyDocument,
-    options,
-  )
-}
-export type MyCompanyQueryHookResult = ReturnType<typeof useMyCompanyQuery>
-export type MyCompanyLazyQueryHookResult = ReturnType<
-  typeof useMyCompanyLazyQuery
->
-export type MyCompanyQueryResult = Apollo.QueryResult<
-  MyCompanyQuery,
-  MyCompanyQueryVariables
->
-export const CreateGarageDocument = /*#__PURE__*/ gql`
-  mutation createGarage($createGarageInput: CreateGarageInput!) {
-    createGarage(createGarageInput: $createGarageInput) {
-      id
-    }
-  }
-`
-export type CreateGarageMutationFn = Apollo.MutationFunction<
+export const MyCompanyDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'myCompany' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'myCompany' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'garages' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'displayName' },
+                      },
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'description' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'address' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'id' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'address' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'lat' },
+                            },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'lng' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MyCompanyQuery, MyCompanyQueryVariables>
+export const CreateGarageDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'createGarage' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'createGarageInput' },
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateGarageInput' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createGarage' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'createGarageInput' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'createGarageInput' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
   CreateGarageMutation,
   CreateGarageMutationVariables
 >
-
-/**
- * __useCreateGarageMutation__
- *
- * To run a mutation, you first call `useCreateGarageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateGarageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createGarageMutation, { data, loading, error }] = useCreateGarageMutation({
- *   variables: {
- *      createGarageInput: // value for 'createGarageInput'
- *   },
- * });
- */
-export function useCreateGarageMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateGarageMutation,
-    CreateGarageMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useMutation<
-    CreateGarageMutation,
-    CreateGarageMutationVariables
-  >(CreateGarageDocument, options)
-}
-export type CreateGarageMutationHookResult = ReturnType<
-  typeof useCreateGarageMutation
->
-export type CreateGarageMutationResult =
-  Apollo.MutationResult<CreateGarageMutation>
-export type CreateGarageMutationOptions = Apollo.BaseMutationOptions<
-  CreateGarageMutation,
-  CreateGarageMutationVariables
->
-export const AdminsDocument = /*#__PURE__*/ gql`
-  query admins(
-    $distinct: [AdminScalarFieldEnum!]
-    $skip: Int
-    $take: Int
-    $cursor: AdminWhereUniqueInput
-    $orderBy: [AdminOrderByWithRelationInput!]
-    $where: AdminWhereInput
-  ) {
-    admins(
-      distinct: $distinct
-      skip: $skip
-      take: $take
-      cursor: $cursor
-      orderBy: $orderBy
-      where: $where
-    ) {
-      uid
-      updatedAt
-      displayName
-      createdAt
-    }
-    adminsCount(where: $where) {
-      count
-    }
-  }
-`
-
-/**
- * __useAdminsQuery__
- *
- * To run a query within a React component, call `useAdminsQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAdminsQuery({
- *   variables: {
- *      distinct: // value for 'distinct'
- *      skip: // value for 'skip'
- *      take: // value for 'take'
- *      cursor: // value for 'cursor'
- *      orderBy: // value for 'orderBy'
- *      where: // value for 'where'
- *   },
- * });
- */
-export function useAdminsQuery(
-  baseOptions?: Apollo.QueryHookOptions<AdminsQuery, AdminsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useQuery<AdminsQuery, AdminsQueryVariables>(
-    AdminsDocument,
-    options,
-  )
-}
-export function useAdminsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<AdminsQuery, AdminsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions }
-  return Apollo.useLazyQuery<AdminsQuery, AdminsQueryVariables>(
-    AdminsDocument,
-    options,
-  )
-}
-export type AdminsQueryHookResult = ReturnType<typeof useAdminsQuery>
-export type AdminsLazyQueryHookResult = ReturnType<typeof useAdminsLazyQuery>
-export type AdminsQueryResult = Apollo.QueryResult<
-  AdminsQuery,
-  AdminsQueryVariables
->
+export const AdminsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'admins' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'distinct' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'AdminScalarFieldEnum' },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'skip' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'take' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'cursor' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'AdminWhereUniqueInput' },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'orderBy' },
+          },
+          type: {
+            kind: 'ListType',
+            type: {
+              kind: 'NonNullType',
+              type: {
+                kind: 'NamedType',
+                name: { kind: 'Name', value: 'AdminOrderByWithRelationInput' },
+              },
+            },
+          },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'where' },
+          },
+          type: {
+            kind: 'NamedType',
+            name: { kind: 'Name', value: 'AdminWhereInput' },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'admins' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'distinct' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'distinct' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'skip' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'skip' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'take' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'take' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'cursor' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'cursor' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'orderBy' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'orderBy' },
+                },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'uid' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'updatedAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'createdAt' } },
+              ],
+            },
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'adminsCount' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'where' },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AdminsQuery, AdminsQueryVariables>
