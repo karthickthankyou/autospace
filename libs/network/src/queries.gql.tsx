@@ -122,6 +122,10 @@ export const bookings = gql`
         }
       }
     }
+
+    bookingsCount(where: $where) {
+      count
+    }
   }
 `
 

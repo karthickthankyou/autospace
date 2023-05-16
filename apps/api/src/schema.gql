@@ -457,6 +457,7 @@ type Query {
   admin(where: AdminWhereUniqueInput): Admin!
   adminsCount(where: AdminWhereInput): AggregateCountOutput!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  bookingsCount(where: BookingWhereInput): AggregateCountOutput!
   booking(where: BookingWhereUniqueInput): Booking!
   companies(where: CompanyWhereInput, orderBy: [CompanyOrderByWithRelationInput!], cursor: CompanyWhereUniqueInput, take: Int, skip: Int, distinct: [CompanyScalarFieldEnum!]): [Company!]!
   company(where: CompanyWhereUniqueInput): Company!

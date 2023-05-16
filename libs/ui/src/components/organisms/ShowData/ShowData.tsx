@@ -49,16 +49,18 @@ export const ShowData = ({
         <div>
           <div className="mb-2 text-lg font-semibold">{title}</div>
           <div className={className}>{children}</div>
-          <Pagination
-            count={totalCount || 0}
-            page={(skip || 0) / (take || 12)}
-            rowsPerPage={take || 0}
-            rowsPerPageOptions={[2, 4, 12, 24, 36, 48]}
-            onPageChange={(v, c) => setSkip(c * (take || 12))}
-            onRowsPerPageChange={(v) => {
-              setTake(+v.target.value)
-            }}
-          />
+          <div className="flex justify-center">
+            <Pagination
+              count={totalCount || 0}
+              page={(skip || 0) / (take || 12)}
+              rowsPerPage={take || 0}
+              rowsPerPageOptions={[2, 4, 12, 24, 36, 48]}
+              onPageChange={(v, c) => setSkip(c * (take || 12))}
+              onRowsPerPageChange={(v) => {
+                setTake(+v.target.value)
+              }}
+            />
+          </div>
         </div>
       )}
     </div>

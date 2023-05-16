@@ -802,6 +802,7 @@ export type Query = {
   adminsCount: AggregateCountOutput
   booking: Booking
   bookings: Array<Booking>
+  bookingsCount: AggregateCountOutput
   companies: Array<Company>
   company: Company
   customer: Customer
@@ -861,6 +862,10 @@ export type QueryBookingsArgs = {
   orderBy?: InputMaybe<Array<BookingOrderByWithRelationInput>>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookingWhereInput>
+}
+
+export type QueryBookingsCountArgs = {
   where?: InputMaybe<BookingWhereInput>
 }
 

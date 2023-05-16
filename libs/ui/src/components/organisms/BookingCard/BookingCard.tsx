@@ -11,34 +11,24 @@ export interface IBookingCardProps {
 
 export const CustomerBookingCard = ({ booking }: IBookingCardProps) => {
   return (
-    <div className="p-2 border border-white shadow-lg">
-      <StartEndDateCard
-        startTime={booking.startTime}
-        endTime={booking.endTime}
-      />
-      <div className="mt-2">{booking.slot.garage.address.address}</div>
-      <div className="mt-2">{booking.vehicleNumber}</div>
-      <Reveal secret={booking.passcode || ''} />
-      <MapLink
-        lat={booking.slot.garage.address.lat}
-        lng={booking.slot.garage.address.lng}
-      />
-    </div>
-  )
-}
-export const PastCustomerBookingCard = ({ booking }: IBookingCardProps) => {
-  return (
-    <div className="border border-white">
-      <StartEndDateCard
-        startTime={booking.startTime}
-        endTime={booking.endTime}
-      />
-      <div className="mt-2">{booking.slot.garage.address.address}</div>
-      <div className="mt-2">{booking.vehicleNumber}</div>
-      <MapLink
-        lat={booking.slot.garage.address.lat}
-        lng={booking.slot.garage.address.lng}
-      />
+    <div className="bg-white ">
+      <div className="p-4 ">
+        <StartEndDateCard
+          startTime={booking.startTime}
+          endTime={booking.endTime}
+        />
+      </div>
+      <div className="flex items-center justify-between gap-1 p-4 mt-2 bg-topo">
+        <div>{booking.slot.garage.address.address}</div>
+        <MapLink
+          lat={booking.slot.garage.address.lat}
+          lng={booking.slot.garage.address.lng}
+        />
+      </div>
+      <div className="p-4">
+        <div className="mt-2">{booking.vehicleNumber}</div>
+        <Reveal secret={booking.passcode || ''} />
+      </div>
     </div>
   )
 }

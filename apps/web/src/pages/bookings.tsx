@@ -11,8 +11,8 @@ export default function Bookings() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <Container>
+      <main className="bg-gray-50">
+        <Container className="min-h-[90vh]">
           <CustomerBookings />
         </Container>
       </main>

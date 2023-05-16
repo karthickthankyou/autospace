@@ -20,6 +20,9 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@autospace-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { BookingWhereInput } from './dto/where.args'
+import { BadRequestException } from '@nestjs/common'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -45,9 +48,30 @@ export class BookingsResolver {
     return this.bookingsService.create(args)
   }
 
+  @AllowAuthenticated()
   @Query(() => [Booking], { name: 'bookings' })
-  findAll(@Args() args: FindManyBookingArgs) {
+  findAll(@Args() args: FindManyBookingArgs, @GetUser() user: GetUserType) {
+    if (!args.where.customerId.equals) {
+      throw new BadRequestException(
+        'Customer id missing in args.where.customerId',
+      )
+    }
+    checkRowLevelPermission(user, args.where.customerId.equals)
     return this.bookingsService.findAll(args)
+  }
+
+  @Query(() => AggregateCountOutput, {
+    name: 'bookingsCount',
+  })
+  async garagesCount(
+    @Args('where', { nullable: true })
+    where: BookingWhereInput,
+  ) {
+    const bookings = await this.prisma.booking.aggregate({
+      _count: { _all: true },
+      where,
+    })
+    return { count: bookings._count._all }
   }
 
   @Query(() => Booking, { name: 'booking' })

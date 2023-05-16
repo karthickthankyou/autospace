@@ -8,7 +8,7 @@ export const Tabs = (props: TabsProps) => {
       classes={{
         indicator: 'bg-black',
         flexContainer: 'gap-4',
-        root: 'min-h-0',
+        root: 'min-h-0 py-2',
       }}
       {...props}
     />
@@ -19,8 +19,8 @@ export const Tab = (props: TabProps) => {
     <TabMui
       disableRipple
       classes={{
-        root: 'px-0 py-2 min-w-0 min-h-0',
-        selected: 'text-black',
+        root: 'px-0 py-2 min-w-0 min-h-0 capitalize',
+        selected: 'text-black font-semibold',
       }}
       {...props}
     />

@@ -7,12 +7,21 @@ const Reveal = ({ secret }: IRevealProps) => {
   const [revealed, setRevealed] = useState(false)
 
   return (
-    <div className="flex gap-2">
-      <button onClick={() => setRevealed((state) => !state)}>
-        {revealed ? 'Close' : 'Reveal'}
-      </button>
-      {revealed ? <p>{secret}</p> : '______'}
-    </div>
+    <button
+      className="flex flex-col items-center w-full gap-2 "
+      onClick={() => setRevealed((state) => !state)}
+    >
+      <span
+        className={`text-2xl tracking-wider bg-primary px-1 ${
+          revealed ? '' : 'blur'
+        }`}
+      >
+        {secret}
+      </span>
+      <span className="text-xs text-gray-600">
+        {revealed ? 'Hide' : 'Tap to reveal'}
+      </span>
+    </button>
   )
 }
 
