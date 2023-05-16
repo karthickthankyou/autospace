@@ -37,7 +37,7 @@ export const useConvertSearchFormToVariables = () => {
   } = useFormContext<FormTypeSearchGarage>()
   const formData = useWatch<FormTypeSearchGarage>()
 
-  const debouncedForm = useDebouncedValue(formData, 2000)
+  const debouncedForm = useDebouncedValue(formData, 400)
 
   useEffect(() => {
     // Date filter

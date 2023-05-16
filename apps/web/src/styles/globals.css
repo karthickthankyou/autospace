@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .mapboxgl-popup-content {
-  @apply px-4 py-4 rounded-none shadow-md !important;
+  @apply px-3 py-3 rounded-none shadow-md min-w-[16rem] !important;
 }
 
 .bg-topo {

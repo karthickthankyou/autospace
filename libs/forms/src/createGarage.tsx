@@ -1,10 +1,10 @@
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
+import { ReactNode } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createManySlotsFormSchema } from './createManySlots'
 
 export const schemaCreateGarage = z.object({
-  companyId: z.string().min(1),
   displayName: z.string().min(1),
   description: z.string().min(1),
   location: z.object({
@@ -21,3 +21,12 @@ export const useFormCreateGarage = () =>
   useForm<FormTypeCreateGarage>({
     resolver: zodResolver(schemaCreateGarage),
   })
+
+export const FormProviderCreateGarage = ({
+  children,
+}: {
+  children: ReactNode
+}) => {
+  const methods = useFormCreateGarage()
+  return <FormProvider {...methods}>{children}</FormProvider>
+}

@@ -14,20 +14,16 @@ export interface ISearchPlaceBoxProps {
 
 export const majorCitiesLocationInfo: LocationInfo[] = [
   {
-    placeName: 'Chennai, India',
+    placeName: 'Chennai, Tamil Nadu, India',
     latLng: [13.0827, 80.2707],
   },
   {
-    placeName: 'New York, USA',
+    placeName: 'New York, New York, United States',
     latLng: [40.7128, -74.006],
   },
   {
-    placeName: 'London, UK',
+    placeName: 'London, Greater London, England, United Kingdom',
     latLng: [51.5074, -0.1278],
-  },
-  {
-    placeName: 'Tokyo, Japan',
-    latLng: [35.6895, 139.6917],
   },
   {
     placeName: 'Paris, France',
@@ -38,7 +34,7 @@ export const majorCitiesLocationInfo: LocationInfo[] = [
     latLng: [52.52, 13.405],
   },
   {
-    placeName: 'Sydney, Australia',
+    placeName: 'Sydney, New South Wales, Australia',
     latLng: [-33.8688, 151.2093],
   },
   {
@@ -46,7 +42,7 @@ export const majorCitiesLocationInfo: LocationInfo[] = [
     latLng: [-22.9068, -43.1729],
   },
   {
-    placeName: 'Cape Town, South Africa',
+    placeName: 'Cape Town, Western Cape, South Africa',
     latLng: [-33.9249, 18.4241],
   },
   {
@@ -71,20 +67,9 @@ export const SearchPlaceBox = ({
     if (value) setSearchText(value)
   }, [value])
 
-  const { prevSearches, addPrevSearches } = useMapStore((state) => ({
-    prevSearches: state.prevSearches,
-    addPrevSearches: state.addPrevSearches,
-  }))
-
   return (
     <Autocomplete<LocationInfo, false, false, false>
-      options={
-        locationInfo.length
-          ? locationInfo
-          : prevSearches.length
-          ? prevSearches
-          : majorCitiesLocationInfo
-      }
+      options={locationInfo.length ? locationInfo : majorCitiesLocationInfo}
       noOptionsText={searchText ? 'No options.' : 'Type something...'}
       getOptionLabel={(x) => x.placeName}
       onInputChange={(_, v) => {
@@ -92,13 +77,9 @@ export const SearchPlaceBox = ({
         setSearchText(v)
       }}
       loading={loading}
-      isOptionEqualToValue={(option, value) => {
-        return option.placeName === value.placeName
-      }}
       onChange={(_, v) => {
         if (v) {
           const { latLng, placeName } = v
-          addPrevSearches({ latLng, placeName })
           setLocationInfo({ latLng: latLng, placeName: placeName })
         }
       }}

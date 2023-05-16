@@ -17,7 +17,7 @@ export class CreateSlotInput extends PickType(
 ) {}
 
 @InputType()
-export class CreateMultipleSlotInputWithoutGarageId extends OmitType(
+export class CreateSlotInputWithoutGarageId extends OmitType(
   CreateSlotInput,
   ['garageId'],
   InputType,

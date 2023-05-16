@@ -6,7 +6,6 @@ import { RadioGroup } from '@headlessui/react'
 import { IconBike, IconCar, IconMotorbike, IconTir } from '@tabler/icons-react'
 
 import {
-  CreateBookingDocument,
   SearchGaragesQuery,
   SlotType,
   useCreateBookingMutation,
@@ -103,7 +102,7 @@ const BookSlotPopup = memo(
             }
           })}
         >
-          <div className="mb-2 font-bold">{garage.displayName}</div>
+          <div className="mb-2 text-lg font-bold">{garage.displayName}</div>
           <div className="mb-2">{garage.address.address}</div>
 
           <DateRangeBookingInfo />

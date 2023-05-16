@@ -21,7 +21,6 @@ type MapSliceType = {
   prevSearches: LocationInfo[]
   addPrevSearches: (loc: LocationInfo) => void
   setSelectedGarage: (garage: number) => void
-  setSelectedHome: (isHome: boolean) => void
   setUpdatedViewState: (viewState: ViewState) => void
   setDirectionStart: (start: LngLatTuple) => void
   setDirectionEnd: (end: LngLatTuple) => void
@@ -49,11 +48,7 @@ export const useMapStore = create<MapSliceType>((set) => ({
       state.selectedGarage = garage
       return state
     }),
-  setSelectedHome: (isHome: boolean) =>
-    set((state) => {
-      state.selectedHome = isHome
-      return state
-    }),
+
   setUpdatedViewState: (viewState: ViewState) =>
     set((state) => {
       state.updatedViewState = viewState

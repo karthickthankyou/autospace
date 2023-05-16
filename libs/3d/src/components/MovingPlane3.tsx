@@ -10,39 +10,37 @@ const random = (min: number, max: number) => Math.random() * (max - min) + min
 
 const angles = [90, 180, 270, 0]
 
-export const BuildingSet = React.memo(
-  ({
-    minHeight = 2,
-    maxHeight = 20,
-  }: {
-    minHeight?: number
-    maxHeight?: number
-  }) => {
-    return (
-      <group>
-        <mesh
-          rotation={[
-            radians(0),
-            radians(angles[randInt(0, angles.length - 1)]),
-            0,
-          ]}
-        >
-          {buildingSets[randInt(0, buildingSets.length - 1)].map(
-            ({ length, position, width }) => (
-              <Building
-                position={
-                  position.map((pos) => pos * 2) as [number, number, number]
-                }
-                size={[width * 2, length * 2]}
-                floors={randExp(minHeight, maxHeight, 7)}
-              />
-            ),
-          )}
-        </mesh>
-      </group>
-    )
-  },
-)
+export const BuildingSet = ({
+  minHeight = 2,
+  maxHeight = 20,
+}: {
+  minHeight?: number
+  maxHeight?: number
+}) => {
+  return (
+    <group>
+      <mesh
+        rotation={[
+          radians(0),
+          radians(angles[randInt(0, angles.length - 1)]),
+          0,
+        ]}
+      >
+        {buildingSets[randInt(0, buildingSets.length - 1)].map(
+          ({ length, position, width }) => (
+            <Building
+              position={
+                position.map((pos) => pos * 2) as [number, number, number]
+              }
+              size={[width * 2, length * 2]}
+              floors={randExp(minHeight, maxHeight, 7)}
+            />
+          ),
+        )}
+      </mesh>
+    </group>
+  )
+}
 
 type BuildingSet = {
   position: [number, number, number]

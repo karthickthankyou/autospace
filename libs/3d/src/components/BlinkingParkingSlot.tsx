@@ -10,34 +10,32 @@ interface BlinkingParkingSlotProps extends ParkingSlotProps {
   blinkDuration?: number
 }
 
-export const BlinkingParkingSlot = React.memo(
-  ({
-    borderColor = yellow,
-    blinkDuration = 1000,
-    ...props
-  }: BlinkingParkingSlotProps) => {
-    const [isBlinking, setIsBlinking] = useState(true)
+export const BlinkingParkingSlot = ({
+  borderColor = yellow,
+  blinkDuration = 1000,
+  ...props
+}: BlinkingParkingSlotProps) => {
+  const [isBlinking, setIsBlinking] = useState(true)
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setIsBlinking((prevState) => !prevState)
-      }, blinkDuration)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsBlinking((prevState) => !prevState)
+    }, blinkDuration)
 
-      return () => {
-        clearInterval(interval)
-      }
-    }, [blinkDuration])
+    return () => {
+      clearInterval(interval)
+    }
+  }, [blinkDuration])
 
-    if (isBlinking) return null
+  if (isBlinking) return null
 
-    return (
-      <mesh rotation={[radians(0), radians(90), 0]} position={[0, 2, 0]}>
-        <ParkingSlot
-          {...props}
-          borderColor={borderColor}
-          enableoOccupied={false}
-        />
-      </mesh>
-    )
-  },
-)
+  return (
+    <mesh rotation={[radians(0), radians(90), 0]} position={[0, 2, 0]}>
+      <ParkingSlot
+        {...props}
+        borderColor={borderColor}
+        enableoOccupied={false}
+      />
+    </mesh>
+  )
+}

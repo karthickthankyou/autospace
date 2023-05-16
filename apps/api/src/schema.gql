@@ -906,10 +906,9 @@ input UpdateCustomerInput {
 input CreateGarageInput {
   imageUrl: String
   displayName: String!
-  companyId: Int!
   description: String!
   address: CreateAddressInputWithoutGarageId!
-  slots: CreateMultipleSlotInputWithoutGarageId!
+  slots: [CreateSlotInputWithoutGarageId!]!
 }
 
 input CreateAddressInputWithoutGarageId {
@@ -918,7 +917,7 @@ input CreateAddressInputWithoutGarageId {
   address: String!
 }
 
-input CreateMultipleSlotInputWithoutGarageId {
+input CreateSlotInputWithoutGarageId {
   displayName: String
   pricePerHour: Int!
   type: SlotType
@@ -931,10 +930,9 @@ input CreateMultipleSlotInputWithoutGarageId {
 input UpdateGarageInput {
   imageUrl: String
   displayName: String
-  companyId: Int
   description: String
   address: CreateAddressInputWithoutGarageId
-  slots: CreateMultipleSlotInputWithoutGarageId
+  slots: [CreateSlotInputWithoutGarageId!]
   id: Int!
 }
 

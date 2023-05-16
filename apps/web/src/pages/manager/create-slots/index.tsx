@@ -24,12 +24,11 @@ const CreateSlotsPage = () => {
     <div>
       <Form
         onSubmit={handleSubmit((data) => {
-          const { pricePerHour, numberOfSlots, startingSlotNumber, ...rest } =
-            data
-          const slots = Array.from({ length: numberOfSlots }, (_, i) => ({
+          const { pricePerHour, count, ...rest } = data
+          const slots = Array.from({ length: count }, (_, i) => ({
             pricePerHour,
             ...rest,
-            displayName: `${startingSlotNumber + i}`,
+            displayName: `${i}`,
           }))
 
           createManySlots({
@@ -47,11 +46,11 @@ const CreateSlotsPage = () => {
             {...register('pricePerHour', { valueAsNumber: true })}
           />
         </HtmlLabel>
-        <HtmlLabel error={errors.numberOfSlots?.message}>
+        <HtmlLabel error={errors.count?.message}>
           <HtmlInput
             type="number"
             placeholder="Number of slots"
-            {...register('numberOfSlots', { valueAsNumber: true })}
+            {...register('count', { valueAsNumber: true })}
           />
         </HtmlLabel>
         <HtmlLabel error={errors.height?.message}>
@@ -75,11 +74,11 @@ const CreateSlotsPage = () => {
             {...register('length', { valueAsNumber: true })}
           />
         </HtmlLabel>
-        <HtmlLabel error={errors.startingSlotNumber?.message}>
+        <HtmlLabel error={errors.count?.message}>
           <HtmlInput
             type="number"
             placeholder="Starting slot number."
-            {...register('startingSlotNumber', { valueAsNumber: true })}
+            {...register('count', { valueAsNumber: true })}
           />
         </HtmlLabel>
         <HtmlLabel error={errors.type?.message?.toString()}>

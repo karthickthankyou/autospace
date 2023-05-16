@@ -10,16 +10,6 @@ const minMaxTuple = z.tuple([z.number(), z.number()])
 export const formSchemaSearchGarage = z.object({
   startTime: z.string(),
   endTime: z.string(),
-  searchText: z.string().optional(),
-
-  locationInfo: z
-    .object({
-      placeName: z.string().optional(),
-      lat: z.number().optional(),
-      lng: z.number().optional(),
-      zoom: z.number().optional(),
-    })
-    .optional(),
 
   locationFilter: z
     .object({
@@ -127,11 +117,7 @@ export const FormProviderSearchGarage = ({
   useEffect(() => {
     methods.setValue('startTime', startTimeParam || currentTime)
     methods.setValue('endTime', endTimeParam || currentTimePlusOneHour)
-    methods.setValue('locationInfo', {
-      placeName: placeName || '',
-      lat: lat || 0,
-      lng: lng || 0,
-    })
+
     methods.setValue('type', type || AllSlotTypes.sort())
   }, [])
 

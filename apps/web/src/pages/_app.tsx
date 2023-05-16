@@ -3,7 +3,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
-import { Layout } from '@autospace-org/ui/src/components/templates/Layout'
 import { AppLevelListeners } from '@autospace-org/ui/src/components/atoms/AppLevelListeners'
 import { Notifications } from '@autospace-org/ui/src/components/organisms/Notifications'
 import { useIsPathInArray } from '@autospace-org/hooks/src'

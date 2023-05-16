@@ -305,27 +305,16 @@ export type CreateCustomerInput = {
 
 export type CreateGarageInput = {
   address: CreateAddressInputWithoutGarageId
-  companyId: Scalars['Int']
   description: Scalars['String']
   displayName: Scalars['String']
   imageUrl?: InputMaybe<Scalars['String']>
-  slots: CreateMultipleSlotInputWithoutGarageId
+  slots: Array<CreateSlotInputWithoutGarageId>
 }
 
 export type CreateManagerInput = {
   companyId: Scalars['Int']
   displayName: Scalars['String']
   uid: Scalars['String']
-}
-
-export type CreateMultipleSlotInputWithoutGarageId = {
-  count: Scalars['Int']
-  displayName?: InputMaybe<Scalars['String']>
-  height?: InputMaybe<Scalars['Int']>
-  length?: InputMaybe<Scalars['Int']>
-  pricePerHour: Scalars['Int']
-  type?: InputMaybe<SlotType>
-  width?: InputMaybe<Scalars['Int']>
 }
 
 export type CreateReviewInput = {
@@ -338,6 +327,16 @@ export type CreateReviewInput = {
 export type CreateSlotInput = {
   displayName?: InputMaybe<Scalars['String']>
   garageId: Scalars['Int']
+  height?: InputMaybe<Scalars['Int']>
+  length?: InputMaybe<Scalars['Int']>
+  pricePerHour: Scalars['Int']
+  type?: InputMaybe<SlotType>
+  width?: InputMaybe<Scalars['Int']>
+}
+
+export type CreateSlotInputWithoutGarageId = {
+  count: Scalars['Int']
+  displayName?: InputMaybe<Scalars['String']>
   height?: InputMaybe<Scalars['Int']>
   length?: InputMaybe<Scalars['Int']>
   pricePerHour: Scalars['Int']
@@ -1232,12 +1231,11 @@ export type UpdateCustomerInput = {
 
 export type UpdateGarageInput = {
   address?: InputMaybe<CreateAddressInputWithoutGarageId>
-  companyId?: InputMaybe<Scalars['Int']>
   description?: InputMaybe<Scalars['String']>
   displayName?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
   imageUrl?: InputMaybe<Scalars['String']>
-  slots?: InputMaybe<CreateMultipleSlotInputWithoutGarageId>
+  slots?: InputMaybe<Array<CreateSlotInputWithoutGarageId>>
 }
 
 export type UpdateManagerInput = {

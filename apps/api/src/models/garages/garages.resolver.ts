@@ -24,6 +24,12 @@ import { SlotWhereInput } from '../slots/dto/where.args'
 import { MinimalSlotGroupBy } from './dto/entities.output'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { GarageWhereInput } from './dto/where.args'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { GetUserType } from '@autospace-org/types'
+import { BadRequestException } from '@nestjs/common'
 
 @Resolver(() => Garage)
 export class GaragesResolver {
@@ -32,9 +38,21 @@ export class GaragesResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Garage)
-  createGarage(@Args('createGarageInput') args: CreateGarageInput) {
-    return this.garagesService.create(args)
+  async createGarage(
+    @Args('createGarageInput') args: CreateGarageInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const company = await this.prisma.company.findFirst({
+      where: { manager: { uid: user.uid } },
+    })
+    if (!company?.id) {
+      throw new BadRequestException(
+        'No company associated with the manager id.',
+      )
+    }
+    return this.garagesService.create({ ...args, companyId: company.id })
   }
 
   @Query(() => [Garage], { name: 'garages' })

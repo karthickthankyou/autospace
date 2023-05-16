@@ -3,31 +3,6 @@ import { useDebouncedValue } from './async'
 
 export type LocationInfo = { placeName: string; latLng: [number, number] }
 
-export const useCurrentLocation = ({
-  setLocationInfo,
-}: {
-  setLocationInfo: (locationInfo: LocationInfo) => void
-}) => {
-  const setCurrentLocation = () =>
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocationInfo({
-          latLng: [position.coords.latitude, position.coords.longitude],
-          placeName: 'Current Location',
-        })
-      },
-      (error) => {
-        console.error(error)
-      },
-      { enableHighAccuracy: true, timeout: 20000 },
-      //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    )
-  useEffect(() => {
-    setCurrentLocation()
-  }, [setCurrentLocation, setLocationInfo])
-  return { setCurrentLocation }
-}
-
 export const useSearchLocation = () => {
   const [searchText, setSearchText] = useState('')
   const [loading, setLoading] = useState(false)

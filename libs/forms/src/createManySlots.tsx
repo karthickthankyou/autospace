@@ -4,12 +4,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 export const createManySlotsFormSchema = z.object({
-  pricePerHour: z.number(),
-  numberOfSlots: z.number(),
-  startingSlotNumber: z.number(),
   height: z.number(),
   width: z.number(),
   length: z.number(),
+  pricePerHour: z.number(),
+  count: z.number(),
   type: z.nativeEnum(SlotType),
 })
 

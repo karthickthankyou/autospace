@@ -2,11 +2,9 @@ import { Controller } from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { SearchPlaceBox } from '../SearchPlaceBox'
-import { useRouter } from 'next/navigation'
 import { stringify } from 'querystring'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import { ToggleButton, dividerClasses } from '@mui/material'
+import { ToggleButton } from '@mui/material'
 import { useFormSearchGaragesHome } from '@autospace-org/forms/src/searchGaragesHome'
 import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 import { NextRouter } from 'next/router'
@@ -27,37 +25,17 @@ export const HeroSearchForm = ({ router }: IHeroSearchFormProps) => {
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        const { type, endTime, startTime, locationInfo } = data
+        const { type, endTime, startTime } = data
 
         let queryString = stringify({
           type,
           endTime,
           startTime,
-          placeName: locationInfo?.placeName,
-          lat: locationInfo?.lat,
-          lng: locationInfo?.lng,
         })
         router.push(`/search?${queryString}`)
       })}
     >
       <div className="flex flex-col gap-4 ">
-        <div>
-          <HtmlLabel
-            title="Search location"
-            error={errors.locationInfo?.message}
-          >
-            <SearchPlaceBox
-              setLocationInfo={({ placeName, latLng }) => {
-                setValue('locationInfo', {
-                  placeName,
-                  lat: latLng[0],
-                  lng: latLng[1],
-                })
-              }}
-            />
-          </HtmlLabel>
-        </div>
-
         <HtmlLabel title="Start time" error={errors.startTime?.message}>
           <HtmlInput
             type="datetime-local"
