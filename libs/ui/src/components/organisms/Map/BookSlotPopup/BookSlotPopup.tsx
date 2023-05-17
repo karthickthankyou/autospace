@@ -23,6 +23,7 @@ import { notification$ } from '@autospace-org/util/subjects'
 import { useUserStore } from '@autospace-org/store/user'
 import { DateRange } from '@autospace-org/forms/src/util'
 import { useEffect } from 'react'
+import { ShowImages } from '../../../molecules/ShowImages'
 
 const IconTypes = {
   [SlotType.Bicycle]: <IconBike />,
@@ -109,7 +110,7 @@ const BookSlotPopup = ({
       >
         <div className="mb-2 text-lg font-bold">{garage.displayName}</div>
         <div className="mb-2">{garage.address.address}</div>
-
+        <ShowImages images={garage.images || []} />
         <DateRangeBookingInfo startTime={startTime} endTime={endTime} />
 
         <div className="flex flex-wrap gap-2 mt-2">

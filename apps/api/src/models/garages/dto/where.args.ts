@@ -5,6 +5,7 @@ import {
   IntFilter,
   RestrictProperties,
   StringFilter,
+  StringListFilter,
 } from 'src/common/dtos/common.input'
 import { AddressRelationFilter } from 'src/models/addresses/dto/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dto/where.args'
@@ -22,9 +23,8 @@ export class GarageWhereUniqueInput
 
 @InputType()
 export class GarageWhereInput implements Required<Prisma.GarageWhereInput> {
-  @Field(() => StringFilter, { nullable: true })
-  imageUrl: StringFilter
-
+  @Field(() => StringListFilter, { nullable: true })
+  images: StringListFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

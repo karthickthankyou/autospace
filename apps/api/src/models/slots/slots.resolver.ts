@@ -92,7 +92,7 @@ export class SlotsResolver {
 
   @ResolveField(() => Garage)
   garage(@Parent() slot: Slot) {
-    return this.prisma.company.findFirst({ where: { id: slot.garageId } })
+    return this.prisma.garage.findUnique({ where: { id: slot.garageId } })
   }
 
   @ResolveField(() => [Booking])

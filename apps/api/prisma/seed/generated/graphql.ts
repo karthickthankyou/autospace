@@ -306,7 +306,7 @@ export type CreateGarageInput = {
   address: CreateAddressInputWithoutGarageId
   description: Scalars['String']
   displayName: Scalars['String']
-  imageUrl?: InputMaybe<Scalars['String']>
+  images?: InputMaybe<Array<Scalars['String']>>
   slots: Array<CreateSlotInputWithoutGarageId>
 }
 
@@ -438,7 +438,7 @@ export type Garage = {
   description: Scalars['String']
   displayName: Scalars['String']
   id: Scalars['Int']
-  imageUrl?: Maybe<Scalars['String']>
+  images?: Maybe<Array<Scalars['String']>>
   slots: Array<Slot>
   updatedAt: Scalars['DateTime']
 }
@@ -473,7 +473,7 @@ export type GarageOrderByWithRelationInput = {
   description?: InputMaybe<SortOrder>
   displayName?: InputMaybe<SortOrder>
   id?: InputMaybe<SortOrder>
-  imageUrl?: InputMaybe<SortOrder>
+  images?: InputMaybe<SortOrder>
   reviews?: InputMaybe<ReviewOrderByRelationAggregateInput>
   slots?: InputMaybe<SlotOrderByRelationAggregateInput>
   updatedAt?: InputMaybe<SortOrder>
@@ -491,7 +491,7 @@ export enum GarageScalarFieldEnum {
   Description = 'description',
   DisplayName = 'displayName',
   Id = 'id',
-  ImageUrl = 'imageUrl',
+  Images = 'images',
   UpdatedAt = 'updatedAt',
 }
 
@@ -506,7 +506,7 @@ export type GarageWhereInput = {
   description?: InputMaybe<StringFilter>
   displayName?: InputMaybe<StringFilter>
   id?: InputMaybe<IntFilter>
-  imageUrl?: InputMaybe<StringFilter>
+  images?: InputMaybe<StringListFilter>
   reviews?: InputMaybe<ReviewListRelationFilter>
   slots?: InputMaybe<SlotListRelationFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
@@ -1193,6 +1193,14 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>
 }
 
+export type StringListFilter = {
+  equals?: InputMaybe<Array<Scalars['String']>>
+  has?: InputMaybe<Scalars['String']>
+  hasEvery?: InputMaybe<Array<Scalars['String']>>
+  hasSome?: InputMaybe<Array<Scalars['String']>>
+  isEmpty?: InputMaybe<Scalars['Boolean']>
+}
+
 export type UpdateAddressInput = {
   address?: InputMaybe<Scalars['String']>
   garageId?: InputMaybe<Scalars['Int']>
@@ -1233,7 +1241,7 @@ export type UpdateGarageInput = {
   description?: InputMaybe<Scalars['String']>
   displayName?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
-  imageUrl?: InputMaybe<Scalars['String']>
+  images?: InputMaybe<Array<Scalars['String']>>
   slots?: InputMaybe<Array<CreateSlotInputWithoutGarageId>>
 }
 
@@ -1366,7 +1374,7 @@ export type GaragesQuery = {
     __typename?: 'Garage'
     id: number
     displayName: string
-    imageUrl?: string | null
+    images?: Array<string> | null
     address: { __typename?: 'Address'; address: string }
   }>
   garagesCount: { __typename?: 'AggregateCountOutput'; count: number }
@@ -1799,7 +1807,7 @@ export const GaragesDocument = {
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'imageUrl' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'images' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'address' },

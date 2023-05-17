@@ -25,18 +25,14 @@ import {
   useSearchGaragesLazyQuery,
 } from '@autospace-org/network/src/generated'
 import { Marker } from '../../organisms/Map/MapMarker'
-import { Popup } from '../../organisms/Map/Popup'
 import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { ViewStateChangeEvent, useMap } from 'react-map-gl'
 import { useKeypress } from '@autospace-org/util'
 import { ParkingIcon } from '../../atoms/ParkingIcon'
-import React from 'react'
 import { Autocomplete } from '../../atoms/Autocomplete'
 import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
-import { Transition } from '@headlessui/react'
-import { createPortal } from 'react-dom'
 import { Dialog } from '../../atoms/Dialog'
 
 export interface ISearchPageTemplateProps {
@@ -181,7 +177,6 @@ export const MarkerWithPopup = ({
         longitude={marker.address.lng}
         onClick={(e) => {
           e.originalEvent.stopPropagation()
-
           setShowPopup((state) => !state)
         }}
       >

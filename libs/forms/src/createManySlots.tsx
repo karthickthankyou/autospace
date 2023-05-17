@@ -8,7 +8,7 @@ export const createManySlotsFormSchema = z.object({
   width: z.number(),
   length: z.number(),
   pricePerHour: z.number(),
-  count: z.number(),
+  count: z.number().max(20, { message: 'Maximum 20.' }),
   type: z.nativeEnum(SlotType),
 })
 

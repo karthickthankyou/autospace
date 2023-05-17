@@ -23,7 +23,7 @@ type AggregateCountOutput {
 }
 
 type Garage {
-  imageUrl: String
+  images: [String!]
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -126,7 +126,7 @@ input GarageRelationFilter {
 }
 
 input GarageWhereInput {
-  imageUrl: StringFilter
+  images: StringListFilter
   id: IntFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -141,6 +141,14 @@ input GarageWhereInput {
   AND: [GarageWhereInput!]
   OR: [GarageWhereInput!]
   NOT: [GarageWhereInput!]
+}
+
+input StringListFilter {
+  equals: [String!]
+  has: String
+  hasEvery: [String!]
+  hasSome: [String!]
+  isEmpty: Boolean
 }
 
 input VerificationRelationFilter {
@@ -495,7 +503,7 @@ enum SortOrder {
 }
 
 input GarageOrderByWithRelationInput {
-  imageUrl: SortOrder
+  images: SortOrder
   verification: VerificationOrderByWithRelationInput
   reviews: ReviewOrderByRelationAggregateInput
   id: SortOrder
@@ -685,7 +693,7 @@ enum GarageScalarFieldEnum {
   displayName
   companyId
   description
-  imageUrl
+  images
 }
 
 input LocationFilterInput {
@@ -904,7 +912,7 @@ input UpdateCustomerInput {
 }
 
 input CreateGarageInput {
-  imageUrl: String
+  images: [String!]
   displayName: String!
   description: String!
   address: CreateAddressInputWithoutGarageId!
@@ -928,7 +936,7 @@ input CreateSlotInputWithoutGarageId {
 }
 
 input UpdateGarageInput {
-  imageUrl: String
+  images: [String!]
   displayName: String
   description: String
   address: CreateAddressInputWithoutGarageId

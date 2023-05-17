@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useFormContext, useWatch, useFieldArray } from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
@@ -31,6 +33,9 @@ import {
 } from '@autospace-org/network/src/generated'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 import { notification$ } from '@autospace-org/util/subjects'
+import { useImageUpload } from '@autospace-org/util'
+import { ProgressBar } from '../../atoms/ProgressBar'
+import { ShowImages } from '../../molecules/ShowImages'
 export interface ICreateGarageProps {}
 
 export const CreateGarage = () => {
@@ -54,18 +59,25 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
     formState: { errors },
   } = useFormContext<FormTypeCreateGarage>()
 
-  const daata = useWatch<FormTypeCreateGarage>()
+  const [{ percent }, uploadImages] = useImageUpload()
 
   const [createGarage, { loading }] = useCreateGarageMutation()
+  const router = useRouter()
 
   return (
     <div className="grid grid-cols-2 gap-2">
       <Dialog open={open} setOpen={setOpen} title={'Success.'}>
-        Garage created successfully.
+        <div>Garage created successfully.</div>
+        <div className="flex gap-1 mt-4">
+          <Button variant="outlined" onClick={() => setOpen(false)}>
+            Create more
+          </Button>
+          <Button onClick={() => router.push('/')}>Go to garages</Button>
+        </div>
       </Dialog>
       <Form
         onSubmit={handleSubmit(
-          async ({ description, displayName, location, slotTypes }) => {
+          async ({ description, displayName, location, slotTypes, images }) => {
             const { data, errors } = await createGarage({
               variables: {
                 createGarageInput: {
@@ -73,6 +85,7 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
                   displayName,
                   address: location,
                   slots: slotTypes,
+                  images,
                 },
               },
             })
@@ -96,6 +109,24 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
         <HtmlLabel title="Address">
           <HtmlTextArea cols={5} {...register('location.address')} />
         </HtmlLabel>
+        <HtmlLabel title="Images" error={errors.images?.message}>
+          <HtmlInput
+            multiple={true}
+            type="file"
+            placeholder="Upload images"
+            accept="image/*"
+            onChange={(e) => {
+              uploadImages(e, (images: string[]) => {
+                console.trace('-- - --- - set value called.... ')
+                if (images) setValue('images', images)
+              })
+            }}
+          />
+          {percent > 0 ? (
+            <ProgressBar variant="determinate" value={percent} />
+          ) : null}
+        </HtmlLabel>
+        <Form />
         <AddSlots />
         <Button loading={loading} type="submit">
           Create garage
@@ -310,6 +341,15 @@ export const AddSlots = () => {
       </div>
     </div>
   )
+}
+
+export const ShowFormImages = () => {
+  const { images } = useWatch<FormTypeCreateGarage>()
+  if (!images?.length) {
+    return null
+  }
+
+  return <ShowImages images={images} />
 }
 
 export const MapMarker = () => {

@@ -6,7 +6,7 @@ import { CreateSlotInputWithoutGarageId } from 'src/models/slots/dto/create-slot
 @InputType()
 export class CreateGarageInput extends PickType(
   Garage,
-  ['description', 'displayName', 'imageUrl'],
+  ['description', 'displayName', 'images'],
   InputType,
 ) {
   @Field(() => CreateAddressInputWithoutGarageId)

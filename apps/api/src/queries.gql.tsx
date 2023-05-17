@@ -41,7 +41,7 @@ export const garages = gql`
     ) {
       id
       displayName
-      imageUrl
+      images
       address {
         address
       }

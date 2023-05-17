@@ -73,7 +73,7 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
   const [skip, setSkip] = useState(0)
   const [take, setTake] = useState(12)
 
-  const [getBookings, { loading, data }] = useBookingsLazyQuery()
+  const [getBookings, { loading, data, error }] = useBookingsLazyQuery()
 
   useEffect(() => {
     if (uid)
@@ -94,6 +94,7 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
 
   return (
     <ShowData
+      error={error?.message}
       loading={loading}
       pagination={{
         skip,

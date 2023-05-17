@@ -11,7 +11,7 @@ export class GarageOrderByWithRelationInput
   implements Required<Prisma.GarageOrderByWithRelationInput>
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
-  imageUrl: Prisma.SortOrder
+  images: Prisma.SortOrder
   @Field(() => VerificationOrderByWithRelationInput, { nullable: true })
   verification: VerificationOrderByWithRelationInput
   @Field(() => ReviewOrderByRelationAggregateInput, { nullable: true })

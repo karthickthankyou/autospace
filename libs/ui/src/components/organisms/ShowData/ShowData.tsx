@@ -2,9 +2,11 @@ import { ReactNode } from 'react'
 import { Pagination } from '../../molecules/Pagination'
 import { LoaderPanel } from '../../molecules/Loader'
 import { IconBox } from '@tabler/icons-react'
+import { AlertSection } from '../AlertSection'
 
 export interface IShowDataProps {
   loading: boolean
+  error?: string
   pagination: {
     skip?: number
     take?: number
@@ -28,6 +30,7 @@ export const NoResults = () => {
 
 export const ShowData = ({
   loading,
+  error,
   pagination: {
     resultCount = 0,
     setSkip,
@@ -42,8 +45,15 @@ export const ShowData = ({
 }: IShowDataProps) => {
   return (
     <div>
+      {error && (
+        <AlertSection>
+          {' '}
+          Oops. Something went wrong.{' '}
+          <span className="text-xs">Psst. {error}</span>
+        </AlertSection>
+      )}
       {loading && <LoaderPanel />}
-      {!loading && resultCount === 0 && <NoResults />}
+      {!loading && !error && resultCount === 0 && <NoResults />}
 
       {!loading && resultCount > 0 && (
         <div>

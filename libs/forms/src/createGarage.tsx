@@ -7,6 +7,7 @@ import { createManySlotsFormSchema } from './createManySlots'
 export const schemaCreateGarage = z.object({
   displayName: z.string().min(1),
   description: z.string().min(1),
+  images: z.string().array().min(0),
   location: z.object({
     lat: z.number(),
     lng: z.number(),
@@ -20,6 +21,7 @@ export type FormTypeCreateGarage = z.infer<typeof schemaCreateGarage>
 export const useFormCreateGarage = () =>
   useForm<FormTypeCreateGarage>({
     resolver: zodResolver(schemaCreateGarage),
+    defaultValues: { slotTypes: [] },
   })
 
 export const FormProviderCreateGarage = ({

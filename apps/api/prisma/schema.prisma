@@ -44,7 +44,7 @@ model Garage {
     displayName  String?
     companyId    Int
     description  String?
-    imageUrl     String?
+    images       String[]
     address      Address?
     company      Company       @relation(fields: [companyId], references: [id])
     reviews      Review[]

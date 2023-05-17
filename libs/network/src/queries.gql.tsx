@@ -41,7 +41,7 @@ export const garages = gql`
     ) {
       id
       displayName
-      imageUrl
+      images
       address {
         address
       }
@@ -71,6 +71,7 @@ export const searchGarages = gql`
         lng
         address
       }
+      images
       displayName
       availableSlots(slotsFilter: $slotsFilter, dateFilter: $dateFilter) {
         type
