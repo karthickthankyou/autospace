@@ -9,13 +9,47 @@ import { setContext } from '@apollo/client/link/context'
 import { ReactNode } from 'react'
 import { useUserStore } from '@autospace-org/store/user'
 import jwtDecode from 'jwt-decode'
+import { auth } from './firebase'
 
 export interface IApolloProviderProps {
   children: ReactNode
 }
 
+export const getLatestToken = async ({ token }: { token: string }) => {
+  const decoded: any = jwtDecode(token || '')
+
+  const currentTime = new Date()
+
+  const expirytime = new Date(decoded?.exp * 1000)
+  const bufferTime = 5 * 60 * 1000
+  const timeToExpire = expirytime.getTime() - currentTime.getTime()
+
+  console.log(
+    'Auth checK ',
+    currentTime,
+    expirytime,
+    timeToExpire / 1000,
+    'Seconds to expire',
+  )
+
+  if (timeToExpire < bufferTime) {
+    // Refresh token
+    const currentUser = auth.currentUser
+    if (currentUser) {
+      const newToken = await currentUser.getIdToken()
+      return newToken
+    }
+  }
+  return token
+}
+
 export const ApolloProvider = ({ children }: IApolloProviderProps) => {
-  const user = useUserStore((state) => ({ uid: state.uid, token: state.token }))
+  console.log('  --  Apollo provider  --  ')
+  const { setUser, token, uid } = useUserStore((state) => ({
+    uid: state.uid,
+    token: state.token,
+    setUser: state.setUser,
+  }))
 
   //   Create an http link
   const httpLink = createHttpLink({
@@ -23,30 +57,23 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
   })
 
   const authLink = setContext(async (_, { headers }) => {
-    if (!user.token) {
+    if (!token) {
       return {
         headers,
       }
     }
-    // return the headers to the context so httpLink can read them
-    const decoded: any = jwtDecode(user.token || '')
 
-    const currentTime = new Date()
-    const expirytime = new Date(decoded?.exp * 1000)
+    const authToken = await getLatestToken({ token })
 
-    console.log(
-      'Auth running...',
-      'Implement refetcting???',
-      decoded,
-      currentTime,
-      expirytime,
-      currentTime.getTime() < expirytime.getTime(),
-    )
+    if (authToken !== token) {
+      console.log('Set new token.')
+      setUser({ uid, token: authToken })
+    }
 
     return {
       headers: {
         ...headers,
-        authorization: user.token ? `Bearer ${user.token}` : '',
+        authorization: token ? `Bearer ${token}` : '',
       },
     }
   })
