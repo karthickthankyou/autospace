@@ -16,6 +16,32 @@ export const createCustomer = gql`
   }
 `
 
+export const createVerification = gql`
+  mutation createVerification(
+    $createVerificationInput: CreateVerificationInput!
+  ) {
+    createVerification(createVerificationInput: $createVerificationInput) {
+      adminId
+      createdAt
+      garageId
+      updatedAt
+      verified
+    }
+  }
+`
+
+export const removeVerification = gql`
+  mutation removeVerification($where: VerificationWhereUniqueInput) {
+    removeVerification(where: $where) {
+      verified
+      updatedAt
+      garageId
+      createdAt
+      adminId
+    }
+  }
+`
+
 export const logout = gql`
   mutation logout {
     logout
@@ -43,6 +69,9 @@ export const garages = gql`
       displayName
       description
       images
+      verification {
+        verified
+      }
       address {
         address
       }

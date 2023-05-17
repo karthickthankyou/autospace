@@ -24,17 +24,18 @@ type AggregateCountOutput {
 
 type Garage {
   images: [String!]
+  description: String
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
   displayName: String!
   companyId: Int!
-  description: String!
   company: Company!
   address: Address!
   slots: [Slot!]!
   slotCounts: [SlotTypeCount!]!
   availableSlots(slotsFilter: SlotWhereInput, dateFilter: DateFilterInput!): [MinimalSlotGroupBy!]!
+  verification: Verification
 }
 
 input SlotWhereInput {
@@ -457,6 +458,14 @@ type MinimalSlotGroupBy {
   count: Int!
 }
 
+type Verification {
+  garageId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  verified: Boolean!
+  adminId: String!
+}
+
 type Review {
   id: Int!
   createdAt: DateTime!
@@ -465,14 +474,6 @@ type Review {
   customerId: String!
   rating: Int!
   comment: String!
-}
-
-type Verification {
-  garageId: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  verified: Boolean!
-  adminId: String!
 }
 
 type LoginOutput {
@@ -1015,8 +1016,8 @@ input UpdateCustomerInput {
 
 input CreateGarageInput {
   images: [String!]
+  description: String
   displayName: String!
-  description: String!
   address: CreateAddressInputWithoutGarageId!
   slots: [CreateSlotInputWithoutGarageId!]!
 }
@@ -1039,8 +1040,8 @@ input CreateSlotInputWithoutGarageId {
 
 input UpdateGarageInput {
   images: [String!]
-  displayName: String
   description: String
+  displayName: String
   address: CreateAddressInputWithoutGarageId
   slots: [CreateSlotInputWithoutGarageId!]
   id: Int!

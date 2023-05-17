@@ -11,6 +11,7 @@ export class Garage implements RestrictProperties<Garage, GarageType> {
   updatedAt: Date
   displayName: string
   companyId: number
+  @Field(() => String, { nullable: true })
   description: string
 }
 

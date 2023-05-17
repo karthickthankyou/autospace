@@ -380,7 +380,7 @@ export type CreateCustomerInput = {
 
 export type CreateGarageInput = {
   address: CreateAddressInputWithoutGarageId
-  description: Scalars['String']
+  description?: InputMaybe<Scalars['String']>
   displayName: Scalars['String']
   images?: InputMaybe<Array<Scalars['String']>>
   slots: Array<CreateSlotInputWithoutGarageId>
@@ -518,13 +518,14 @@ export type Garage = {
   company: Company
   companyId: Scalars['Int']
   createdAt: Scalars['DateTime']
-  description: Scalars['String']
+  description?: Maybe<Scalars['String']>
   displayName: Scalars['String']
   id: Scalars['Int']
   images?: Maybe<Array<Scalars['String']>>
   slotCounts: Array<SlotTypeCount>
   slots: Array<Slot>
   updatedAt: Scalars['DateTime']
+  verification?: Maybe<Verification>
 }
 
 export type GarageAvailableSlotsArgs = {
@@ -1632,7 +1633,7 @@ export type MyCompanyQuery = {
       __typename?: 'Garage'
       displayName: string
       id: number
-      description: string
+      description?: string | null
       address: {
         __typename?: 'Address'
         id: number

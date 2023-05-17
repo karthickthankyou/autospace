@@ -381,7 +381,7 @@ export type CreateCustomerInput = {
 
 export type CreateGarageInput = {
   address: CreateAddressInputWithoutGarageId
-  description: Scalars['String']
+  description?: InputMaybe<Scalars['String']>
   displayName: Scalars['String']
   images?: InputMaybe<Array<Scalars['String']>>
   slots: Array<CreateSlotInputWithoutGarageId>
@@ -519,13 +519,14 @@ export type Garage = {
   company: Company
   companyId: Scalars['Int']
   createdAt: Scalars['DateTime']
-  description: Scalars['String']
+  description?: Maybe<Scalars['String']>
   displayName: Scalars['String']
   id: Scalars['Int']
   images?: Maybe<Array<Scalars['String']>>
   slotCounts: Array<SlotTypeCount>
   slots: Array<Slot>
   updatedAt: Scalars['DateTime']
+  verification?: Maybe<Verification>
 }
 
 export type GarageAvailableSlotsArgs = {
@@ -1492,6 +1493,38 @@ export type CreateCustomerMutation = {
   createCustomer: { __typename?: 'Customer'; uid: string }
 }
 
+export type CreateVerificationMutationVariables = Exact<{
+  createVerificationInput: CreateVerificationInput
+}>
+
+export type CreateVerificationMutation = {
+  __typename?: 'Mutation'
+  createVerification: {
+    __typename?: 'Verification'
+    adminId: string
+    createdAt: any
+    garageId: number
+    updatedAt: any
+    verified: boolean
+  }
+}
+
+export type RemoveVerificationMutationVariables = Exact<{
+  where?: InputMaybe<VerificationWhereUniqueInput>
+}>
+
+export type RemoveVerificationMutation = {
+  __typename?: 'Mutation'
+  removeVerification: {
+    __typename?: 'Verification'
+    verified: boolean
+    updatedAt: any
+    garageId: number
+    createdAt: any
+    adminId: string
+  }
+}
+
 export type LogoutMutationVariables = Exact<{ [key: string]: never }>
 
 export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean }
@@ -1513,8 +1546,9 @@ export type GaragesQuery = {
     __typename?: 'Garage'
     id: number
     displayName: string
-    description: string
+    description?: string | null
     images?: Array<string> | null
+    verification?: { __typename?: 'Verification'; verified: boolean } | null
     address: { __typename?: 'Address'; address: string }
     slotCounts: Array<{
       __typename?: 'SlotTypeCount'
@@ -1814,6 +1848,8 @@ export const namedOperations = {
   Mutation: {
     CreateManager: 'CreateManager',
     CreateCustomer: 'CreateCustomer',
+    createVerification: 'createVerification',
+    removeVerification: 'removeVerification',
     logout: 'logout',
     createBooking: 'createBooking',
     createBookingTimeline: 'createBookingTimeline',
@@ -1949,6 +1985,116 @@ export type CreateCustomerMutationOptions = Apollo.BaseMutationOptions<
   CreateCustomerMutation,
   CreateCustomerMutationVariables
 >
+export const CreateVerificationDocument = /*#__PURE__*/ gql`
+  mutation createVerification(
+    $createVerificationInput: CreateVerificationInput!
+  ) {
+    createVerification(createVerificationInput: $createVerificationInput) {
+      adminId
+      createdAt
+      garageId
+      updatedAt
+      verified
+    }
+  }
+`
+export type CreateVerificationMutationFn = Apollo.MutationFunction<
+  CreateVerificationMutation,
+  CreateVerificationMutationVariables
+>
+
+/**
+ * __useCreateVerificationMutation__
+ *
+ * To run a mutation, you first call `useCreateVerificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateVerificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createVerificationMutation, { data, loading, error }] = useCreateVerificationMutation({
+ *   variables: {
+ *      createVerificationInput: // value for 'createVerificationInput'
+ *   },
+ * });
+ */
+export function useCreateVerificationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateVerificationMutation,
+    CreateVerificationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateVerificationMutation,
+    CreateVerificationMutationVariables
+  >(CreateVerificationDocument, options)
+}
+export type CreateVerificationMutationHookResult = ReturnType<
+  typeof useCreateVerificationMutation
+>
+export type CreateVerificationMutationResult =
+  Apollo.MutationResult<CreateVerificationMutation>
+export type CreateVerificationMutationOptions = Apollo.BaseMutationOptions<
+  CreateVerificationMutation,
+  CreateVerificationMutationVariables
+>
+export const RemoveVerificationDocument = /*#__PURE__*/ gql`
+  mutation removeVerification($where: VerificationWhereUniqueInput) {
+    removeVerification(where: $where) {
+      verified
+      updatedAt
+      garageId
+      createdAt
+      adminId
+    }
+  }
+`
+export type RemoveVerificationMutationFn = Apollo.MutationFunction<
+  RemoveVerificationMutation,
+  RemoveVerificationMutationVariables
+>
+
+/**
+ * __useRemoveVerificationMutation__
+ *
+ * To run a mutation, you first call `useRemoveVerificationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveVerificationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeVerificationMutation, { data, loading, error }] = useRemoveVerificationMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useRemoveVerificationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveVerificationMutation,
+    RemoveVerificationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    RemoveVerificationMutation,
+    RemoveVerificationMutationVariables
+  >(RemoveVerificationDocument, options)
+}
+export type RemoveVerificationMutationHookResult = ReturnType<
+  typeof useRemoveVerificationMutation
+>
+export type RemoveVerificationMutationResult =
+  Apollo.MutationResult<RemoveVerificationMutation>
+export type RemoveVerificationMutationOptions = Apollo.BaseMutationOptions<
+  RemoveVerificationMutation,
+  RemoveVerificationMutationVariables
+>
 export const LogoutDocument = /*#__PURE__*/ gql`
   mutation logout {
     logout
@@ -2014,6 +2160,9 @@ export const GaragesDocument = /*#__PURE__*/ gql`
       displayName
       description
       images
+      verification {
+        verified
+      }
       address {
         address
       }

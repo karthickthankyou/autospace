@@ -5,9 +5,6 @@ import {
   Args,
   ResolveField,
   Parent,
-  InputType,
-  Field,
-  ObjectType,
 } from '@nestjs/graphql'
 import { GaragesService } from './garages.service'
 import { Garage, SlotTypeCount } from './entities/garage.entity'
@@ -33,7 +30,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@autospace-org/types'
 import { BadRequestException } from '@nestjs/common'
-import { SlotType } from '@prisma/client'
+import { Verification } from '../verifications/entities/verification.entity'
 
 @Resolver(() => Garage)
 export class GaragesResolver {
@@ -100,6 +97,7 @@ export class GaragesResolver {
       ...garageFilters,
       where: {
         ...where,
+        verification: { verified: true },
         address: {
           lat: { lte: nw_lat, gte: se_lat },
           lng: { gte: nw_lng, lte: se_lng },
@@ -215,5 +213,12 @@ export class GaragesResolver {
       where,
     })
     return { count: garages._count._all }
+  }
+
+  @ResolveField(() => Verification, { nullable: true })
+  async verification(@Parent() parent: Garage) {
+    return this.prisma.verification.findUnique({
+      where: { garageId: parent.id },
+    })
   }
 }

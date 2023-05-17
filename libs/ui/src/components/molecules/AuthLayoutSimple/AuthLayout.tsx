@@ -3,7 +3,6 @@ import { BrandIcon } from '../../atoms/BrandIcon'
 
 import Link from 'next/link'
 import { IconArrowBack } from '@tabler/icons-react'
-import { Container } from '../../atoms/Container'
 
 export interface IAuthLayoutProps {
   children: ReactNode
