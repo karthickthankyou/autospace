@@ -11,6 +11,7 @@ import { MenuItem } from '@autospace-org/types'
 const MENUITEMS: MenuItem[] = [
   { label: 'Garages', href: '/', loggedIn: true },
   { label: 'Admins', href: '/manageAdmins', loggedIn: true },
+  { label: 'Settings', href: '/settings', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,
