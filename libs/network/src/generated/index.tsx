@@ -1375,6 +1375,7 @@ export type GaragesQuery = {
     __typename?: 'Garage'
     id: number
     displayName: string
+    description: string
     images?: Array<string> | null
     address: { __typename?: 'Address'; address: string }
   }>
@@ -1449,6 +1450,7 @@ export type BookingsQuery = {
       displayName?: string | null
       garage: {
         __typename?: 'Garage'
+        images?: Array<string> | null
         address: {
           __typename?: 'Address'
           address: string
@@ -1539,19 +1541,6 @@ export type MyCompanyQuery = {
     id: number
     createdAt: any
     displayName: string
-    garages: Array<{
-      __typename?: 'Garage'
-      displayName: string
-      id: number
-      description: string
-      address: {
-        __typename?: 'Address'
-        id: number
-        address: string
-        lat: number
-        lng: number
-      }
-    }>
   }
 }
 
@@ -1772,6 +1761,7 @@ export const GaragesDocument = /*#__PURE__*/ gql`
     ) {
       id
       displayName
+      description
       images
       address {
         address
@@ -1991,6 +1981,7 @@ export const BookingsDocument = /*#__PURE__*/ gql`
       slot {
         displayName
         garage {
+          images
           address {
             address
             lat
@@ -2324,17 +2315,6 @@ export const MyCompanyDocument = /*#__PURE__*/ gql`
   query myCompany {
     myCompany {
       id
-      garages {
-        displayName
-        id
-        description
-        address {
-          id
-          address
-          lat
-          lng
-        }
-      }
       createdAt
       displayName
     }

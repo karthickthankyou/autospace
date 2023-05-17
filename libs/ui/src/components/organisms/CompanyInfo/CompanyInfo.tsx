@@ -1,13 +1,16 @@
 import {
   MyCompanyQuery,
-  useMyCompanyQuery,
+  useGaragesLazyQuery,
+  useGaragesQuery,
 } from '@autospace-org/network/src/generated'
 import { LoaderPanel } from '../../molecules/Loader'
 import { QueryResult } from '@autospace-org/network'
 import { AlertSection } from '../AlertSection'
-import { CreateGarage } from '../../templates/CreateGarage'
 import Link from 'next/link'
 import { CreateCompany } from '../../templates/CreateCompany'
+import { GarageCard } from '../GarageCard'
+import { ShowData } from '../ShowData'
+import { useState } from 'react'
 
 export interface ICompanyInfoProps {
   company: Pick<QueryResult<MyCompanyQuery>, 'data' | 'loading'>
@@ -30,17 +33,23 @@ export const CompanyInfo = ({ company }: ICompanyInfoProps) => {
   return (
     <div>
       {data?.myCompany.displayName}
-      <ListGarages garages={data.myCompany.garages} />
+      <ListGarages companyId={data.myCompany.id} />
     </div>
   )
 }
 
 export const ListGarages = ({
-  garages,
+  companyId,
 }: {
-  garages: MyCompanyQuery['myCompany']['garages']
+  companyId: MyCompanyQuery['myCompany']['id']
 }) => {
-  if (garages.length === 0) {
+  const [skip, setSkip] = useState(0)
+  const [take, setTake] = useState(12)
+  const { data, loading, error } = useGaragesQuery({
+    variables: { skip, take, where: { companyId: { equals: companyId } } },
+  })
+
+  if (data?.garages.length === 0) {
     return (
       <AlertSection>
         No garages found.
@@ -53,14 +62,24 @@ export const ListGarages = ({
       </AlertSection>
     )
   }
+
   return (
-    <div className="grid grid-cols-3">
-      {garages.map((garage) => (
-        <div key={garage.id}>
-          <div>{garage.displayName}</div>
-          <div>{garage.description}</div>
-        </div>
+    <ShowData
+      error={error?.message}
+      loading={loading}
+      pagination={{
+        skip,
+        take,
+        resultCount: data?.garages.length,
+        totalCount: data?.garagesCount.count,
+        setSkip,
+        setTake,
+      }}
+      title={'Garages'}
+    >
+      {data?.garages.map((garage) => (
+        <GarageCard garage={garage} />
       ))}
-    </div>
+    </ShowData>
   )
 }

@@ -40,6 +40,4 @@ export const Manager = ({}: IManagerProps) => {
     )
 
   return <CompanyInfo company={data} />
-
-  // User is manager
 }

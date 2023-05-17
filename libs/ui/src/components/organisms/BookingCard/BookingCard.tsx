@@ -4,6 +4,7 @@ import { Reveal } from '../../molecules/Reveal'
 
 import { StartEndDateCard } from '../DateCard/DateCard'
 import { BookingsQuery } from '@autospace-org/network/src/generated'
+import { AutoImageChanger } from '../../molecules/AutoImageChanger'
 
 export interface IBookingCardProps {
   booking: NonNullable<BookingsQuery['bookings']>[number]
@@ -18,6 +19,10 @@ export const CustomerBookingCard = ({ booking }: IBookingCardProps) => {
           endTime={booking.endTime}
         />
       </div>
+      <AutoImageChanger
+        images={booking.slot.garage.images || []}
+        durationPerImage={5}
+      />
       <div className="flex items-center justify-between gap-1 p-4 mt-2 bg-topo">
         <div>{booking.slot.garage.address.address}</div>
         <MapLink

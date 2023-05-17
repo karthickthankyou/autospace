@@ -22,16 +22,12 @@ export const CustomerBookings = ({}: ICustomerBookingsProps) => {
         aria-label="bookings"
       >
         <Tab label={BookingType[BookingTypes.UPCOMING].title} />
-        <Tab label={BookingType[BookingTypes.ONGOING].title} />
         <Tab label={BookingType[BookingTypes.PAST].title} />
       </Tabs>
       <TabPanel value={value} index={0}>
         <ShowBookings type={BookingTypes.UPCOMING} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ShowBookings type={BookingTypes.ONGOING} />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
         <ShowBookings type={BookingTypes.PAST} />
       </TabPanel>
     </>
@@ -39,23 +35,15 @@ export const CustomerBookings = ({}: ICustomerBookingsProps) => {
 }
 
 export enum BookingTypes {
-  ONGOING = 'ONGOING',
   UPCOMING = 'UPCOMING',
   PAST = 'PAST',
 }
 
 const BookingType = {
-  [BookingTypes.ONGOING]: {
-    title: 'Ongoing bookings',
-    where: {
-      startTime: { lte: new Date().toISOString() },
-      endTime: { gte: new Date().toISOString() },
-    },
-  },
   [BookingTypes.UPCOMING]: {
     title: 'Upcoming bookings',
     where: {
-      startTime: { gt: new Date().toISOString() },
+      endTime: { gt: new Date().toISOString() },
     },
   },
   [BookingTypes.PAST]: {
@@ -74,6 +62,8 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
   const [take, setTake] = useState(12)
 
   const [getBookings, { loading, data, error }] = useBookingsLazyQuery()
+
+  console.log('data ', data, loading)
 
   useEffect(() => {
     if (uid)
@@ -107,7 +97,7 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
       title={undefined}
     >
       {data?.bookings.map((booking) => (
-        <CustomerBookingCard booking={booking} />
+        <CustomerBookingCard key={booking.id} booking={booking} />
       ))}
     </ShowData>
   )

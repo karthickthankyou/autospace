@@ -41,6 +41,7 @@ export const garages = gql`
     ) {
       id
       displayName
+      description
       images
       address {
         address
@@ -116,6 +117,7 @@ export const bookings = gql`
       slot {
         displayName
         garage {
+          images
           address {
             address
             lat
@@ -190,17 +192,6 @@ export const company = gql`
   query myCompany {
     myCompany {
       id
-      garages {
-        displayName
-        id
-        description
-        address {
-          id
-          address
-          lat
-          lng
-        }
-      }
       createdAt
       displayName
     }
