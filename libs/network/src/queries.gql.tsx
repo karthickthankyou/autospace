@@ -95,6 +95,30 @@ export const createBooking = gql`
     }
   }
 `
+
+export const BOOKING_FRAGMENT = gql`
+  fragment BookingFields on Booking {
+    id
+    pricePerHour
+    endTime
+    startTime
+    vehicleNumber
+    passcode
+    status
+    slot {
+      displayName
+      garage {
+        images
+        address {
+          address
+          lat
+          lng
+        }
+      }
+    }
+  }
+`
+
 export const bookings = gql`
   query bookings(
     $distinct: [BookingScalarFieldEnum!]
@@ -112,27 +136,55 @@ export const bookings = gql`
       orderBy: $orderBy
       where: $where
     ) {
-      id
-      pricePerHour
-      endTime
-      startTime
-      vehicleNumber
-      passcode
-      slot {
-        displayName
-        garage {
-          images
-          address {
-            address
-            lat
-            lng
-          }
-        }
-      }
+      ...BookingFields
     }
 
     bookingsCount(where: $where) {
       count
+    }
+  }
+  ${BOOKING_FRAGMENT}
+`
+
+export const bookingsForGarage = gql`
+  query bookingsForGarage(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: BookingWhereUniqueInput
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    bookingsForGarage(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      ...BookingFields
+    }
+
+    bookingsCount(where: $where) {
+      count
+    }
+  }
+  ${BOOKING_FRAGMENT}
+`
+
+export const createBookingTimeline = gql`
+  mutation createBookingTimeline(
+    $createBookingTimelineInput: CreateBookingTimelineInput!
+  ) {
+    createBookingTimeline(
+      createBookingTimelineInput: $createBookingTimelineInput
+    ) {
+      bookingId
+      id
+      managerId
+      status
+      timestamp
     }
   }
 `

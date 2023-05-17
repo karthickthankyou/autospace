@@ -220,6 +220,7 @@ input ManagerRelationFilter {
 }
 
 input ManagerWhereInput {
+  BookingTimeline: BookingTimelineListRelationFilter
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
@@ -229,6 +230,114 @@ input ManagerWhereInput {
   AND: [ManagerWhereInput!]
   OR: [ManagerWhereInput!]
   NOT: [ManagerWhereInput!]
+}
+
+input BookingTimelineListRelationFilter {
+  every: BookingTimelineWhereInput
+  some: BookingTimelineWhereInput
+  none: BookingTimelineWhereInput
+}
+
+input BookingTimelineWhereInput {
+  id: IntFilter
+  timestamp: DateTimeFilter
+  bookingId: IntFilter
+  status: EnumBookingStatusFilter
+  managerId: StringFilter
+  booking: BookingRelationFilter
+  manager: ManagerRelationFilter
+  AND: [BookingTimelineWhereInput!]
+  OR: [BookingTimelineWhereInput!]
+  NOT: [BookingTimelineWhereInput!]
+}
+
+input EnumBookingStatusFilter {
+  equals: BookingStatus
+  in: [BookingStatus!]
+  notIn: [BookingStatus!]
+  not: BookingStatus
+}
+
+enum BookingStatus {
+  BOOKED
+  CHECKED_IN
+  CHECKED_OUT
+}
+
+input BookingRelationFilter {
+  is: BookingWhereInput
+  isNot: BookingWhereInput
+}
+
+input BookingWhereInput {
+  BookingTimeline: BookingTimelineListRelationFilter
+  status: EnumBookingStatusFilter
+  customer: CustomerRelationFilter
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  pricePerHour: FloatFilter
+  totalPrice: FloatFilter
+  startTime: DateTimeFilter
+  endTime: DateTimeFilter
+  slotId: IntFilter
+  slot: SlotRelationFilter
+  customerId: StringFilter
+  vehicleNumber: StringFilter
+  phoneNumber: StringFilter
+  passcode: StringFilter
+  AND: [BookingWhereInput!]
+  OR: [BookingWhereInput!]
+  NOT: [BookingWhereInput!]
+}
+
+input CustomerRelationFilter {
+  is: CustomerWhereInput
+  isNot: CustomerWhereInput
+}
+
+input CustomerWhereInput {
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  displayName: StringFilter
+  bookings: BookingListRelationFilter
+  reviews: ReviewListRelationFilter
+  AND: [CustomerWhereInput!]
+  OR: [CustomerWhereInput!]
+  NOT: [CustomerWhereInput!]
+}
+
+input BookingListRelationFilter {
+  every: BookingWhereInput
+  some: BookingWhereInput
+  none: BookingWhereInput
+}
+
+input ReviewListRelationFilter {
+  every: ReviewWhereInput!
+  some: ReviewWhereInput!
+  none: ReviewWhereInput!
+}
+
+input ReviewWhereInput {
+  customer: CustomerRelationFilter
+  garage: GarageRelationFilter
+  id: IntFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  garageId: IntFilter
+  customerId: StringFilter
+  rating: IntFilter
+  comment: StringFilter
+  AND: [ReviewWhereInput!]
+  OR: [ReviewWhereInput!]
+  NOT: [ReviewWhereInput!]
+}
+
+input SlotRelationFilter {
+  is: SlotWhereInput
+  isNot: SlotWhereInput
 }
 
 input GarageListRelationFilter {
@@ -262,75 +371,6 @@ input AddressWhereInput {
   NOT: [AddressWhereInput!]
 }
 
-input ReviewListRelationFilter {
-  every: ReviewWhereInput!
-  some: ReviewWhereInput!
-  none: ReviewWhereInput!
-}
-
-input ReviewWhereInput {
-  customer: CustomerRelationFilter
-  garage: GarageRelationFilter
-  id: IntFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  garageId: IntFilter
-  customerId: StringFilter
-  rating: IntFilter
-  comment: StringFilter
-  AND: [ReviewWhereInput!]
-  OR: [ReviewWhereInput!]
-  NOT: [ReviewWhereInput!]
-}
-
-input CustomerRelationFilter {
-  is: CustomerWhereInput
-  isNot: CustomerWhereInput
-}
-
-input CustomerWhereInput {
-  uid: StringFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  displayName: StringFilter
-  bookings: BookingListRelationFilter
-  reviews: ReviewListRelationFilter
-  AND: [CustomerWhereInput!]
-  OR: [CustomerWhereInput!]
-  NOT: [CustomerWhereInput!]
-}
-
-input BookingListRelationFilter {
-  every: BookingWhereInput
-  some: BookingWhereInput
-  none: BookingWhereInput
-}
-
-input BookingWhereInput {
-  customer: CustomerRelationFilter
-  slot: SlotRelationFilter
-  id: IntFilter
-  createdAt: DateTimeFilter
-  updatedAt: DateTimeFilter
-  pricePerHour: FloatFilter
-  totalPrice: FloatFilter
-  startTime: DateTimeFilter
-  endTime: DateTimeFilter
-  slotId: IntFilter
-  customerId: StringFilter
-  vehicleNumber: StringFilter
-  phoneNumber: StringFilter
-  passcode: StringFilter
-  AND: [BookingWhereInput!]
-  OR: [BookingWhereInput!]
-  NOT: [BookingWhereInput!]
-}
-
-input SlotRelationFilter {
-  is: SlotWhereInput
-  isNot: SlotWhereInput
-}
-
 input DateFilterInput {
   start: String!
   end: String!
@@ -349,6 +389,7 @@ type Admin {
 }
 
 type Booking {
+  status: BookingStatus!
   pricePerHour: Int
   totalPrice: Int
   phoneNumber: String
@@ -464,6 +505,14 @@ type RefreshTokenOutput {
   project_id: String!
 }
 
+type BookingTimeline {
+  status: BookingStatus!
+  id: Int!
+  timestamp: DateTime!
+  bookingId: Int!
+  managerId: String!
+}
+
 type Query {
   addresses(where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int, distinct: [AddressScalarFieldEnum!]): [Address!]!
   address(where: AddressWhereUniqueInput): Address!
@@ -471,8 +520,11 @@ type Query {
   admin(where: AdminWhereUniqueInput): Admin!
   adminsCount(where: AdminWhereInput): AggregateCountOutput!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  bookingsForGarage(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   bookingsCount(where: BookingWhereInput): AggregateCountOutput!
   booking(where: BookingWhereUniqueInput): Booking!
+  bookingTimelines(where: BookingTimelineWhereInput, orderBy: [BookingTimelineOrderByWithRelationInput!], cursor: BookingTimelineWhereUniqueInput, take: Int, skip: Int, distinct: [BookingTimelineScalarFieldEnum!]): [BookingTimeline!]!
+  bookingTimeline(where: BookingTimelineWhereUniqueInput): BookingTimeline!
   companies(where: CompanyWhereInput, orderBy: [CompanyOrderByWithRelationInput!], cursor: CompanyWhereUniqueInput, take: Int, skip: Int, distinct: [CompanyScalarFieldEnum!]): [Company!]!
   company(where: CompanyWhereUniqueInput): Company!
   myCompany: Company!
@@ -560,12 +612,17 @@ input CompanyOrderByWithRelationInput {
 }
 
 input ManagerOrderByWithRelationInput {
+  BookingTimeline: BookingTimelineOrderByRelationAggregateInput
   uid: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   displayName: SortOrder
   companyId: SortOrder
   company: CompanyOrderByWithRelationInput
+}
+
+input BookingTimelineOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input GarageOrderByRelationAggregateInput {
@@ -603,6 +660,8 @@ enum AdminScalarFieldEnum {
 }
 
 input BookingOrderByWithRelationInput {
+  BookingTimeline: BookingTimelineOrderByRelationAggregateInput
+  status: SortOrder
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
@@ -664,6 +723,29 @@ enum BookingScalarFieldEnum {
   vehicleNumber
   phoneNumber
   passcode
+  status
+}
+
+input BookingTimelineOrderByWithRelationInput {
+  id: SortOrder
+  timestamp: SortOrder
+  bookingId: SortOrder
+  status: SortOrder
+  managerId: SortOrder
+  booking: BookingOrderByWithRelationInput
+  manager: ManagerOrderByWithRelationInput
+}
+
+input BookingTimelineWhereUniqueInput {
+  id: Int
+}
+
+enum BookingTimelineScalarFieldEnum {
+  id
+  timestamp
+  bookingId
+  status
+  managerId
 }
 
 input CompanyWhereUniqueInput {
@@ -800,6 +882,9 @@ type Mutation {
   createBooking(createBookingInput: CreateBookingInput!): Booking!
   updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
   removeBooking(where: BookingWhereUniqueInput): Booking!
+  createBookingTimeline(createBookingTimelineInput: CreateBookingTimelineInput!): BookingTimeline!
+  updateBookingTimeline(updateBookingTimelineInput: UpdateBookingTimelineInput!): BookingTimeline!
+  removeBookingTimeline(where: BookingTimelineWhereUniqueInput): BookingTimeline!
   createCompany(createCompanyInput: CreateCompanyInput!): Company!
   updateCompany(updateCompanyInput: UpdateCompanyInput!): Company!
   removeCompany(where: CompanyWhereUniqueInput): Company!
@@ -893,6 +978,17 @@ input UpdateBookingInput {
   phoneNumber: String
   type: SlotType
   garageId: Int
+  id: Int!
+}
+
+input CreateBookingTimelineInput {
+  status: BookingStatus!
+  bookingId: Int!
+}
+
+input UpdateBookingTimelineInput {
+  status: BookingStatus
+  bookingId: Int
   id: Int!
 }
 

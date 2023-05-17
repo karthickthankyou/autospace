@@ -32,6 +32,7 @@ export const CustomerBookingCard = ({ booking }: IBookingCardProps) => {
       </div>
       <div className="flex flex-col items-center gap-1 p-4 ">
         <div className="text-sm">{booking.vehicleNumber}</div>
+        <div className="text-sm">{booking.status}</div>
         <div className="px-1 font-semibold border border-black">
           {booking.slot.displayName}
         </div>

@@ -20,12 +20,13 @@ model Customer {
 }
 
 model Manager {
-    uid         String   @id
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    displayName String?
-    companyId   Int?     @unique
-    company     Company? @relation(fields: [companyId], references: [id])
+    uid             String            @id
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    displayName     String?
+    companyId       Int?              @unique
+    company         Company?          @relation(fields: [companyId], references: [id])
+    BookingTimeline BookingTimeline[]
 }
 
 model Company {
@@ -79,22 +80,36 @@ model Slot {
 }
 
 model Booking {
-    id            Int      @id @default(autoincrement())
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
-    pricePerHour  Float?
-    totalPrice    Float?
-    startTime     DateTime
-    endTime       DateTime
-    slotId        Int
-    customerId    String
-    vehicleNumber String
-    phoneNumber   String?
-    passcode      String?
-    customer      Customer @relation(fields: [customerId], references: [uid])
-    slot          Slot     @relation(fields: [slotId], references: [id])
+    id              Int               @id @default(autoincrement())
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    pricePerHour    Float?
+    totalPrice      Float?
+    startTime       DateTime
+    endTime         DateTime
+    slotId          Int
+    customerId      String
+    vehicleNumber   String
+    phoneNumber     String?
+    passcode        String?
+    customer        Customer          @relation(fields: [customerId], references: [uid])
+    slot            Slot              @relation(fields: [slotId], references: [id])
+    status          BookingStatus     @default(BOOKED)
+    BookingTimeline BookingTimeline[]
 
     @@index([startTime, endTime])
+}
+
+model BookingTimeline {
+    id        Int           @id @default(autoincrement())
+    timestamp DateTime      @default(now())
+    bookingId Int
+    status    BookingStatus
+    managerId String?
+    booking   Booking       @relation(fields: [bookingId], references: [id])
+    manager   Manager?      @relation(fields: [managerId], references: [uid])
+
+    @@index([bookingId])
 }
 
 model Admin {
@@ -133,4 +148,10 @@ enum SlotType {
     HEAVY
     BIKE
     BICYCLE
+}
+
+enum BookingStatus {
+    BOOKED
+    CHECKED_IN
+    CHECKED_OUT
 }

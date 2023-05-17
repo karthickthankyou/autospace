@@ -1,9 +1,14 @@
 import {
+  BookingStatus,
   CreateSlotInput,
   GaragesQuery,
   MyCompanyQuery,
   SlotType,
   namedOperations,
+  useBookingsForGarageQuery,
+  useBookingsLazyQuery,
+  useBookingsQuery,
+  useCreateBookingTimelineMutation,
   useCreateManySlotsMutation,
 } from '@autospace-org/network/src/generated'
 import { AutoImageChanger } from '../../molecules/AutoImageChanger'
@@ -16,6 +21,11 @@ import { useFormCreateManySlots } from '@autospace-org/forms/src/createManySlots
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlSelect } from '../../atoms/HtmlSelect'
 import { Button } from '../../atoms/Button'
+import { IconList } from '@tabler/icons-react'
+import { ShowData } from '../ShowData'
+import { Tab, Tabs } from '../../molecules/Tabs'
+import { TabPanel } from '../../molecules/Tabs/Tabs'
+import { Reveal } from '../../molecules/Reveal'
 
 export interface IGarageCardProps {
   garage: GaragesQuery['garages'][number]
@@ -26,7 +36,10 @@ export const GarageCard = ({ garage }: IGarageCardProps) => {
     <div className="overflow-hidden ">
       <AutoImageChanger images={garage.images || []} durationPerImage={2000} />
 
-      <h3 className="font-semibold ">{garage.displayName}</h3>
+      <div className="flex justify-between">
+        <h3 className="font-semibold ">{garage.displayName}</h3>
+        <ListBookings garageId={garage.id} />
+      </div>
       <p className="text-gray-500 ">{garage.description}</p>
       <p className="text-sm text-gray-400">Address: {garage.address.address}</p>
       <div className="flex gap-2 mt-2">
@@ -148,5 +161,142 @@ export const CreateManySlotsDialog = ({ garageId }: { garageId: number }) => {
         </Form>
       </Dialog>
     </>
+  )
+}
+
+export const ListBookings = ({ garageId }: { garageId: number }) => {
+  const [open, setOpen] = useState(false)
+
+  const [value, setValue] = useState<0 | 1 | 2>(0)
+
+  return (
+    <>
+      <button onClick={() => setOpen(true)}>
+        <IconList className="w-8 h-8 p-1" />
+      </button>
+      <Dialog
+        widthClassName="max-w-2xl"
+        open={open}
+        setOpen={setOpen}
+        title={'Check In/Out'}
+      >
+        <Tabs
+          value={value}
+          onChange={(e, v) => setValue(v)}
+          aria-label="bookings"
+        >
+          <Tab label={'IN'} />
+          <Tab label={'OUT'} />
+          <Tab label={'RESOLVED'} />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <ShowGarageBookings
+            garageId={garageId}
+            status={BookingStatus.Booked}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ShowGarageBookings
+            garageId={garageId}
+            status={BookingStatus.CheckedIn}
+          />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <ShowGarageBookings
+            garageId={garageId}
+            status={BookingStatus.CheckedOut}
+          />
+        </TabPanel>
+      </Dialog>
+    </>
+  )
+}
+
+export const ShowGarageBookings = ({
+  garageId,
+  status,
+}: {
+  garageId: number
+  status: BookingStatus
+}) => {
+  const [skip, setSkip] = useState(0)
+  const [take, setTake] = useState(12)
+  const { data, loading, error } = useBookingsForGarageQuery({
+    variables: {
+      skip,
+      take,
+      where: {
+        status: { equals: status },
+        slot: { is: { garageId: { equals: garageId } } },
+      },
+    },
+  })
+
+  const [creaBookingTimeline, { loading: checkInLoading }] =
+    useCreateBookingTimelineMutation({
+      awaitRefetchQueries: true,
+      refetchQueries: [namedOperations.Query.bookingsForGarage],
+    })
+
+  return (
+    <ShowData
+      className="flex flex-col gap-2"
+      error={error?.message}
+      loading={loading}
+      pagination={{
+        skip,
+        take,
+        resultCount: data?.bookingsForGarage.length,
+        totalCount: data?.bookingsCount.count,
+        setSkip,
+        setTake,
+      }}
+      title={undefined}
+    >
+      {data?.bookingsForGarage.map((booking) => (
+        <div key={booking.id}>
+          <div>{booking.passcode}</div>
+          <div className="flex justify-between">
+            <div>{booking.status}</div>
+            {booking.status === BookingStatus.Booked ? (
+              <Button
+                onClick={async () => {
+                  await creaBookingTimeline({
+                    variables: {
+                      createBookingTimelineInput: {
+                        bookingId: booking.id,
+                        status: BookingStatus.CheckedIn,
+                      },
+                    },
+                  })
+                }}
+                loading={checkInLoading}
+              >
+                Check in
+              </Button>
+            ) : null}
+            {booking.status === BookingStatus.CheckedIn ? (
+              <Button
+                onClick={async () => {
+                  await creaBookingTimeline({
+                    variables: {
+                      createBookingTimelineInput: {
+                        bookingId: booking.id,
+                        status: BookingStatus.CheckedOut,
+                      },
+                    },
+                  })
+                }}
+                loading={checkInLoading}
+              >
+                Check out
+              </Button>
+            ) : null}
+          </div>
+          <Reveal secret={booking.passcode || ''} />
+          <div>{booking.vehicleNumber}</div>
+        </div>
+      ))}
+    </ShowData>
   )
 }

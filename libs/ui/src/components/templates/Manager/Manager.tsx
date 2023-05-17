@@ -18,7 +18,6 @@ export const Manager = ({}: IManagerProps) => {
     loaded: state.loaded,
   }))
 
-  console.log('Hey there... ', { uid, loaded })
   const [getCompany, data] = useMyCompanyLazyQuery()
 
   useEffect(() => {

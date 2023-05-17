@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { BookingTimelineOrderByRelationAggregateInput } from 'src/models/booking-timelines/dto/orderBy.args'
 import { CustomerOrderByWithRelationInput } from 'src/models/customers/dto/orderBy.args'
 import { SlotOrderByWithRelationInput } from 'src/models/slots/dto/orderBy.args'
 
@@ -7,6 +8,10 @@ import { SlotOrderByWithRelationInput } from 'src/models/slots/dto/orderBy.args'
 export class BookingOrderByWithRelationInput
   implements Required<Prisma.BookingOrderByWithRelationInput>
 {
+  @Field(() => BookingTimelineOrderByRelationAggregateInput, { nullable: true })
+  BookingTimeline: BookingTimelineOrderByRelationAggregateInput
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  status: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })

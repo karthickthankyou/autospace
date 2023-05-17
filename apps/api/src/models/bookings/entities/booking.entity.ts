@@ -1,8 +1,12 @@
-import { Field, ObjectType } from '@nestjs/graphql'
-import { Booking as BookingType } from '@prisma/client'
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { BookingStatus, Booking as BookingType } from '@prisma/client'
+
+registerEnumType(BookingStatus, { name: 'BookingStatus' })
 
 @ObjectType()
 export class Booking implements BookingType {
+  @Field(() => BookingStatus)
+  status: BookingStatus
   id: number
   createdAt: Date
   updatedAt: Date

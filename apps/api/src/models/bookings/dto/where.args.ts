@@ -1,11 +1,12 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Prisma } from '@prisma/client'
+import { BookingStatus, Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
   FloatFilter,
   IntFilter,
   StringFilter,
 } from 'src/common/dtos/common.input'
+import { BookingTimelineListRelationFilter } from 'src/models/booking-timelines/dto/where.args'
 import { CustomerRelationFilter } from 'src/models/customers/dto/where.args'
 import { SlotRelationFilter } from 'src/models/slots/dto/where.args'
 
@@ -16,13 +17,27 @@ export class BookingWhereUniqueInput
   @Field(() => Number, { nullable: true })
   id: number
 }
+@InputType()
+export class EnumBookingStatusFilter {
+  @Field(() => BookingStatus, { nullable: true })
+  equals: BookingStatus;
+  @Field(() => [BookingStatus], { nullable: true })
+  in: BookingStatus[]
+  @Field(() => [BookingStatus], { nullable: true })
+  notIn: BookingStatus[]
+  @Field(() => BookingStatus, { nullable: true })
+  not: BookingStatus
+}
 
 @InputType()
 export class BookingWhereInput implements Required<Prisma.BookingWhereInput> {
+  @Field(() => BookingTimelineListRelationFilter, { nullable: true })
+  BookingTimeline: BookingTimelineListRelationFilter
+  @Field(() => EnumBookingStatusFilter, { nullable: true })
+  status: EnumBookingStatusFilter
   @Field(() => CustomerRelationFilter, { nullable: true })
   customer: Prisma.CustomerRelationFilter
-  @Field(() => SlotRelationFilter, { nullable: true })
-  slot: Prisma.SlotRelationFilter
+
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })
@@ -39,6 +54,8 @@ export class BookingWhereInput implements Required<Prisma.BookingWhereInput> {
   endTime: DateTimeFilter
   @Field(() => IntFilter, { nullable: true })
   slotId: IntFilter
+  @Field(() => SlotRelationFilter, { nullable: true })
+  slot: SlotRelationFilter
   @Field(() => StringFilter, { nullable: true })
   customerId: StringFilter
   @Field(() => StringFilter, { nullable: true })

@@ -6,6 +6,7 @@ import {
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
+import { BookingTimelineListRelationFilter } from 'src/models/booking-timelines/dto/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dto/where.args'
 
 @InputType()
@@ -20,6 +21,8 @@ export class ManagerWhereUniqueInput
 
 @InputType()
 export class ManagerWhereInput implements Required<Prisma.ManagerWhereInput> {
+  @Field(() => BookingTimelineListRelationFilter, { nullable: true })
+  BookingTimeline: BookingTimelineListRelationFilter
   @Field(() => StringFilter, { nullable: true })
   uid: Prisma.StringFilter
   @Field(() => DateTimeFilter, { nullable: true })

@@ -23,6 +23,7 @@ import { checkRowLevelPermission } from 'src/common/guards'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { BookingWhereInput } from './dto/where.args'
 import { BadRequestException } from '@nestjs/common'
+import { BookingStatus } from '@prisma/client'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -58,6 +59,29 @@ export class BookingsResolver {
     }
     checkRowLevelPermission(user, args.where.customerId.equals)
     return this.bookingsService.findAll(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Booking], { name: 'bookingsForGarage' })
+  async bookingsForGarage(
+    @Args()
+    args: FindManyBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const garageId = args.where.slot.is.garageId.equals
+
+    if (!args.where.slot.is.garageId.equals) {
+      throw new BadRequestException(
+        'Garage id missing in where.slot.is.garageId.equals',
+      )
+    }
+    console.log('garageId ', garageId)
+    const garage = await this.prisma.garage.findUnique({
+      where: { id: garageId },
+      include: { company: { include: { manager: true } } },
+    })
+    checkRowLevelPermission(user, garage.company.manager.uid)
+    return this.prisma.booking.findMany(args)
   }
 
   @Query(() => AggregateCountOutput, {

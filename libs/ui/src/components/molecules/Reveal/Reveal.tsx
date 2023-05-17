@@ -8,7 +8,7 @@ const Reveal = ({ secret }: IRevealProps) => {
 
   return (
     <button
-      className="flex flex-col items-center w-full gap-2 "
+      className="flex flex-col items-center gap-2 "
       onClick={() => setRevealed((state) => !state)}
     >
       <span

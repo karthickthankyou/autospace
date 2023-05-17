@@ -19,6 +19,7 @@ import { VerificationsModule } from './models/verifications/verifications.module
 import { FirebaseModule } from './common/firebase/firebase.module'
 import { AuthModule } from './common/auth/auth.module'
 import { StripeModule } from './models/stripe/stripe.module'
+import { BookingTimelinesModule } from './models/booking-timelines/booking-timelines.module'
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { StripeModule } from './models/stripe/stripe.module'
     AddressesModule,
     AdminsModule,
     BookingsModule,
+    BookingTimelinesModule,
     CompaniesModule,
     CustomersModule,
     GaragesModule,

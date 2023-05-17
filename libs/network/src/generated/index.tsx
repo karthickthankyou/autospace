@@ -142,6 +142,7 @@ export type Booking = {
   slot: Slot
   slotId: Scalars['Int']
   startTime: Scalars['DateTime']
+  status: BookingStatus
   totalPrice?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
   vehicleNumber: Scalars['String']
@@ -158,6 +159,7 @@ export type BookingOrderByRelationAggregateInput = {
 }
 
 export type BookingOrderByWithRelationInput = {
+  BookingTimeline?: InputMaybe<BookingTimelineOrderByRelationAggregateInput>
   createdAt?: InputMaybe<SortOrder>
   customer?: InputMaybe<CustomerOrderByWithRelationInput>
   customerId?: InputMaybe<SortOrder>
@@ -169,9 +171,15 @@ export type BookingOrderByWithRelationInput = {
   slot?: InputMaybe<SlotOrderByWithRelationInput>
   slotId?: InputMaybe<SortOrder>
   startTime?: InputMaybe<SortOrder>
+  status?: InputMaybe<SortOrder>
   totalPrice?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
   vehicleNumber?: InputMaybe<SortOrder>
+}
+
+export type BookingRelationFilter = {
+  is?: InputMaybe<BookingWhereInput>
+  isNot?: InputMaybe<BookingWhereInput>
 }
 
 export enum BookingScalarFieldEnum {
@@ -184,13 +192,75 @@ export enum BookingScalarFieldEnum {
   PricePerHour = 'pricePerHour',
   SlotId = 'slotId',
   StartTime = 'startTime',
+  Status = 'status',
   TotalPrice = 'totalPrice',
   UpdatedAt = 'updatedAt',
   VehicleNumber = 'vehicleNumber',
 }
 
+export enum BookingStatus {
+  Booked = 'BOOKED',
+  CheckedIn = 'CHECKED_IN',
+  CheckedOut = 'CHECKED_OUT',
+}
+
+export type BookingTimeline = {
+  __typename?: 'BookingTimeline'
+  bookingId: Scalars['Int']
+  id: Scalars['Int']
+  managerId: Scalars['String']
+  status: BookingStatus
+  timestamp: Scalars['DateTime']
+}
+
+export type BookingTimelineListRelationFilter = {
+  every?: InputMaybe<BookingTimelineWhereInput>
+  none?: InputMaybe<BookingTimelineWhereInput>
+  some?: InputMaybe<BookingTimelineWhereInput>
+}
+
+export type BookingTimelineOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type BookingTimelineOrderByWithRelationInput = {
+  booking?: InputMaybe<BookingOrderByWithRelationInput>
+  bookingId?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  manager?: InputMaybe<ManagerOrderByWithRelationInput>
+  managerId?: InputMaybe<SortOrder>
+  status?: InputMaybe<SortOrder>
+  timestamp?: InputMaybe<SortOrder>
+}
+
+export enum BookingTimelineScalarFieldEnum {
+  BookingId = 'bookingId',
+  Id = 'id',
+  ManagerId = 'managerId',
+  Status = 'status',
+  Timestamp = 'timestamp',
+}
+
+export type BookingTimelineWhereInput = {
+  AND?: InputMaybe<Array<BookingTimelineWhereInput>>
+  NOT?: InputMaybe<Array<BookingTimelineWhereInput>>
+  OR?: InputMaybe<Array<BookingTimelineWhereInput>>
+  booking?: InputMaybe<BookingRelationFilter>
+  bookingId?: InputMaybe<IntFilter>
+  id?: InputMaybe<IntFilter>
+  manager?: InputMaybe<ManagerRelationFilter>
+  managerId?: InputMaybe<StringFilter>
+  status?: InputMaybe<EnumBookingStatusFilter>
+  timestamp?: InputMaybe<DateTimeFilter>
+}
+
+export type BookingTimelineWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
+}
+
 export type BookingWhereInput = {
   AND?: InputMaybe<Array<BookingWhereInput>>
+  BookingTimeline?: InputMaybe<BookingTimelineListRelationFilter>
   NOT?: InputMaybe<Array<BookingWhereInput>>
   OR?: InputMaybe<Array<BookingWhereInput>>
   createdAt?: InputMaybe<DateTimeFilter>
@@ -204,6 +274,7 @@ export type BookingWhereInput = {
   slot?: InputMaybe<SlotRelationFilter>
   slotId?: InputMaybe<IntFilter>
   startTime?: InputMaybe<DateTimeFilter>
+  status?: InputMaybe<EnumBookingStatusFilter>
   totalPrice?: InputMaybe<FloatFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
   vehicleNumber?: InputMaybe<StringFilter>
@@ -291,6 +362,11 @@ export type CreateBookingInput = {
   startTime: Scalars['DateTime']
   type: SlotType
   vehicleNumber: Scalars['String']
+}
+
+export type CreateBookingTimelineInput = {
+  bookingId: Scalars['Int']
+  status: BookingStatus
 }
 
 export type CreateCompanyInput = {
@@ -409,6 +485,13 @@ export type DateTimeFilter = {
   lt?: InputMaybe<Scalars['String']>
   lte?: InputMaybe<Scalars['String']>
   notIn?: InputMaybe<Array<Scalars['String']>>
+}
+
+export type EnumBookingStatusFilter = {
+  equals?: InputMaybe<BookingStatus>
+  in?: InputMaybe<Array<BookingStatus>>
+  not?: InputMaybe<BookingStatus>
+  notIn?: InputMaybe<Array<BookingStatus>>
 }
 
 export type EnumSlotTypeFilter = {
@@ -564,6 +647,7 @@ export type Manager = {
 }
 
 export type ManagerOrderByWithRelationInput = {
+  BookingTimeline?: InputMaybe<BookingTimelineOrderByRelationAggregateInput>
   company?: InputMaybe<CompanyOrderByWithRelationInput>
   companyId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
@@ -587,6 +671,7 @@ export enum ManagerScalarFieldEnum {
 
 export type ManagerWhereInput = {
   AND?: InputMaybe<Array<ManagerWhereInput>>
+  BookingTimeline?: InputMaybe<BookingTimelineListRelationFilter>
   NOT?: InputMaybe<Array<ManagerWhereInput>>
   OR?: InputMaybe<Array<ManagerWhereInput>>
   company?: InputMaybe<CompanyRelationFilter>
@@ -614,6 +699,7 @@ export type Mutation = {
   createAddress: Address
   createAdmin: Admin
   createBooking: Booking
+  createBookingTimeline: BookingTimeline
   createCompany: Company
   createCustomer: Customer
   createGarage: Garage
@@ -629,6 +715,7 @@ export type Mutation = {
   removeAddress: Address
   removeAdmin: Admin
   removeBooking: Booking
+  removeBookingTimeline: BookingTimeline
   removeCompany: Company
   removeCustomer: Customer
   removeGarage: Garage
@@ -641,6 +728,7 @@ export type Mutation = {
   updateAddress: Address
   updateAdmin: Admin
   updateBooking: Booking
+  updateBookingTimeline: BookingTimeline
   updateCompany: Company
   updateCustomer: Customer
   updateGarage: Garage
@@ -660,6 +748,10 @@ export type MutationCreateAdminArgs = {
 
 export type MutationCreateBookingArgs = {
   createBookingInput: CreateBookingInput
+}
+
+export type MutationCreateBookingTimelineArgs = {
+  createBookingTimelineInput: CreateBookingTimelineInput
 }
 
 export type MutationCreateCompanyArgs = {
@@ -718,6 +810,10 @@ export type MutationRemoveBookingArgs = {
   where?: InputMaybe<BookingWhereUniqueInput>
 }
 
+export type MutationRemoveBookingTimelineArgs = {
+  where?: InputMaybe<BookingTimelineWhereUniqueInput>
+}
+
 export type MutationRemoveCompanyArgs = {
   where?: InputMaybe<CompanyWhereUniqueInput>
 }
@@ -766,6 +862,10 @@ export type MutationUpdateBookingArgs = {
   updateBookingInput: UpdateBookingInput
 }
 
+export type MutationUpdateBookingTimelineArgs = {
+  updateBookingTimelineInput: UpdateBookingTimelineInput
+}
+
 export type MutationUpdateCompanyArgs = {
   updateCompanyInput: UpdateCompanyInput
 }
@@ -802,8 +902,11 @@ export type Query = {
   admins: Array<Admin>
   adminsCount: AggregateCountOutput
   booking: Booking
+  bookingTimeline: BookingTimeline
+  bookingTimelines: Array<BookingTimeline>
   bookings: Array<Booking>
   bookingsCount: AggregateCountOutput
+  bookingsForGarage: Array<Booking>
   companies: Array<Company>
   company: Company
   customer: Customer
@@ -857,6 +960,19 @@ export type QueryBookingArgs = {
   where?: InputMaybe<BookingWhereUniqueInput>
 }
 
+export type QueryBookingTimelineArgs = {
+  where?: InputMaybe<BookingTimelineWhereUniqueInput>
+}
+
+export type QueryBookingTimelinesArgs = {
+  cursor?: InputMaybe<BookingTimelineWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookingTimelineScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookingTimelineOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookingTimelineWhereInput>
+}
+
 export type QueryBookingsArgs = {
   cursor?: InputMaybe<BookingWhereUniqueInput>
   distinct?: InputMaybe<Array<BookingScalarFieldEnum>>
@@ -867,6 +983,15 @@ export type QueryBookingsArgs = {
 }
 
 export type QueryBookingsCountArgs = {
+  where?: InputMaybe<BookingWhereInput>
+}
+
+export type QueryBookingsForGarageArgs = {
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookingOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<BookingWhereInput>
 }
 
@@ -1079,7 +1204,7 @@ export type ReviewWhereUniqueInput = {
 /** Enum for roles */
 export enum RoleEnum {
   Admin = 'admin',
-  Moderator = 'moderator',
+  Manager = 'manager',
 }
 
 export type SetRoleInput = {
@@ -1231,6 +1356,12 @@ export type UpdateBookingInput = {
   startTime?: InputMaybe<Scalars['DateTime']>
   type?: InputMaybe<SlotType>
   vehicleNumber?: InputMaybe<Scalars['String']>
+}
+
+export type UpdateBookingTimelineInput = {
+  bookingId?: InputMaybe<Scalars['Int']>
+  id: Scalars['Int']
+  status?: InputMaybe<BookingStatus>
 }
 
 export type UpdateCompanyInput = {
@@ -1436,6 +1567,31 @@ export type CreateBookingMutation = {
   }
 }
 
+export type BookingFieldsFragment = {
+  __typename?: 'Booking'
+  id: number
+  pricePerHour?: number | null
+  endTime: any
+  startTime: any
+  vehicleNumber: string
+  passcode?: string | null
+  status: BookingStatus
+  slot: {
+    __typename?: 'Slot'
+    displayName?: string | null
+    garage: {
+      __typename?: 'Garage'
+      images?: Array<string> | null
+      address: {
+        __typename?: 'Address'
+        address: string
+        lat: number
+        lng: number
+      }
+    }
+  }
+}
+
 export type BookingsQueryVariables = Exact<{
   distinct?: InputMaybe<Array<BookingScalarFieldEnum> | BookingScalarFieldEnum>
   skip?: InputMaybe<Scalars['Int']>
@@ -1457,6 +1613,7 @@ export type BookingsQuery = {
     startTime: any
     vehicleNumber: string
     passcode?: string | null
+    status: BookingStatus
     slot: {
       __typename?: 'Slot'
       displayName?: string | null
@@ -1473,6 +1630,62 @@ export type BookingsQuery = {
     }
   }>
   bookingsCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
+export type BookingsForGarageQueryVariables = Exact<{
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum> | BookingScalarFieldEnum>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<BookingOrderByWithRelationInput> | BookingOrderByWithRelationInput
+  >
+  where?: InputMaybe<BookingWhereInput>
+}>
+
+export type BookingsForGarageQuery = {
+  __typename?: 'Query'
+  bookingsForGarage: Array<{
+    __typename?: 'Booking'
+    id: number
+    pricePerHour?: number | null
+    endTime: any
+    startTime: any
+    vehicleNumber: string
+    passcode?: string | null
+    status: BookingStatus
+    slot: {
+      __typename?: 'Slot'
+      displayName?: string | null
+      garage: {
+        __typename?: 'Garage'
+        images?: Array<string> | null
+        address: {
+          __typename?: 'Address'
+          address: string
+          lat: number
+          lng: number
+        }
+      }
+    }
+  }>
+  bookingsCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
+export type CreateBookingTimelineMutationVariables = Exact<{
+  createBookingTimelineInput: CreateBookingTimelineInput
+}>
+
+export type CreateBookingTimelineMutation = {
+  __typename?: 'Mutation'
+  createBookingTimeline: {
+    __typename?: 'BookingTimeline'
+    bookingId: number
+    id: number
+    managerId: string
+    status: BookingStatus
+    timestamp: any
+  }
 }
 
 export type LoginMutationVariables = Exact<{
@@ -1593,6 +1806,7 @@ export const namedOperations = {
     Garages: 'Garages',
     SearchGarages: 'SearchGarages',
     bookings: 'bookings',
+    bookingsForGarage: 'bookingsForGarage',
     getManager: 'getManager',
     myCompany: 'myCompany',
     admins: 'admins',
@@ -1602,14 +1816,39 @@ export const namedOperations = {
     CreateCustomer: 'CreateCustomer',
     logout: 'logout',
     createBooking: 'createBooking',
+    createBookingTimeline: 'createBookingTimeline',
     Login: 'Login',
     register: 'register',
     createCompany: 'createCompany',
     createManySlots: 'createManySlots',
     createGarage: 'createGarage',
   },
+  Fragment: {
+    BookingFields: 'BookingFields',
+  },
 }
-
+export const BookingFieldsFragmentDoc = /*#__PURE__*/ gql`
+  fragment BookingFields on Booking {
+    id
+    pricePerHour
+    endTime
+    startTime
+    vehicleNumber
+    passcode
+    status
+    slot {
+      displayName
+      garage {
+        images
+        address {
+          address
+          lat
+          lng
+        }
+      }
+    }
+  }
+`
 export const CreateManagerDocument = /*#__PURE__*/ gql`
   mutation CreateManager($createManagerInput: CreateManagerInput!) {
     createManager(createManagerInput: $createManagerInput) {
@@ -1988,28 +2227,13 @@ export const BookingsDocument = /*#__PURE__*/ gql`
       orderBy: $orderBy
       where: $where
     ) {
-      id
-      pricePerHour
-      endTime
-      startTime
-      vehicleNumber
-      passcode
-      slot {
-        displayName
-        garage {
-          images
-          address {
-            address
-            lat
-            lng
-          }
-        }
-      }
+      ...BookingFields
     }
     bookingsCount(where: $where) {
       count
     }
   }
+  ${BookingFieldsFragmentDoc}
 `
 
 /**
@@ -2061,6 +2285,145 @@ export type BookingsLazyQueryHookResult = ReturnType<
 export type BookingsQueryResult = Apollo.QueryResult<
   BookingsQuery,
   BookingsQueryVariables
+>
+export const BookingsForGarageDocument = /*#__PURE__*/ gql`
+  query bookingsForGarage(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: BookingWhereUniqueInput
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    bookingsForGarage(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      ...BookingFields
+    }
+    bookingsCount(where: $where) {
+      count
+    }
+  }
+  ${BookingFieldsFragmentDoc}
+`
+
+/**
+ * __useBookingsForGarageQuery__
+ *
+ * To run a query within a React component, call `useBookingsForGarageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBookingsForGarageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBookingsForGarageQuery({
+ *   variables: {
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useBookingsForGarageQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    BookingsForGarageQuery,
+    BookingsForGarageQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    BookingsForGarageQuery,
+    BookingsForGarageQueryVariables
+  >(BookingsForGarageDocument, options)
+}
+export function useBookingsForGarageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    BookingsForGarageQuery,
+    BookingsForGarageQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    BookingsForGarageQuery,
+    BookingsForGarageQueryVariables
+  >(BookingsForGarageDocument, options)
+}
+export type BookingsForGarageQueryHookResult = ReturnType<
+  typeof useBookingsForGarageQuery
+>
+export type BookingsForGarageLazyQueryHookResult = ReturnType<
+  typeof useBookingsForGarageLazyQuery
+>
+export type BookingsForGarageQueryResult = Apollo.QueryResult<
+  BookingsForGarageQuery,
+  BookingsForGarageQueryVariables
+>
+export const CreateBookingTimelineDocument = /*#__PURE__*/ gql`
+  mutation createBookingTimeline(
+    $createBookingTimelineInput: CreateBookingTimelineInput!
+  ) {
+    createBookingTimeline(
+      createBookingTimelineInput: $createBookingTimelineInput
+    ) {
+      bookingId
+      id
+      managerId
+      status
+      timestamp
+    }
+  }
+`
+export type CreateBookingTimelineMutationFn = Apollo.MutationFunction<
+  CreateBookingTimelineMutation,
+  CreateBookingTimelineMutationVariables
+>
+
+/**
+ * __useCreateBookingTimelineMutation__
+ *
+ * To run a mutation, you first call `useCreateBookingTimelineMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBookingTimelineMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBookingTimelineMutation, { data, loading, error }] = useCreateBookingTimelineMutation({
+ *   variables: {
+ *      createBookingTimelineInput: // value for 'createBookingTimelineInput'
+ *   },
+ * });
+ */
+export function useCreateBookingTimelineMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateBookingTimelineMutation,
+    CreateBookingTimelineMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CreateBookingTimelineMutation,
+    CreateBookingTimelineMutationVariables
+  >(CreateBookingTimelineDocument, options)
+}
+export type CreateBookingTimelineMutationHookResult = ReturnType<
+  typeof useCreateBookingTimelineMutation
+>
+export type CreateBookingTimelineMutationResult =
+  Apollo.MutationResult<CreateBookingTimelineMutation>
+export type CreateBookingTimelineMutationOptions = Apollo.BaseMutationOptions<
+  CreateBookingTimelineMutation,
+  CreateBookingTimelineMutationVariables
 >
 export const LoginDocument = /*#__PURE__*/ gql`
   mutation Login($credentials: LoginInput!) {
