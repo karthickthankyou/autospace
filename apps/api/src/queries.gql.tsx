@@ -137,14 +137,6 @@ export const createCompany = gql`
   }
 `
 
-export const createManySlots = gql`
-  mutation createManySlots($slots: [CreateSlotInput!]!) {
-    createManySlots(slots: $slots) {
-      count
-    }
-  }
-`
-
 export const company = gql`
   query myCompany {
     myCompany {

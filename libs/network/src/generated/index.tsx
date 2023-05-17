@@ -440,6 +440,7 @@ export type Garage = {
   displayName: Scalars['String']
   id: Scalars['Int']
   images?: Maybe<Array<Scalars['String']>>
+  slotCounts: Array<SlotTypeCount>
   slots: Array<Slot>
   updatedAt: Scalars['DateTime']
 }
@@ -1152,6 +1153,12 @@ export enum SlotType {
   Heavy = 'HEAVY',
 }
 
+export type SlotTypeCount = {
+  __typename?: 'SlotTypeCount'
+  count: Scalars['Int']
+  type: SlotType
+}
+
 export type SlotWhereInput = {
   AND?: InputMaybe<Array<SlotWhereInput>>
   NOT?: InputMaybe<Array<SlotWhereInput>>
@@ -1378,6 +1385,11 @@ export type GaragesQuery = {
     description: string
     images?: Array<string> | null
     address: { __typename?: 'Address'; address: string }
+    slotCounts: Array<{
+      __typename?: 'SlotTypeCount'
+      type: SlotType
+      count: number
+    }>
   }>
   garagesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
@@ -1765,6 +1777,10 @@ export const GaragesDocument = /*#__PURE__*/ gql`
       images
       address {
         address
+      }
+      slotCounts {
+        type
+        count
       }
     }
     garagesCount(where: $where) {

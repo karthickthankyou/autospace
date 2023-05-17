@@ -31,18 +31,8 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Mutation(() => LoginOutput)
-  async login(
-    @Args('credentials') args: LoginInput,
-    @Context() context: GraphQLExecutionContext,
-  ) {
-    const user = await this.authService.login(args)
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const res = context.res
-    this.authService.setAuthCookies(res, user)
-    console.log('user ', user)
-    return user
+  async login(@Args('credentials') args: LoginInput) {
+    return this.authService.login(args)
   }
 
   @Mutation(() => RegisterOutput)
@@ -90,13 +80,13 @@ export class AuthResolver {
       )
     }
     checkRowLevelPermission(user, uid)
-    return this.authService.setRole(uid, role as Role, user.roles)
+    return this.authService.setRole(user, role as Role)
   }
 
   @Mutation(() => Boolean)
   @AllowAuthenticated('admin')
   setAdmin(@Args('uid') uid: string, @GetUser() user: GetUserType) {
     checkRowLevelPermission(user, uid)
-    return this.authService.setRole(uid, 'admin', user.roles)
+    return this.authService.setRole(user, 'admin')
   }
 }

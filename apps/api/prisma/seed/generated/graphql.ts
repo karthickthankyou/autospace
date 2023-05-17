@@ -439,6 +439,7 @@ export type Garage = {
   displayName: Scalars['String']
   id: Scalars['Int']
   images?: Maybe<Array<Scalars['String']>>
+  slotCounts: Array<SlotTypeCount>
   slots: Array<Slot>
   updatedAt: Scalars['DateTime']
 }
@@ -1151,6 +1152,12 @@ export enum SlotType {
   Heavy = 'HEAVY',
 }
 
+export type SlotTypeCount = {
+  __typename?: 'SlotTypeCount'
+  count: Scalars['Int']
+  type: SlotType
+}
+
 export type SlotWhereInput = {
   AND?: InputMaybe<Array<SlotWhereInput>>
   NOT?: InputMaybe<Array<SlotWhereInput>>
@@ -1479,15 +1486,6 @@ export type CreateCompanyMutationVariables = Exact<{
 export type CreateCompanyMutation = {
   __typename?: 'Mutation'
   createCompany: { __typename?: 'Company'; id: number }
-}
-
-export type CreateManySlotsMutationVariables = Exact<{
-  slots: Array<CreateSlotInput> | CreateSlotInput
-}>
-
-export type CreateManySlotsMutation = {
-  __typename?: 'Mutation'
-  createManySlots: { __typename?: 'ReturnCount'; count: number }
 }
 
 export type MyCompanyQueryVariables = Exact<{ [key: string]: never }>
@@ -2291,66 +2289,6 @@ export const CreateCompanyDocument = {
 } as unknown as DocumentNode<
   CreateCompanyMutation,
   CreateCompanyMutationVariables
->
-export const CreateManySlotsDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'createManySlots' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: {
-            kind: 'Variable',
-            name: { kind: 'Name', value: 'slots' },
-          },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'ListType',
-              type: {
-                kind: 'NonNullType',
-                type: {
-                  kind: 'NamedType',
-                  name: { kind: 'Name', value: 'CreateSlotInput' },
-                },
-              },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createManySlots' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'slots' },
-                value: {
-                  kind: 'Variable',
-                  name: { kind: 'Name', value: 'slots' },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'count' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateManySlotsMutation,
-  CreateManySlotsMutationVariables
 >
 export const MyCompanyDocument = {
   kind: 'Document',

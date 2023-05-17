@@ -13,6 +13,7 @@ export const useUserListener = () => {
       onAuthStateChanged(auth, async (user) => {
         console.log('onAuthStateChanged', user)
         if (!user) {
+          console.log('helo ', user)
           resetUser()
           return
         }

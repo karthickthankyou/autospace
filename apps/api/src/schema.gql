@@ -33,6 +33,7 @@ type Garage {
   company: Company!
   address: Address!
   slots: [Slot!]!
+  slotCounts: [SlotTypeCount!]!
   availableSlots(slotsFilter: SlotWhereInput, dateFilter: DateFilterInput!): [MinimalSlotGroupBy!]!
 }
 
@@ -333,6 +334,11 @@ input SlotRelationFilter {
 input DateFilterInput {
   start: String!
   end: String!
+}
+
+type SlotTypeCount {
+  type: SlotType!
+  count: Int!
 }
 
 type Admin {
@@ -841,7 +847,7 @@ input SetRoleInput {
 """Enum for roles"""
 enum RoleEnum {
   admin
-  moderator
+  manager
 }
 
 input CreateAddressInput {

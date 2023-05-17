@@ -39,6 +39,7 @@ export const register = async ({
 }
 
 export const signOut = async () => {
+  console.log('hello ')
   await firebaseSignOut(auth)
 }
 

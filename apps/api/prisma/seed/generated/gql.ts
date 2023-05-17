@@ -32,8 +32,6 @@ const documents = {
     types.GetManagerDocument,
   '\n  mutation createCompany($createCompanyInput: CreateCompanyInput!) {\n    createCompany(createCompanyInput: $createCompanyInput) {\n      id\n    }\n  }\n':
     types.CreateCompanyDocument,
-  '\n  mutation createManySlots($slots: [CreateSlotInput!]!) {\n    createManySlots(slots: $slots) {\n      count\n    }\n  }\n':
-    types.CreateManySlotsDocument,
   '\n  query myCompany {\n    myCompany {\n      id\n      garages {\n        displayName\n        id\n        description\n        address {\n          id\n          address\n          lat\n          lng\n        }\n      }\n      createdAt\n      displayName\n    }\n  }\n':
     types.MyCompanyDocument,
   '\n  mutation createGarage($createGarageInput: CreateGarageInput!) {\n    createGarage(createGarageInput: $createGarageInput) {\n      id\n    }\n  }\n':
@@ -116,12 +114,6 @@ export function graphql(
 export function graphql(
   source: '\n  mutation createCompany($createCompanyInput: CreateCompanyInput!) {\n    createCompany(createCompanyInput: $createCompanyInput) {\n      id\n    }\n  }\n',
 ): (typeof documents)['\n  mutation createCompany($createCompanyInput: CreateCompanyInput!) {\n    createCompany(createCompanyInput: $createCompanyInput) {\n      id\n    }\n  }\n']
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(
-  source: '\n  mutation createManySlots($slots: [CreateSlotInput!]!) {\n    createManySlots(slots: $slots) {\n      count\n    }\n  }\n',
-): (typeof documents)['\n  mutation createManySlots($slots: [CreateSlotInput!]!) {\n    createManySlots(slots: $slots) {\n      count\n    }\n  }\n']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

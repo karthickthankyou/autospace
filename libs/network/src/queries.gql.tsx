@@ -46,6 +46,10 @@ export const garages = gql`
       address {
         address
       }
+      slotCounts {
+        type
+        count
+      }
     }
     garagesCount(where: $where) {
       count

@@ -5,9 +5,12 @@ import {
   Args,
   ResolveField,
   Parent,
+  InputType,
+  Field,
+  ObjectType,
 } from '@nestjs/graphql'
 import { GaragesService } from './garages.service'
-import { Garage } from './entities/garage.entity'
+import { Garage, SlotTypeCount } from './entities/garage.entity'
 import { FindManyGarageArgs, FindUniqueGarageArgs } from './dto/find.args'
 import { CreateGarageInput } from './dto/create-garage.input'
 import { UpdateGarageInput } from './dto/update-garage.input'
@@ -30,6 +33,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@autospace-org/types'
 import { BadRequestException } from '@nestjs/common'
+import { SlotType } from '@prisma/client'
 
 @Resolver(() => Garage)
 export class GaragesResolver {
@@ -139,6 +143,21 @@ export class GaragesResolver {
   @ResolveField(() => [Slot])
   slots(@Parent() garage: Garage) {
     return this.prisma.slot.findMany({ where: { garageId: garage.id } })
+  }
+
+  @ResolveField(() => [SlotTypeCount])
+  async slotCounts(@Parent() garage: Garage) {
+    const slotCounts = await this.prisma.slot.groupBy({
+      by: ['type'],
+      where: {
+        garageId: garage.id,
+      },
+      _count: {
+        type: true,
+      },
+    })
+
+    return slotCounts.map(({ type, _count }) => ({ type, count: _count.type }))
   }
 
   @ResolveField(() => [MinimalSlotGroupBy], {

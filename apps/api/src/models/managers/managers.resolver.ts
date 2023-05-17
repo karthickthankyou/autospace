@@ -13,17 +13,28 @@ import { CreateManagerInput } from './dto/create-manager.input'
 import { UpdateManagerInput } from './dto/update-manager.input'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Company } from '../companies/entities/company.entity'
-import { AllowAuthenticated } from 'src/common/decorators/auth/auth.decorator'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { AuthService } from 'src/common/auth/auth.service'
+import { GetUserType } from '@autospace-org/types'
 
 @Resolver(() => Manager)
 export class ManagersResolver {
   constructor(
     private readonly managersService: ManagersService,
     private readonly prisma: PrismaService,
+    private readonly auth: AuthService,
   ) {}
 
+  @AllowAuthenticated()
   @Mutation(() => Manager)
-  createManager(@Args('createManagerInput') args: CreateManagerInput) {
+  async createManager(
+    @Args('createManagerInput') args: CreateManagerInput,
+    @GetUser() user: GetUserType,
+  ) {
+    await this.auth.setRole(user, 'manager')
     return this.managersService.create(args)
   }
 

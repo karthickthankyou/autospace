@@ -1,4 +1,8 @@
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconPhotoCancel,
+} from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 
@@ -31,8 +35,8 @@ export const AutoImageChanger = ({
   }, [images, durationPerImage])
   if (images.length === 0)
     return (
-      <div className="flex items-center justify-center w-full h-48 text-sm bg-white shadow-inner shadow-black/10 text-gray">
-        No images.
+      <div className="flex items-center justify-center w-full h-48 gap-2 text-sm bg-white border select-none border-gray-50 text-gray">
+        <IconPhotoCancel /> No images.
       </div>
     )
 

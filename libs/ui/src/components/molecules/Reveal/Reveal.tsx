@@ -12,8 +12,8 @@ const Reveal = ({ secret }: IRevealProps) => {
       onClick={() => setRevealed((state) => !state)}
     >
       <span
-        className={`text-2xl tracking-wider bg-primary px-1 ${
-          revealed ? '' : 'blur'
+        className={`text-2xl tracking-wider  px-1 ${
+          revealed ? 'bg-primary' : 'bg-checker text-transparent'
         }`}
       >
         {secret}

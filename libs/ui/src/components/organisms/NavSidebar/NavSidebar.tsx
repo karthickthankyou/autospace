@@ -65,7 +65,10 @@ export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
             <>
               <Button
                 variant="text"
-                onClick={signOut}
+                onClick={async () => {
+                  console.log('oh')
+                  await signOut()
+                }}
                 className="flex items-center gap-2"
               >
                 Log out <IconDoorExit />

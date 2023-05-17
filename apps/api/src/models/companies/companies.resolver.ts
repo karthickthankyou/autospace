@@ -20,12 +20,14 @@ import {
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@autospace-org/types'
+import { AuthService } from 'src/common/auth/auth.service'
 
 @Resolver(() => Company)
 export class CompaniesResolver {
   constructor(
     private readonly companiesService: CompaniesService,
     private readonly prisma: PrismaService,
+    private readonly auth: AuthService,
   ) {}
 
   @AllowAuthenticated()
@@ -34,9 +36,8 @@ export class CompaniesResolver {
     @Args('createCompanyInput') args: CreateCompanyInput,
     @GetUser() user: GetUserType,
   ) {
-    const company = await this.companiesService.create(args, user)
-    console.log('createCompanyInput ', args, company)
-    return company
+    await this.auth.setRole(user, 'manager')
+    return this.companiesService.create(args, user)
   }
 
   @Query(() => [Company], { name: 'companies' })

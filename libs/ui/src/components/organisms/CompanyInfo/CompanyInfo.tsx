@@ -78,7 +78,7 @@ export const ListGarages = ({
       title={'Garages'}
     >
       {data?.garages.map((garage) => (
-        <GarageCard garage={garage} />
+        <GarageCard key={garage.id} garage={garage} />
       ))}
     </ShowData>
   )

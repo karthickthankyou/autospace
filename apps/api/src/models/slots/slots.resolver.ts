@@ -34,18 +34,17 @@ export class SlotsResolver {
     return this.slotsService.create(args)
   }
 
-  @AllowAuthenticated('admin', 'manager')
+  @AllowAuthenticated('manager')
   @Mutation(() => ReturnCount)
   async createManySlots(
     @Args('slots', {
       type: () => [CreateSlotInput],
     })
     args: CreateSlotInput[],
-
     @GetUser() user: GetUserType,
   ) {
-    const garageIds = args.map((arg) => arg.garageId)
-    if (garageIds.length !== 1) {
+    const garageIds = [...new Set(args.map((arg) => arg.garageId))]
+    if (garageIds.length > 1) {
       throw new BadRequestException(
         'Can not create slots for more than one garage id.',
       )
@@ -63,9 +62,6 @@ export class SlotsResolver {
     })
 
     checkRowLevelPermission(user, garage.company.manager.uid)
-
-    const a = args[0].pricePerHour
-    console.log('a', a)
 
     return this.prisma.slot.createMany({ data: args })
   }

@@ -66,7 +66,7 @@ export class RefreshTokenOutput {
 
 export enum RoleEnum {
   'admin' = 'admin',
-  'moderator' = 'moderator',
+  'manager' = 'manager',
 }
 
 registerEnumType(RoleEnum, { name: 'RoleEnum', description: 'Enum for roles' })
