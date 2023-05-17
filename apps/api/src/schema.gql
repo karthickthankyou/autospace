@@ -387,6 +387,8 @@ type Admin {
   createdAt: DateTime!
   updatedAt: DateTime!
   displayName: String!
+  verifications: [Verification!]!
+  verificationsCount: Int!
 }
 
 type LoginOutput {
@@ -417,6 +419,14 @@ type RefreshTokenOutput {
   id_token: String!
   user_id: String!
   project_id: String!
+}
+
+type Verification {
+  garageId: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  verified: Boolean!
+  adminId: String!
 }
 
 type Booking {
@@ -486,14 +496,6 @@ type MinimalSlotGroupBy {
   pricePerHour: Int!
   type: SlotType
   count: Int!
-}
-
-type Verification {
-  garageId: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  verified: Boolean!
-  adminId: String!
 }
 
 type Review {

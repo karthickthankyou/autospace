@@ -85,6 +85,8 @@ export type Admin = {
   displayName: Scalars['String']
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
+  verifications: Array<Verification>
+  verificationsCount: Scalars['Int']
 }
 
 export type AdminOrderByWithRelationInput = {

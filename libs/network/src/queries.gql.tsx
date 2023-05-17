@@ -74,6 +74,8 @@ export const garages = gql`
       }
       address {
         address
+        lat
+        lng
       }
       slotCounts {
         type
@@ -333,6 +335,7 @@ export const admins = gql`
       updatedAt
       displayName
       createdAt
+      verificationsCount
     }
     adminsCount(where: $where) {
       count

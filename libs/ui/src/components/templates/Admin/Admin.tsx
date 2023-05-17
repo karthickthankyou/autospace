@@ -9,6 +9,8 @@ import { useState } from 'react'
 import { useUserStore } from '@autospace-org/store/user'
 import { notification$ } from '@autospace-org/util/subjects'
 import { Button } from '../../atoms/Button'
+import { GarageAdminCard } from '../../organisms/GarageAdminCard'
+import { PlainButton } from '../../atoms/PlainButton'
 
 export interface IAdminProps {}
 
@@ -43,7 +45,8 @@ export const ShowGarages = () => {
     >
       {data?.garages.map((garage) => (
         <div>
-          <div>{garage.id}</div>
+          <GarageAdminCard garage={garage} />
+
           {!garage?.verification?.verified ? (
             <CreateVerificationButton garageId={garage.id} />
           ) : (
@@ -66,9 +69,9 @@ export const CreateVerificationButton = ({
   })
   const uid = useUserStore((state) => state.uid)
   return (
-    <Button
-      variant="outlined"
+    <PlainButton
       loading={loading}
+      className="font-semibold underline underline-offset-4"
       onClick={async () => {
         if (!uid) {
           notification$.next({ message: 'You are not logged in.' })
@@ -82,7 +85,7 @@ export const CreateVerificationButton = ({
       }}
     >
       Verify
-    </Button>
+    </PlainButton>
   )
 }
 
@@ -98,8 +101,8 @@ export const RemoveVerificationButton = ({
     })
   const uid = useUserStore((state) => state.uid)
   return (
-    <Button
-      variant="text"
+    <PlainButton
+      className="font-semibold"
       loading={removeVerificationLoading}
       onClick={async () => {
         if (!uid) {
@@ -110,6 +113,6 @@ export const RemoveVerificationButton = ({
       }}
     >
       Unlist
-    </Button>
+    </PlainButton>
   )
 }

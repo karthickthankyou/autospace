@@ -86,6 +86,8 @@ export type Admin = {
   displayName: Scalars['String']
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
+  verifications: Array<Verification>
+  verificationsCount: Scalars['Int']
 }
 
 export type AdminOrderByWithRelationInput = {
@@ -1544,7 +1546,12 @@ export type GaragesQuery = {
     description?: string | null
     images?: Array<string> | null
     verification?: { __typename?: 'Verification'; verified: boolean } | null
-    address: { __typename?: 'Address'; address: string }
+    address: {
+      __typename?: 'Address'
+      address: string
+      lat: number
+      lng: number
+    }
     slotCounts: Array<{
       __typename?: 'SlotTypeCount'
       type: SlotType
@@ -1856,6 +1863,7 @@ export type AdminsQuery = {
     updatedAt: any
     displayName: string
     createdAt: any
+    verificationsCount: number
   }>
   adminsCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
@@ -2192,6 +2200,8 @@ export const GaragesDocument = /*#__PURE__*/ gql`
       }
       address {
         address
+        lat
+        lng
       }
       slotCounts {
         type
@@ -3100,6 +3110,7 @@ export const AdminsDocument = /*#__PURE__*/ gql`
       updatedAt
       displayName
       createdAt
+      verificationsCount
     }
     adminsCount(where: $where) {
       count

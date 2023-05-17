@@ -5,15 +5,16 @@ import {
   useRemoveAdminMutation,
 } from '@autospace-org/network/src/generated'
 import { ShowData } from '../../organisms/ShowData'
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { Form } from '../../atoms/Form'
 import { useFormRegister } from '@autospace-org/forms'
-import { IconMoodSmileBeam, IconTrash } from '@tabler/icons-react'
+import { IconTrash } from '@tabler/icons-react'
 import { useUserStore } from '@autospace-org/store/user'
+import { AdminCard } from '../../organisms/AdminCard'
 
 export interface IManageAdminsProps {}
 
@@ -21,7 +22,7 @@ export const ManageAdmins = ({}: IManageAdminsProps) => {
   const [skip, setSkip] = useState(0)
   const [take, setTake] = useState(12)
   const { data, loading } = useAdminsQuery()
-  const uid = useUserStore((state) => state.uid)
+
   return (
     <div>
       <div className="flex justify-end">
@@ -40,9 +41,9 @@ export const ManageAdmins = ({}: IManageAdminsProps) => {
         title={'Manage admins'}
       >
         {data?.admins.map((admin) => (
-          <div key={admin.uid}>
-            {admin.uid}
-            <div>{admin.uid === uid ? 'You' : null}</div>
+          <div className="pl-2 border-l-2 shadow-lg border-primary">
+            <AdminCard key={admin.uid} admin={admin} />
+            <br />
             <RemoveAdmin uid={admin.uid} />
           </div>
         ))}
@@ -66,7 +67,7 @@ export const RemoveAdmin = ({ uid }: { uid: string }) => {
         loading={loading}
         onClick={() => setOpen(true)}
       >
-        <IconTrash className="text-red" />
+        <IconTrash className="w-8 h-8 p-2 border border-red-100 text-red bg-red-50" />
       </Button>
       <Dialog open={open} setOpen={setOpen} title={'Delete'}>
         <div>

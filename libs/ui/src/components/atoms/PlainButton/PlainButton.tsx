@@ -1,3 +1,5 @@
+import { Loader } from '../../molecules/Loader'
+
 export type IPlainButtonProps = {
   loading?: boolean
 } & React.DetailedHTMLProps<
@@ -9,5 +11,5 @@ export const PlainButton = ({
   loading,
   ...props
 }: IPlainButtonProps) => {
-  return <button {...props}>{loading ? '...' : children}</button>
+  return <button {...props}>{loading ? <Loader /> : children}</button>
 }

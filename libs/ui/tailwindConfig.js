@@ -18,18 +18,18 @@ const primaryPallete = {
   900: `hsl(${brandHue}, 100%, 06%)`,
 }
 const grayPallete = {
-  DEFAULT: `hsl(${brandHue}, 10%, 32%)`,
-  25: `hsl(${brandHue}, 10%, 98%)`,
-  50: `hsl(${brandHue}, 10%, 90%)`,
-  100: `hsl(${brandHue}, 10%, 80%)`,
-  200: `hsl(${brandHue}, 10%, 70%)`,
-  300: `hsl(${brandHue}, 10%, 60%)`,
-  400: `hsl(${brandHue}, 10%, 50%)`,
-  500: `hsl(${brandHue}, 10%, 32%)`,
-  600: `hsl(${brandHue}, 10%, 24%)`,
-  700: `hsl(${brandHue}, 10%, 16%)`,
-  800: `hsl(${brandHue}, 10%, 08%)`,
-  900: `hsl(${brandHue}, 10%, 04%)`,
+  DEFAULT: `hsl(${brandHue}, 2%, 32%)`,
+  25: `hsl(${brandHue}, 2%, 98%)`,
+  50: `hsl(${brandHue}, 2%, 90%)`,
+  100: `hsl(${brandHue}, 2%, 80%)`,
+  200: `hsl(${brandHue}, 2%, 70%)`,
+  300: `hsl(${brandHue}, 2%, 60%)`,
+  400: `hsl(${brandHue}, 2%, 50%)`,
+  500: `hsl(${brandHue}, 2%, 32%)`,
+  600: `hsl(${brandHue}, 2%, 24%)`,
+  700: `hsl(${brandHue}, 2%, 16%)`,
+  800: `hsl(${brandHue}, 2%, 08%)`,
+  900: `hsl(${brandHue}, 2%, 04%)`,
 }
 
 // #FBD813
@@ -62,18 +62,18 @@ const greenPallete = {
   900: 'hsl(116, 100%, 04%)',
 }
 const redPallete = {
-  DEFAULT: 'hsl(340, 94%, 45%)',
-  25: 'hsl(340, 94%, 98%)',
-  50: 'hsl(340, 94%, 92%)',
-  100: 'hsl(340, 94%, 84%)',
-  200: 'hsl(340, 94%, 74%)',
-  300: 'hsl(340, 94%, 64%)',
-  400: 'hsl(340, 94%, 54%)',
-  500: 'hsl(340, 94%, 45%)',
-  600: 'hsl(340, 94%, 35%)',
-  700: 'hsl(340, 94%, 22%)',
-  800: 'hsl(340, 94%, 10%)',
-  900: 'hsl(340, 94%, 04%)',
+  DEFAULT: 'hsl(10, 94%, 45%)',
+  25: 'hsl(10, 94%, 98%)',
+  50: 'hsl(10, 94%, 92%)',
+  100: 'hsl(10, 94%, 84%)',
+  200: 'hsl(10, 94%, 74%)',
+  300: 'hsl(10, 94%, 64%)',
+  400: 'hsl(10, 94%, 54%)',
+  500: 'hsl(10, 94%, 45%)',
+  600: 'hsl(10, 94%, 35%)',
+  700: 'hsl(10, 94%, 22%)',
+  800: 'hsl(10, 94%, 10%)',
+  900: 'hsl(10, 94%, 04%)',
 }
 
 module.exports.animationConfig = {

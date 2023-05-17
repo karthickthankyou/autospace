@@ -9,8 +9,8 @@ import { Header } from '@autospace-org/ui/src/components/organisms/Header'
 import { MenuItem } from '@autospace-org/types'
 
 const MENUITEMS: MenuItem[] = [
-  { label: 'Manage admins', href: '/manageAdmins', loggedIn: false },
-  { label: 'Garages', href: '/garages', loggedIn: true },
+  { label: 'Garages', href: '/', loggedIn: true },
+  { label: 'Admins', href: '/manageAdmins', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,

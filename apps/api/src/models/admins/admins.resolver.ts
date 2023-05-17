@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { AdminsService } from './admins.service'
 import { Admin } from './entities/admin.entity'
 import { FindManyAdminArgs, FindUniqueAdminArgs } from './dto/find.args'
@@ -14,6 +21,7 @@ import { AuthService } from 'src/common/auth/auth.service'
 import { GetUserType } from '@autospace-org/types'
 import { RegisterInput } from 'src/common/auth/dto/auth.input'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
+import { Verification } from '../verifications/entities/verification.entity'
 
 @AllowAuthenticated('admin')
 @Resolver(() => Admin)
@@ -66,7 +74,7 @@ export class AdminsResolver {
   @Query(() => AggregateCountOutput, {
     name: 'adminsCount',
   })
-  async garagesCount(
+  async adminsCount(
     @Args('where', { nullable: true })
     where: AdminWhereInput,
   ) {
@@ -75,5 +83,19 @@ export class AdminsResolver {
       where,
     })
     return { count: admins._count._all }
+  }
+
+  @ResolveField(() => [Verification])
+  verifications(@Parent() parent: Admin) {
+    return this.prisma.verification.findMany({
+      where: { adminId: parent.uid },
+    })
+  }
+
+  @ResolveField(() => Number)
+  async verificationsCount(@Parent() parent: Admin) {
+    return this.prisma.verification.count({
+      where: { adminId: parent.uid },
+    })
   }
 }

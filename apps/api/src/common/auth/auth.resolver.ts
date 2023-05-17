@@ -65,11 +65,11 @@ export class AuthResolver {
     @GetUser() user: GetUserType,
   ) {
     const { uid, role } = args
-    if (role === 'admin') {
-      throw new BadRequestException(
-        'Can not set admin role. Use setAdmin route.',
-      )
-    }
+    // if (role === 'admin') {
+    //   throw new BadRequestException(
+    //     'Can not set admin role. Use setAdmin route.',
+    //   )
+    // }
     checkRowLevelPermission(user, uid)
     return this.authService.setRole(user, role as Role)
   }

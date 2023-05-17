@@ -9,7 +9,6 @@ import {
   RefreshTokenInput,
   RefreshTokenOutput,
   RegisterInput,
-  RegisterOutput,
 } from './dto/auth.input'
 
 import { GetUserType, Role } from '@autospace-org/types'
