@@ -31,12 +31,16 @@
     "@nestjs/graphql": "^11.0.5",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "4.14.0",
+    "axios": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "firebase-admin": "^11.8.0",
     "graphql": "^16.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "stripe": "^12.5.0"
+  },
+  "resolutions": {
+    "axios": "1.4.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

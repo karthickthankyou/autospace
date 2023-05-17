@@ -349,11 +349,6 @@ export type CreateAddressInputWithoutGarageId = {
   lng: Scalars['Float']
 }
 
-export type CreateAdminInput = {
-  displayName: Scalars['String']
-  uid: Scalars['String']
-}
-
 export type CreateBookingInput = {
   customerId: Scalars['String']
   endTime: Scalars['DateTime']
@@ -744,7 +739,7 @@ export type MutationCreateAddressArgs = {
 }
 
 export type MutationCreateAdminArgs = {
-  createAdminInput: CreateAdminInput
+  createAdminInput: RegisterInput
 }
 
 export type MutationCreateBookingArgs = {
@@ -1812,6 +1807,36 @@ export type CreateGarageMutation = {
   createGarage: { __typename?: 'Garage'; id: number }
 }
 
+export type CreateAdminMutationVariables = Exact<{
+  createAdminInput: RegisterInput
+}>
+
+export type CreateAdminMutation = {
+  __typename?: 'Mutation'
+  createAdmin: {
+    __typename?: 'Admin'
+    createdAt: any
+    displayName: string
+    uid: string
+    updatedAt: any
+  }
+}
+
+export type RemoveAdminMutationVariables = Exact<{
+  where?: InputMaybe<AdminWhereUniqueInput>
+}>
+
+export type RemoveAdminMutation = {
+  __typename?: 'Mutation'
+  removeAdmin: {
+    __typename?: 'Admin'
+    createdAt: any
+    displayName: string
+    updatedAt: any
+    uid: string
+  }
+}
+
 export type AdminsQueryVariables = Exact<{
   distinct?: InputMaybe<Array<AdminScalarFieldEnum> | AdminScalarFieldEnum>
   skip?: InputMaybe<Scalars['Int']>
@@ -1858,6 +1883,8 @@ export const namedOperations = {
     createCompany: 'createCompany',
     createManySlots: 'createManySlots',
     createGarage: 'createGarage',
+    createAdmin: 'createAdmin',
+    removeAdmin: 'removeAdmin',
   },
   Fragment: {
     BookingFields: 'BookingFields',
@@ -2945,6 +2972,112 @@ export type CreateGarageMutationResult =
 export type CreateGarageMutationOptions = Apollo.BaseMutationOptions<
   CreateGarageMutation,
   CreateGarageMutationVariables
+>
+export const CreateAdminDocument = /*#__PURE__*/ gql`
+  mutation createAdmin($createAdminInput: RegisterInput!) {
+    createAdmin(createAdminInput: $createAdminInput) {
+      createdAt
+      displayName
+      uid
+      updatedAt
+    }
+  }
+`
+export type CreateAdminMutationFn = Apollo.MutationFunction<
+  CreateAdminMutation,
+  CreateAdminMutationVariables
+>
+
+/**
+ * __useCreateAdminMutation__
+ *
+ * To run a mutation, you first call `useCreateAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAdminMutation, { data, loading, error }] = useCreateAdminMutation({
+ *   variables: {
+ *      createAdminInput: // value for 'createAdminInput'
+ *   },
+ * });
+ */
+export function useCreateAdminMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateAdminMutation,
+    CreateAdminMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateAdminMutation, CreateAdminMutationVariables>(
+    CreateAdminDocument,
+    options,
+  )
+}
+export type CreateAdminMutationHookResult = ReturnType<
+  typeof useCreateAdminMutation
+>
+export type CreateAdminMutationResult =
+  Apollo.MutationResult<CreateAdminMutation>
+export type CreateAdminMutationOptions = Apollo.BaseMutationOptions<
+  CreateAdminMutation,
+  CreateAdminMutationVariables
+>
+export const RemoveAdminDocument = /*#__PURE__*/ gql`
+  mutation removeAdmin($where: AdminWhereUniqueInput) {
+    removeAdmin(where: $where) {
+      createdAt
+      displayName
+      updatedAt
+      uid
+    }
+  }
+`
+export type RemoveAdminMutationFn = Apollo.MutationFunction<
+  RemoveAdminMutation,
+  RemoveAdminMutationVariables
+>
+
+/**
+ * __useRemoveAdminMutation__
+ *
+ * To run a mutation, you first call `useRemoveAdminMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveAdminMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeAdminMutation, { data, loading, error }] = useRemoveAdminMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useRemoveAdminMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveAdminMutation,
+    RemoveAdminMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RemoveAdminMutation, RemoveAdminMutationVariables>(
+    RemoveAdminDocument,
+    options,
+  )
+}
+export type RemoveAdminMutationHookResult = ReturnType<
+  typeof useRemoveAdminMutation
+>
+export type RemoveAdminMutationResult =
+  Apollo.MutationResult<RemoveAdminMutation>
+export type RemoveAdminMutationOptions = Apollo.BaseMutationOptions<
+  RemoveAdminMutation,
+  RemoveAdminMutationVariables
 >
 export const AdminsDocument = /*#__PURE__*/ gql`
   query admins(

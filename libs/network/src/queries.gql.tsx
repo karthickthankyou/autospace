@@ -291,6 +291,27 @@ export const createGarage = gql`
   }
 `
 
+export const createAdmin = gql`
+  mutation createAdmin($createAdminInput: RegisterInput!) {
+    createAdmin(createAdminInput: $createAdminInput) {
+      createdAt
+      displayName
+      uid
+      updatedAt
+    }
+  }
+`
+export const removeAdmin = gql`
+  mutation removeAdmin($where: AdminWhereUniqueInput) {
+    removeAdmin(where: $where) {
+      createdAt
+      displayName
+      updatedAt
+      uid
+    }
+  }
+`
+
 export const admins = gql`
   query admins(
     $distinct: [AdminScalarFieldEnum!]

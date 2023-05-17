@@ -12,6 +12,7 @@
     "@autospace-org/network": "*",
     "@autospace-org/ui": "*",
     "@autospace-org/store": "*",
+    "@autospace-org/forms": "*",
     "@types/node": "20.1.7",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",

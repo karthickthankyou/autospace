@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { AdminsService } from './admins.service'
 import { Admin } from './entities/admin.entity'
 import { FindManyAdminArgs, FindUniqueAdminArgs } from './dto/find.args'
-import { CreateAdminInput } from './dto/create-admin.input'
 import { UpdateAdminInput } from './dto/update-admin.input'
 import {
   AllowAuthenticated,
@@ -13,6 +12,8 @@ import { AdminWhereInput } from './dto/where.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { AuthService } from 'src/common/auth/auth.service'
 import { GetUserType } from '@autospace-org/types'
+import { RegisterInput } from 'src/common/auth/dto/auth.input'
+import { FirebaseService } from 'src/common/firebase/firebase.service'
 
 @AllowAuthenticated('admin')
 @Resolver(() => Admin)
@@ -21,15 +22,19 @@ export class AdminsResolver {
     private readonly adminsService: AdminsService,
     private readonly prisma: PrismaService,
     private readonly auth: AuthService,
+    private readonly firebase: FirebaseService,
   ) {}
 
   @Mutation(() => Admin)
   async createAdmin(
-    @Args('createAdminInput') args: CreateAdminInput,
+    @Args('createAdminInput')
+    { displayName, email, password }: RegisterInput,
     @GetUser() user: GetUserType,
   ) {
+    const newAdmin = await this.auth.register({ email, displayName, password })
+
     await this.auth.setRole(user, 'admin')
-    return this.adminsService.create(args)
+    return this.adminsService.create({ displayName, uid: newAdmin.uid })
   }
 
   @Query(() => [Admin], { name: 'admins' })
@@ -48,7 +53,13 @@ export class AdminsResolver {
   }
 
   @Mutation(() => Admin)
-  removeAdmin(@Args() args: FindUniqueAdminArgs) {
+  async removeAdmin(
+    @Args() args: FindUniqueAdminArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const deletedUser = await this.firebase.getAuth().deleteUser(args.where.uid)
+    await this.auth.removeRole(user, 'admin')
+
     return this.adminsService.remove(args)
   }
 
@@ -59,7 +70,7 @@ export class AdminsResolver {
     @Args('where', { nullable: true })
     where: AdminWhereInput,
   ) {
-    const admins = await this.prisma.garage.aggregate({
+    const admins = await this.prisma.admin.aggregate({
       _count: { _all: true },
       where,
     })

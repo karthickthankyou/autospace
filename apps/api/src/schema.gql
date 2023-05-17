@@ -389,6 +389,36 @@ type Admin {
   displayName: String!
 }
 
+type LoginOutput {
+  kind: String!
+  localId: String!
+  email: String!
+  displayName: String!
+  idToken: String!
+  refreshToken: String!
+  expiresIn: String!
+}
+
+type RegisterOutput {
+  kind: String!
+  localId: String!
+  email: String!
+  displayName: String!
+  idToken: String!
+  refreshToken: String!
+  expiresIn: String!
+}
+
+type RefreshTokenOutput {
+  access_token: String!
+  expires_in: String!
+  token_type: String!
+  refresh_token: String!
+  id_token: String!
+  user_id: String!
+  project_id: String!
+}
+
 type Booking {
   status: BookingStatus!
   pricePerHour: Int
@@ -474,36 +504,6 @@ type Review {
   customerId: String!
   rating: Int!
   comment: String!
-}
-
-type LoginOutput {
-  kind: String!
-  localId: String!
-  email: String!
-  displayName: String!
-  idToken: String!
-  refreshToken: String!
-  expiresIn: String!
-}
-
-type RegisterOutput {
-  kind: String!
-  localId: String!
-  email: String!
-  displayName: String!
-  idToken: String!
-  refreshToken: String!
-  expiresIn: String!
-}
-
-type RefreshTokenOutput {
-  access_token: String!
-  expires_in: String!
-  token_type: String!
-  refresh_token: String!
-  id_token: String!
-  user_id: String!
-  project_id: String!
 }
 
 type BookingTimeline {
@@ -877,7 +877,7 @@ type Mutation {
   createAddress(createAddressInput: CreateAddressInput!): Address!
   updateAddress(updateAddressInput: UpdateAddressInput!): Address!
   removeAddress(where: AddressWhereUniqueInput): Address!
-  createAdmin(createAdminInput: CreateAdminInput!): Admin!
+  createAdmin(createAdminInput: RegisterInput!): Admin!
   updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
   removeAdmin(where: AdminWhereUniqueInput): Admin!
   createBooking(createBookingInput: CreateBookingInput!): Booking!
@@ -949,11 +949,6 @@ input UpdateAddressInput {
   garageId: Int
   address: String
   id: Int!
-}
-
-input CreateAdminInput {
-  uid: String!
-  displayName: String!
 }
 
 input UpdateAdminInput {

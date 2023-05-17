@@ -36,17 +36,8 @@ export class AuthResolver {
   }
 
   @Mutation(() => RegisterOutput)
-  async register(
-    @Args('credentials') args: RegisterInput,
-    @Context() context: GraphQLExecutionContext,
-  ) {
+  async register(@Args('credentials') args: RegisterInput) {
     const user = await this.authService.register(args)
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const res = context.res
-    this.authService.setAuthCookies(res, user)
-    console.log('user ', user)
     return user
   }
 

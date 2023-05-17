@@ -348,11 +348,6 @@ export type CreateAddressInputWithoutGarageId = {
   lng: Scalars['Float']
 }
 
-export type CreateAdminInput = {
-  displayName: Scalars['String']
-  uid: Scalars['String']
-}
-
 export type CreateBookingInput = {
   customerId: Scalars['String']
   endTime: Scalars['DateTime']
@@ -743,7 +738,7 @@ export type MutationCreateAddressArgs = {
 }
 
 export type MutationCreateAdminArgs = {
-  createAdminInput: CreateAdminInput
+  createAdminInput: RegisterInput
 }
 
 export type MutationCreateBookingArgs = {

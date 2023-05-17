@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as admin from 'firebase-admin'
 
 import { BadRequestException, Injectable } from '@nestjs/common'
 
@@ -20,7 +21,7 @@ export class AuthService {
 
   async login(args: LoginInput) {
     const { email, password } = args
-
+    console.log('axios.post: ', axios.post)
     try {
       const firebaseUser = await axios.post<LoginOutput>(
         `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${process.env.firebaseAPIKey}`,
@@ -47,21 +48,21 @@ export class AuthService {
       throw new BadRequestException(err.response.data.error.message)
     }
   }
-
-  async register(args: RegisterInput): Promise<RegisterOutput> {
+  async register(args: RegisterInput): Promise<admin.auth.UserRecord> {
     const { email, password, displayName } = args
 
-    console.log('firebase api key: ', process.env.firebaseAPIKey)
     try {
-      const firebaseUser = await axios.post<RegisterOutput>(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.firebaseAPIKey}`,
-        { email, password, displayName, returnSecureToken: true },
-      )
+      const firebaseUser = await this.firebaseService.getAuth().createUser({
+        email,
+        password,
+        displayName,
+      })
 
-      return firebaseUser.data
+      console.log('firebaseUser', firebaseUser)
+      return firebaseUser
     } catch (err) {
-      console.log('Err', err.response.data.error.message)
-      throw new BadRequestException(err.response.data.error.message)
+      console.error('Registration error:', err)
+      throw new BadRequestException('Registration failed.')
     }
   }
 
@@ -87,7 +88,9 @@ export class AuthService {
     return true
   }
 
-  async removeRole(uid: string, role: Role, existingRoles: Role[]) {
+  async removeRole(user: GetUserType, role: Role) {
+    const existingRoles = user.roles || []
+
     if (!existingRoles.includes(role)) {
       throw new BadRequestException(`User does not have this role. ${role}`)
     }
@@ -96,7 +99,7 @@ export class AuthService {
 
     await this.firebaseService
       .getAuth()
-      .setCustomUserClaims(uid, {
+      .setCustomUserClaims(user.uid, {
         roles: updatedRoles,
       })
       .then((res) => {
@@ -106,19 +109,19 @@ export class AuthService {
     return { success: true }
   }
 
-  setAuthCookies(res: any, user: LoginOutput) {
-    res.cookie('authToken', user.idToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: Number(user.expiresIn) * 1000,
-    })
+  //   setAuthCookies(res: any, user: LoginOutput) {
+  //     res.cookie('authToken', user.idToken, {
+  //       httpOnly: true,
+  //       secure: process.env.NODE_ENV === 'production',
+  //       sameSite: 'lax',
+  //       maxAge: Number(user.expiresIn) * 1000,
+  //     })
 
-    res.cookie('uid', user.localId, {
-      httpOnly: false,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: Number(user.expiresIn) * 1000,
-    })
-  }
+  //     res.cookie('uid', user.localId, {
+  //       httpOnly: false,
+  //       secure: process.env.NODE_ENV === 'production',
+  //       sameSite: 'lax',
+  //       maxAge: Number(user.expiresIn) * 1000,
+  //     })
+  //   }
 }

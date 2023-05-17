@@ -1,9 +1,12 @@
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
+import { ManageAdmins } from '@autospace-org/ui/src/components/templates/ManageAdmins'
 
-export default function ManageAdmins() {
+export default function ManageAdminsPage() {
   return (
     <main>
-      <Container>Hello</Container>
+      <Container>
+        <ManageAdmins />
+      </Container>
     </main>
   )
 }
