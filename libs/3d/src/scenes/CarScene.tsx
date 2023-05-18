@@ -92,7 +92,7 @@ export const CarScene = ({
     <Canvas
       style={{
         background:
-          'linear-gradient(to top right, hsl(0, 0%, 0%), hsl(52, 0%, 15%))',
+          'linear-gradient(to top right, hsl(0, 0%, 15%), hsl(52, 0%, 30%))',
       }}
       className={className}
       //   camera={{
@@ -131,7 +131,7 @@ export const CarScene = ({
         position={[-120, -0.02, -0.5]}
         rotation={[radians(-90), 0, 0]}
       >
-        <meshBasicMaterial color="black" />
+        <meshBasicMaterial color="#222" />
       </Plane>
 
       {/* Building set */}

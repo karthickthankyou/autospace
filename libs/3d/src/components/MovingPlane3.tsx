@@ -1,48 +1,85 @@
+import { useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { radians } from './Camera'
 import { GradientCube } from './GradientCube'
 import { randInt } from 'three/src/math/MathUtils'
 import React from 'react'
 import { randExp } from './MovingPlane2'
-import { Building, ParkingSlot } from './ParkingSlot'
+import { Building, ParkingSlot, floorHeight } from './ParkingSlot'
 
 const random = (min: number, max: number) => Math.random() * (max - min) + min
 
 const angles = [90, 180, 270, 0]
 
-export const BuildingSet = ({
-  minHeight = 2,
-  maxHeight = 20,
-}: {
-  minHeight?: number
-  maxHeight?: number
-}) => {
-  return (
-    <group>
-      <mesh
-        rotation={[
-          radians(0),
-          radians(angles[randInt(0, angles.length - 1)]),
-          0,
-        ]}
-      >
-        {buildingSets[randInt(0, buildingSets.length - 1)].map(
-          ({ length, position, width }) => (
-            <Building
-              position={
-                position.map((pos) => pos * 2) as [number, number, number]
-              }
-              size={[width * 2, length * 2]}
-              floors={randExp(minHeight, maxHeight, 7)}
-            />
-          ),
-        )}
-      </mesh>
-    </group>
-  )
-}
+export const BuildingSet = React.memo(
+  ({
+    minHeight = 2,
+    maxHeight = 20,
+  }: {
+    minHeight?: number
+    maxHeight?: number
+  }) => {
+    const [buildingSetIndex, setBuildingSetIndex] = useState<number>(0)
+    const [floors, setFloors] = useState<number[]>([])
 
-type BuildingSet = {
+    useEffect(() => {
+      setBuildingSetIndex(randInt(0, buildingSets.length - 1))
+
+      // Set random floors for each building in the selected building set
+      setFloors(
+        buildingSets[buildingSetIndex].map(() => {
+          const randHeight = randExp(minHeight, maxHeight, 7)
+          return Math.floor(randHeight)
+        }),
+      )
+    }, [])
+
+    return (
+      <group>
+        <mesh
+          rotation={[
+            radians(0),
+            radians(angles[randInt(0, angles.length - 1)]),
+            0,
+          ]}
+        >
+          {buildingSets[buildingSetIndex].map(
+            ({ length, position, width }, i) => (
+              <>
+                <Building
+                  position={
+                    position.map((pos) => pos * 2) as [number, number, number]
+                  }
+                  size={[width * 2, length * 2]}
+                  floors={floors[i]}
+                />
+                {/* Add a translucent white plane that is the same size as the parking lot */}
+
+                <mesh
+                  position={[
+                    position[0] * 2,
+                    floorHeight * (floors[i] - 1), // Adjust the y-position to the top of the building
+                    position[2] * 2,
+                  ]}
+                  rotation={[radians(-90), 0, 0]} // Rotate the plane to align with the ground
+                >
+                  <planeGeometry args={[width * 2, length * 2]} />
+                  <meshBasicMaterial
+                    color={'black'}
+                    transparent
+                    opacity={0.5}
+                  />
+                </mesh>
+              </>
+            ),
+          )}
+        </mesh>
+      </group>
+    )
+  },
+)
+
+export type BuildingSet = {
   position: [number, number, number]
   width: number
   length: number

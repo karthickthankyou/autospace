@@ -14,9 +14,8 @@ interface BuildingProps extends ParkingSlotProps {
   floors?: number
 }
 
+export const floorHeight = 6 // You can adjust this value according to your needs
 export const Building = ({ position, size, floors = 3 }: BuildingProps) => {
-  const floorHeight = 6 // You can adjust this value according to your needs
-
   const floorsArray = Array.from({ length: floors }, (_, index) => (
     <ParkingSlot
       key={index}
