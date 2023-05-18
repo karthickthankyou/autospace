@@ -14,19 +14,25 @@ type UserSliceType = {
   resetUser: () => void
 }
 
+const initialState: Pick<
+  UserSliceType,
+  'displayName' | 'email' | 'loaded' | 'roles' | 'token' | 'uid'
+> = {
+  uid: undefined,
+  displayName: undefined,
+  email: undefined,
+  roles: undefined,
+  token: undefined,
+  loaded: false,
+}
+
 export const useUserStore = create<UserSliceType>(
   devtools(
     (set) => ({
-      uid: undefined,
-      displayName: undefined,
-      email: undefined,
-      roles: undefined,
-      token: undefined,
-      loaded: false,
-
+      ...initialState,
       setUser: (payload: Partial<UserSliceType>) =>
         set((state) => ({ ...state, ...payload, loaded: true })),
-      resetUser: () => set({ loaded: true }),
+      resetUser: () => set(initialState),
     }),
     { name: 'user' },
   ),

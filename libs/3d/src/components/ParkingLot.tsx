@@ -39,11 +39,6 @@ export const ParkingLot = ({
         const z = row * slotLength + slotLength / 2
         const y = floor * floorHeight
 
-        console.log('---- ')
-        console.log('row, col', row, col)
-        console.log('x,y,z ', x, y, z)
-        console.log('---- ')
-
         // Position the parking slots based on row parity
         if (slotPresence[row] === 1) {
           parkingRows.push(

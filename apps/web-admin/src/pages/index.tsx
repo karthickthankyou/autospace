@@ -10,8 +10,6 @@ export default function Home() {
     roles: state.roles,
   }))
 
-  console.log({ uid, roles })
-
   if (!uid) {
     return (
       <AuthLayout title="Login">

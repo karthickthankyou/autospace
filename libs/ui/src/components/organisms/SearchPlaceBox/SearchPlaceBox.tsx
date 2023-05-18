@@ -59,7 +59,6 @@ export const SearchPlaceBox = ({
   setLocationInfo,
   value,
 }: ISearchPlaceBoxProps) => {
-  //   console.log('Recent searches', recentSearches)
   const { loading, setLoading, searchText, locationInfo, setSearchText } =
     useSearchLocation()
 

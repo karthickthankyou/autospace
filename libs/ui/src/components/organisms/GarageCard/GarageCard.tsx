@@ -68,8 +68,6 @@ export const CreateManySlotsDialog = ({ garageId }: { garageId: number }) => {
     formState: { errors },
   } = useFormCreateManySlots()
 
-  console.log('garageid ', garageId)
-
   const [createManySlots, { loading, data }] = useCreateManySlotsMutation()
   return (
     <>

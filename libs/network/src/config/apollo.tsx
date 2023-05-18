@@ -44,7 +44,6 @@ export const getLatestToken = async ({ token }: { token: string }) => {
 }
 
 export const ApolloProvider = ({ children }: IApolloProviderProps) => {
-  console.log('  --  Apollo provider  --  ')
   const { setUser, token, uid } = useUserStore((state) => ({
     uid: state.uid,
     token: state.token,
@@ -66,7 +65,6 @@ export const ApolloProvider = ({ children }: IApolloProviderProps) => {
     const authToken = await getLatestToken({ token })
 
     if (authToken !== token) {
-      console.log('Set new token.')
       setUser({ uid, token: authToken })
     }
 

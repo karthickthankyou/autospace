@@ -63,8 +63,6 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
 
   const [getBookings, { loading, data, error }] = useBookingsLazyQuery()
 
-  console.log('data ', data, loading)
-
   useEffect(() => {
     if (uid)
       getBookings({

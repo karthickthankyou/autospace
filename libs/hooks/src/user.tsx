@@ -11,9 +11,7 @@ export const useUserListener = () => {
   useEffect(
     () =>
       onAuthStateChanged(auth, async (user) => {
-        console.log('onAuthStateChanged', user)
         if (!user) {
-          console.log('helo ', user)
           resetUser()
           return
         }
