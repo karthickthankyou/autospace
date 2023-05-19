@@ -1,9 +1,22 @@
 import axios from 'axios'
+import { Map } from '@autospace-org/ui/src/components/organisms/Map'
+
 import { loadStripe } from '@stripe/stripe-js'
 import { useTotalPrice } from '@autospace-org/hooks/src/useTotalPrice'
 
 import { RadioGroup } from '@headlessui/react'
-import { IconBike, IconCar, IconMotorbike, IconTir } from '@tabler/icons-react'
+import {
+  IconBike,
+  IconCar,
+  IconMotorbike,
+  IconSquareRoundedNumber1,
+  IconSquareRoundedNumber2,
+  IconTir,
+  IconUser,
+} from '@tabler/icons-react'
+import MapGL, { Source, Layer } from 'react-map-gl'
+
+import { useFormContext, useWatch } from 'react-hook-form'
 
 import {
   SearchGaragesQuery,
@@ -18,12 +31,24 @@ import { DateRangeBookingInfo } from '../../../molecules/DateRangeBookingInfo'
 import { HtmlLabel } from '../../../atoms/HtmlLabel'
 import { HtmlInput } from '../../../atoms/HtmlInput'
 import { Form } from '../../../atoms/Form'
-import { userFormBookSlot } from '@autospace-org/forms/src/bookSlot'
+import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
 import { notification$ } from '@autospace-org/util/subjects'
 import { useUserStore } from '@autospace-org/store/user'
 import { DateRange } from '@autospace-org/forms/src/util'
-import { useEffect } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { ShowImages } from '../../../molecules/ShowImages'
+import { Switch } from '../../../atoms/Switch'
+import { Panel } from '../Panel'
+import { SearchBox } from '../../../templates/CreateGarage/CreateGarage'
+import { CenterOfMap, DefaultZoomControls } from '../ZoomControls/ZoomControls'
+import { Marker } from '../MapMarker'
+import { ParkingIcon } from '../../../atoms/ParkingIcon'
+import { getDistance } from '@autospace-org/util'
+import { MarkerDragEvent } from 'react-map-gl'
+import { LatLng } from '@autospace-org/types'
+import { useDebouncedValue } from '@autospace-org/hooks/src/async'
+import { LngLatTuple } from '@autospace-org/store/map'
+import React from 'react'
 
 const IconTypes = {
   [SlotType.Bicycle]: <IconBike />,
@@ -32,7 +57,7 @@ const IconTypes = {
   [SlotType.Heavy]: <IconTir />,
 }
 
-const BookSlotPopup = ({
+export const BookSlotPopup = ({
   garage,
   dateRange,
 }: {
@@ -50,21 +75,30 @@ const BookSlotPopup = ({
     setValue,
     formState: { errors },
     watch,
-  } = userFormBookSlot()
+  } = useFormContext<FormTypeBookSlot>()
 
   useEffect(() => {
     if (dateRange?.startTime) setValue('startTime', dateRange.startTime)
     if (dateRange?.endTime) setValue('endTime', dateRange.endTime)
   }, [dateRange])
 
-  const { startTime, endTime, type } = watch()
+  const { startTime, endTime, type, valet } = watch()
 
   const totalPrice = useTotalPrice({
-    slots: garage.availableSlots,
-    type,
+    pricePerHour: garage.availableSlots.find((slot) => slot.type === type)
+      ?.pricePerHour,
     startTime,
     endTime,
+    location: garage.address,
+    valet: { pickup: valet?.pickupInfo, deliver: valet?.returnInfo },
   })
+
+  useEffect(() => {
+    console.log(getDistance(garage.address, valet?.pickupInfo))
+  }, [garage.address, valet?.pickupInfo])
+
+  const [showValet, setShowValet] = useState(false)
+  const [differentLocations, setDifferentLocations] = useState(false)
 
   return (
     <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
@@ -163,6 +197,118 @@ const BookSlotPopup = ({
             />
           </HtmlLabel>
         </div>
+        <div className="p-2 bg-gray-50">
+          <HtmlLabel title="Need valet?">
+            <Switch
+              checked={showValet}
+              onChange={(e) => setShowValet(e.target.checked)}
+            />
+          </HtmlLabel>
+          {showValet ? (
+            <div>
+              <HtmlLabel title="Different pick up and deliver locations?">
+                <Switch
+                  checked={differentLocations}
+                  onChange={(e) => setDifferentLocations(e.target.checked)}
+                />
+              </HtmlLabel>
+              <Map
+                initialViewState={{
+                  latitude: garage.address.lat,
+                  longitude: garage.address.lng,
+                  zoom: 13,
+                }}
+                height="30vh"
+              >
+                <Marker
+                  latitude={garage.address.lat}
+                  longitude={garage.address.lng}
+                >
+                  <ParkingIcon />
+                </Marker>
+                {showValet ? (
+                  <MarkerWithDirection
+                    sourceId="pickup_route"
+                    destination={{
+                      lat: valet?.pickupInfo?.lat,
+                      lng: valet?.pickupInfo?.lng,
+                    }}
+                    origin={garage.address}
+                    onDragEnd={({ lngLat }) => {
+                      const { lat, lng } = lngLat
+                      setValue('valet.pickupInfo.lat', lat || 0)
+                      setValue('valet.pickupInfo.lng', lng || 0)
+                    }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <IconUser />
+                      <span>
+                        Pickup {!differentLocations ? '& deliver' : null}
+                      </span>
+                    </div>
+                  </MarkerWithDirection>
+                ) : null}
+
+                {differentLocations ? (
+                  <MarkerWithDirection
+                    sourceId="deliver_route"
+                    destination={{
+                      lat: valet?.returnInfo?.lat,
+                      lng: valet?.returnInfo?.lng,
+                    }}
+                    origin={garage.address}
+                    onDragEnd={({ lngLat }) => {
+                      const { lat, lng } = lngLat
+                      setValue('valet.returnInfo.lat', lat || 0)
+                      setValue('valet.returnInfo.lng', lng || 0)
+                    }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <IconUser />
+                      <span>Deliver</span>
+                    </div>
+                  </MarkerWithDirection>
+                ) : null}
+
+                <Panel position="left-top">
+                  <DefaultZoomControls>
+                    <CenterOfMap
+                      Icon={IconUser}
+                      onClick={(latLng) => {
+                        const lat = parseFloat(latLng.lat.toFixed(6))
+                        const lng = parseFloat(latLng.lng.toFixed(6))
+
+                        setValue('valet.pickupInfo.lat', lat, {
+                          shouldValidate: true,
+                        })
+                        setValue('valet.pickupInfo.lng', lng, {
+                          shouldValidate: true,
+                        })
+                      }}
+                    />
+                    {differentLocations ? (
+                      <CenterOfMap
+                        Icon={IconUser}
+                        onClick={(latLng) => {
+                          const lat = parseFloat(latLng.lat.toFixed(6))
+                          const lng = parseFloat(latLng.lng.toFixed(6))
+
+                          setValue('valet.returnInfo.lat', lat, {
+                            shouldValidate: true,
+                          })
+                          setValue('valet.returnInfo.lng', lng, {
+                            shouldValidate: true,
+                          })
+                        }}
+                      />
+                    ) : null}
+                  </DefaultZoomControls>
+                </Panel>
+              </Map>
+            </div>
+          ) : null}
+        </div>
+
         <HtmlLabel title="Start time" error={errors.startTime?.message}>
           <HtmlInput
             type="datetime-local"
@@ -232,4 +378,108 @@ export const createBookingSession = async (
   return result
 }
 
-export { BookSlotPopup }
+export const MarkerWithDirection = ({
+  destination,
+  origin,
+  onDragEnd,
+  children,
+  sourceId,
+}: {
+  origin: LatLng
+  destination: Partial<LatLng>
+  onDragEnd: (e: MarkerDragEvent) => void
+  children: ReactNode
+  sourceId: string
+}) => {
+  if (!destination.lng || !destination.lat) {
+    return null
+  }
+
+  return (
+    <>
+      <Marker
+        pitchAlignment="auto"
+        longitude={destination.lng}
+        latitude={destination.lat}
+        draggable
+        onDragEnd={onDragEnd}
+      >
+        {children}
+      </Marker>
+      <Directions
+        sourceId={sourceId}
+        origin={origin}
+        destination={{ lat: destination.lat, lng: destination.lng }}
+      />
+    </>
+  )
+}
+
+export const Directions = React.memo(
+  ({
+    origin: originRaw,
+    destination: destinationRaw,
+    sourceId,
+  }: {
+    origin: LatLng
+    destination: LatLng
+    sourceId: string
+  }) => {
+    const [coordinates, setCoordinates] = useState<LngLatTuple[]>([])
+
+    const { origin, destination } = useDebouncedValue({
+      origin: originRaw,
+      destination: destinationRaw,
+    })
+
+    console.log('coordinates ', coordinates, origin, destination)
+
+    useEffect(() => {
+      ;(async () => {
+        if (!origin || !destination) {
+          setCoordinates([])
+          return
+        }
+
+        const response = await fetch(
+          // pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ
+          `https://api.mapbox.com/directions/v5/mapbox/walking/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&steps=true&overview=simplified`,
+        )
+        const data = await response.json()
+        const coordinates =
+          data?.routes[0]?.legs[0]?.steps.map(
+            (step: { maneuver: { location: any } }) => step.maneuver.location,
+          ) || []
+        console.log('coordinates', coordinates)
+        setCoordinates(coordinates)
+      })()
+    }, [origin, destination])
+
+    const dataOne = useMemo(
+      () => ({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'LineString',
+          coordinates,
+        },
+      }),
+      [coordinates],
+    )
+
+    return (
+      //   @ts-ignore
+      <Source id={sourceId} type="geojson" data={dataOne}>
+        <Layer
+          id={sourceId}
+          type="line"
+          source="my-data"
+          paint={{
+            'line-color': 'rgb(0,0,0)',
+            'line-width': 2,
+          }}
+        />
+      </Source>
+    )
+  },
+)

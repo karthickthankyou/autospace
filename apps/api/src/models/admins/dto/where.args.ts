@@ -1,6 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
-import { DateTimeFilter, StringFilter } from 'src/common/dtos/common.input'
+import {
+  DateTimeFilter,
+  RestrictProperties,
+  StringFilter,
+} from 'src/common/dtos/common.input'
 import { VerificationListRelationFilter } from 'src/models/verifications/dto/where.args'
 
 @InputType()
@@ -12,7 +16,9 @@ export class AdminWhereUniqueInput
 }
 
 @InputType()
-export class AdminWhereInput implements Required<Prisma.AdminWhereInput> {
+export class AdminWhereInput
+  implements RestrictProperties<AdminWhereInput, Prisma.AdminWhereInput>
+{
   @Field(() => StringFilter, { nullable: true })
   uid: StringFilter
   @Field(() => DateTimeFilter, { nullable: true })

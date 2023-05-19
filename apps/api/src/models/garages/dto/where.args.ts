@@ -15,14 +15,17 @@ import { VerificationRelationFilter } from 'src/models/verifications/dto/where.a
 
 @InputType()
 export class GarageWhereUniqueInput
-  implements Required<Prisma.GarageWhereUniqueInput>
+  implements
+    RestrictProperties<GarageWhereUniqueInput, Prisma.GarageWhereUniqueInput>
 {
   @Field(() => Number, { nullable: true })
   id: number
 }
 
 @InputType()
-export class GarageWhereInput implements Required<Prisma.GarageWhereInput> {
+export class GarageWhereInput
+  implements RestrictProperties<GarageWhereInput, Prisma.GarageWhereInput>
+{
   @Field(() => StringListFilter, { nullable: true })
   images: StringListFilter
   @Field(() => IntFilter, { nullable: true })

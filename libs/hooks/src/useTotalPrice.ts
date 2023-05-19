@@ -4,24 +4,28 @@ import { SlotType, Garage } from '@autospace-org/network/src/generated'
 import { differenceInTime } from '@autospace-org/util/date'
 
 export type TotalPriceType = {
-  type?: SlotType
-  slots: Garage['availableSlots']
+  pricePerHour?: number
   startTime?: string
   endTime?: string
+  location?: { lat: number; lng: number }
+  valet?: {
+    pickup: { lat: number; lng: number }
+    deliver: { lat: number; lng: number }
+  }
 }
 
 export const useTotalPrice = ({
-  type,
-  slots,
+  pricePerHour,
   startTime,
   endTime,
+  location,
+  valet,
 }: TotalPriceType) => {
   const [totalPrice, setTotalPrice] = useState(0)
 
   useEffect(() => {
-    // if (!type) return
-
     if (!startTime || !endTime) return
+    if (!pricePerHour) return
 
     const differenceInMilliseconds = differenceInTime({
       startTime: startTime,
@@ -29,15 +33,10 @@ export const useTotalPrice = ({
     })
     const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60)
 
-    const selectedSlot = slots.find((slot) => slot.type === type)
-
-    if (!selectedSlot) return
-    const totalPrice = Math.floor(
-      (selectedSlot.pricePerHour || 0) * differenceInHours,
-    )
+    const totalPrice = Math.floor((pricePerHour || 0) * differenceInHours)
 
     setTotalPrice(totalPrice)
-  }, [slots, type, startTime, endTime])
+  }, [pricePerHour, startTime, endTime])
 
   return totalPrice
 }

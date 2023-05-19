@@ -9,6 +9,7 @@ import {
 import { BookingTimelineListRelationFilter } from 'src/models/booking-timelines/dto/where.args'
 import { BookingListRelationFilter } from 'src/models/bookings/dto/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dto/where.args'
+import { ValetAssignmentListRelationFilter } from 'src/models/valet-assignments/dto/where.args'
 
 @InputType()
 export class ValetWhereUniqueInput
@@ -25,6 +26,10 @@ export class ValetWhereUniqueInput
 export class ValetWhereInput
   implements RestrictProperties<ValetWhereInput, Prisma.ValetWhereInput>
 {
+  @Field(() => ValetAssignmentListRelationFilter, { nullable: true })
+  pickupAssignments: ValetAssignmentListRelationFilter
+  @Field(() => ValetAssignmentListRelationFilter, { nullable: true })
+  returnAssignments: ValetAssignmentListRelationFilter
   @Field(() => StringFilter, { nullable: true })
   uid: StringFilter
   @Field(() => DateTimeFilter, { nullable: true })
@@ -37,10 +42,7 @@ export class ValetWhereInput
   companyId: IntFilter
   @Field(() => CompanyRelationFilter, { nullable: true })
   company: CompanyRelationFilter
-  @Field(() => BookingListRelationFilter, { nullable: true })
-  checkInBookings: BookingListRelationFilter
-  @Field(() => BookingListRelationFilter, { nullable: true })
-  checkOutBookings: BookingListRelationFilter
+
   @Field(() => BookingTimelineListRelationFilter, { nullable: true })
   bookingTimeline: BookingTimelineListRelationFilter
 

@@ -60,7 +60,7 @@ export class ValetsResolver {
         slot: {
           select: {
             garage: {
-              select: { company: { select: { manager: true, valets: true } } },
+              select: { company: { select: { managers: true, valets: true } } },
             },
           },
         },
@@ -68,7 +68,7 @@ export class ValetsResolver {
     })
 
     checkRowLevelPermission(user, [
-      ...booking.slot.garage.company.manager.uid,
+      ...booking.slot.garage.company.managers.map((manager) => manager.uid),
       ...booking.slot.garage.company.valets.map((valet) => valet.uid),
     ])
 
@@ -77,7 +77,16 @@ export class ValetsResolver {
         where: { id: bookingId },
         data: {
           status,
-          checkInValetId: valetId,
+          ...(status === BookingStatus.VALET_ASSIGNED_FOR_CHECK_IN && {
+            valetAssignment: {
+              update: { pickupValetId: valetId },
+            },
+          }),
+          ...(status === BookingStatus.VALET_ASSIGNED_FOR_CHECK_OUT && {
+            valetAssignment: {
+              update: { returnValetId: valetId },
+            },
+          }),
         },
       }),
       this.prisma.bookingTimeline.create({

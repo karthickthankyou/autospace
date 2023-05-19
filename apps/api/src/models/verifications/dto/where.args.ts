@@ -4,6 +4,7 @@ import {
   BoolFilter,
   DateTimeFilter,
   IntFilter,
+  RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { AdminRelationFilter } from 'src/models/admins/dto/where.args'
@@ -11,7 +12,11 @@ import { GarageRelationFilter } from 'src/models/garages/dto/where.args'
 
 @InputType()
 export class VerificationWhereUniqueInput
-  implements Required<Prisma.VerificationWhereUniqueInput>
+  implements
+    RestrictProperties<
+      VerificationWhereUniqueInput,
+      Prisma.VerificationWhereUniqueInput
+    >
 {
   @Field(() => Number, { nullable: true })
   garageId: number
@@ -19,7 +24,8 @@ export class VerificationWhereUniqueInput
 
 @InputType()
 export class VerificationWhereInput
-  implements Required<Prisma.VerificationWhereInput>
+  implements
+    RestrictProperties<VerificationWhereInput, Prisma.VerificationWhereInput>
 {
   @Field(() => IntFilter, { nullable: true })
   garageId: IntFilter

@@ -10,14 +10,20 @@ import { ReviewListRelationFilter } from 'src/models/reviews/dto/where.args'
 
 @InputType()
 export class CustomerWhereUniqueInput
-  implements Required<Prisma.CustomerWhereUniqueInput>
+  implements
+    RestrictProperties<
+      CustomerWhereUniqueInput,
+      Prisma.CustomerWhereUniqueInput
+    >
 {
   @Field(() => String, { nullable: true })
   uid: string
 }
 
 @InputType()
-export class CustomerWhereInput implements Required<Prisma.CustomerWhereInput> {
+export class CustomerWhereInput
+  implements RestrictProperties<CustomerWhereInput, Prisma.CustomerWhereInput>
+{
   @Field(() => StringFilter, { nullable: true })
   uid: StringFilter
   @Field(() => DateTimeFilter, { nullable: true })

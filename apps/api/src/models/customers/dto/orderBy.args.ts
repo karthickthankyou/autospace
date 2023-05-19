@@ -1,11 +1,16 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
 import { BookingOrderByRelationAggregateInput } from 'src/models/bookings/dto/orderBy.args'
 import { ReviewOrderByRelationAggregateInput } from 'src/models/reviews/dto/orderBy.args'
 
 @InputType()
 export class CustomerOrderByWithRelationInput
-  implements Required<Prisma.CustomerOrderByWithRelationInput>
+  implements
+    RestrictProperties<
+      CustomerOrderByWithRelationInput,
+      Prisma.CustomerOrderByWithRelationInput
+    >
 {
   @Field(() => ReviewOrderByRelationAggregateInput, { nullable: true })
   reviews: ReviewOrderByRelationAggregateInput

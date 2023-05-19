@@ -1,10 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
 import { VerificationOrderByRelationAggregateInput } from 'src/models/verifications/dto/orderBy.args'
 
 @InputType()
 export class AdminOrderByWithRelationInput
-  implements Required<Prisma.AdminOrderByWithRelationInput>
+  implements
+    RestrictProperties<
+      AdminOrderByWithRelationInput,
+      Prisma.AdminOrderByWithRelationInput
+    >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
   uid: Prisma.SortOrder
@@ -14,8 +19,6 @@ export class AdminOrderByWithRelationInput
   updatedAt: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
   displayName: Prisma.SortOrder
-  @Field(() => Prisma.SortOrder, { nullable: true })
-  role: Prisma.SortOrder
   @Field(() => VerificationOrderByRelationAggregateInput, { nullable: true })
   verifications: VerificationOrderByRelationAggregateInput
 }

@@ -30,24 +30,24 @@ model Manager {
 }
 
 model Valet {
-    uid              String            @id
-    createdAt        DateTime          @default(now())
-    updatedAt        DateTime          @updatedAt
-    displayName      String
-    companyId        Int?              @unique
-    company          Company?          @relation(fields: [companyId], references: [id])
-    checkInBookings  Booking[]         @relation("CheckInValet")
-    checkOutBookings Booking[]         @relation("CheckOutValet")
-    bookingTimeline  BookingTimeline[]
+    uid               String            @id
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @updatedAt
+    displayName       String
+    companyId         Int?              @unique
+    company           Company?          @relation(fields: [companyId], references: [id])
+    bookingTimeline   BookingTimeline[]
+    pickupAssignments ValetAssignment[] @relation("PickupValet")
+    returnAssignments ValetAssignment[] @relation("ReturnValet")
 }
 
 model Company {
-    id          Int      @id @default(autoincrement())
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    id          Int       @id @default(autoincrement())
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
     displayName String?
     garages     Garage[]
-    manager     Manager?
+    managers    Manager[]
     valets      Valet[]
 }
 
@@ -93,30 +93,43 @@ model Slot {
 }
 
 model Booking {
-    id              Int               @id @default(autoincrement())
-    createdAt       DateTime          @default(now())
-    updatedAt       DateTime          @updatedAt
-    pricePerHour    Float?
-    totalPrice      Float?
-    startTime       DateTime
-    endTime         DateTime
-    slotId          Int
-    customerId      String
-    vehicleNumber   String
-    phoneNumber     String?
-    passcode        String?
+    id            Int      @id @default(autoincrement())
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    pricePerHour  Float?
+    totalPrice    Float?
+    startTime     DateTime
+    endTime       DateTime
+    slotId        Int
+    customerId    String
+    vehicleNumber String
+    phoneNumber   String?
+    passcode      String?
+
     customer        Customer          @relation(fields: [customerId], references: [uid])
     slot            Slot              @relation(fields: [slotId], references: [id])
     status          BookingStatus     @default(BOOKED)
     bookingTimeline BookingTimeline[]
-    type            BookingType       @default(SELF_PARK)
 
-    checkInValetId  String?
-    checkInValet    Valet?  @relation("CheckInValet", fields: [checkInValetId], references: [uid])
-    checkOutValetId String?
-    checkOutValet   Valet?  @relation("CheckOutValet", fields: [checkOutValetId], references: [uid])
+    valetAssignment ValetAssignment?
 
     @@index([startTime, endTime])
+}
+
+model ValetAssignment {
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    pickupValetId String?
+    pickupValet   Valet?   @relation("PickupValet", fields: [pickupValetId], references: [uid])
+    returnValetId String?
+    returnValet   Valet?   @relation("ReturnValet", fields: [returnValetId], references: [uid])
+    pickupLat     Float
+    pickupLng     Float
+    returnLat     Float
+    returnLng     Float
+
+    bookingId Int     @id
+    booking   Booking @relation(fields: [bookingId], references: [id])
 }
 
 model BookingTimeline {
@@ -170,11 +183,6 @@ enum SlotType {
     HEAVY
     BIKE
     BICYCLE
-}
-
-enum BookingType {
-    SELF_PARK
-    VALET
 }
 
 enum BookingStatus {

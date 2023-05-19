@@ -46,7 +46,7 @@ export class GaragesResolver {
     @GetUser() user: GetUserType,
   ) {
     const company = await this.prisma.company.findFirst({
-      where: { manager: { uid: user.uid } },
+      where: { managers: { some: { uid: user.uid } } },
     })
     if (!company?.id) {
       throw new BadRequestException(

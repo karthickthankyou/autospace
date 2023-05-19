@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SlotType } from '@autospace-org/network/src/generated'
+import { BookingType, SlotType } from '@autospace-org/network/src/generated'
 import { ReactNode, useEffect } from 'react'
 import {
   getCurrentTimeAndOneHourLater,
@@ -9,9 +9,24 @@ import {
   isStartTimeValid,
 } from './util'
 
+export const formSchemaValet = z.object({
+  pickupInfo: z.object({
+    notes: z.string().min(1),
+    lat: z.number(),
+    lng: z.number(),
+  }),
+  returnInfo: z.object({
+    notes: z.string().min(1),
+    lat: z.number(),
+    lng: z.number(),
+  }),
+})
+
 export const formSchemaBookSlot = z.object({
   startTime: z.string(),
   endTime: z.string(),
+
+  valet: formSchemaValet,
 
   vehicleNumber: z.string().min(1, { message: 'Vehicle number is required' }),
   type: z.nativeEnum(SlotType, {

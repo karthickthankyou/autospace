@@ -15,7 +15,7 @@ export class CompaniesService {
     return this.prisma.company.create({
       data: {
         ...createCompanyInput,
-        manager: {
+        managers: {
           create: { uid: user.uid, displayName: managerDisplayName },
         },
       },

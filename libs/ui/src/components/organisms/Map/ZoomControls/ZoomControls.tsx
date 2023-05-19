@@ -6,6 +6,7 @@ import {
   IconParking,
   IconPlus,
   IconSoup,
+  TablerIconsProps,
 } from '@tabler/icons-react'
 import { LngLat, useMap } from 'react-map-gl'
 import { ParkingIcon } from '../../../atoms/ParkingIcon'
@@ -47,8 +48,10 @@ const ZoomOut = () => {
 
 export const CenterOfMap = ({
   onClick,
+  Icon = IconParking,
 }: {
   onClick: (latLng: { lng: number; lat: number }) => void
+  Icon?: (props: TablerIconsProps) => JSX.Element
 }) => {
   const { current: map } = useMap()
   return (
@@ -60,7 +63,7 @@ export const CenterOfMap = ({
         onClick({ lat, lng })
       }}
     >
-      <IconParking className="w-8 h-8 p-1.5 text-black" />
+      <Icon className="w-8 h-8 p-1.5 text-black" />
     </button>
   )
 }

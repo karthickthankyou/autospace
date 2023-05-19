@@ -55,7 +55,7 @@ export class CompaniesResolver {
   myCompany(@GetUser() user: GetUserType) {
     console.log('user ', user)
     return this.prisma.company.findFirst({
-      where: { manager: { uid: user.uid } },
+      where: { managers: { some: { uid: user.uid } } },
     })
   }
 

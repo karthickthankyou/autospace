@@ -3,8 +3,8 @@ import { Prisma } from '@prisma/client'
 
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { BookingTimelineOrderByRelationAggregateInput } from 'src/models/booking-timelines/dto/orderBy.args'
-import { BookingOrderByRelationAggregateInput } from 'src/models/bookings/dto/orderBy.args'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dto/orderBy.args'
+import { ValetAssignmentOrderByRelationAggregateInput } from 'src/models/valet-assignments/dto/orderBy.args'
 
 @InputType()
 export class ValetOrderByWithRelationInput
@@ -14,6 +14,10 @@ export class ValetOrderByWithRelationInput
       Prisma.ValetOrderByWithRelationInput
     >
 {
+  @Field(() => ValetAssignmentOrderByRelationAggregateInput, { nullable: true })
+  pickupAssignments: ValetAssignmentOrderByRelationAggregateInput
+  @Field(() => ValetAssignmentOrderByRelationAggregateInput, { nullable: true })
+  returnAssignments: ValetAssignmentOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   uid: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })
@@ -26,10 +30,7 @@ export class ValetOrderByWithRelationInput
   companyId: Prisma.SortOrder
   @Field(() => CompanyOrderByWithRelationInput, { nullable: true })
   company: CompanyOrderByWithRelationInput
-  @Field(() => BookingOrderByRelationAggregateInput, { nullable: true })
-  checkInBookings: BookingOrderByRelationAggregateInput
-  @Field(() => BookingOrderByRelationAggregateInput, { nullable: true })
-  checkOutBookings: BookingOrderByRelationAggregateInput
+
   @Field(() => BookingTimelineOrderByRelationAggregateInput, { nullable: true })
   bookingTimeline: BookingTimelineOrderByRelationAggregateInput
 }

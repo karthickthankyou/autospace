@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
   IntFilter,
+  RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { CustomerRelationFilter } from 'src/models/customers/dto/where.args'
@@ -10,14 +11,17 @@ import { GarageRelationFilter } from 'src/models/garages/dto/where.args'
 
 @InputType()
 export class ReviewWhereUniqueInput
-  implements Required<Prisma.ReviewWhereUniqueInput>
+  implements
+    RestrictProperties<ReviewWhereUniqueInput, Prisma.ReviewWhereUniqueInput>
 {
   @Field(() => Number, { nullable: true })
   id: number
 }
 
 @InputType()
-export class ReviewWhereInput implements Required<Prisma.ReviewWhereInput> {
+export class ReviewWhereInput
+  implements RestrictProperties<ReviewWhereInput, Prisma.ReviewWhereInput>
+{
   @Field(() => CustomerRelationFilter, { nullable: true })
   customer: Prisma.CustomerRelationFilter
   @Field(() => GarageRelationFilter, { nullable: true })
@@ -53,7 +57,11 @@ export class ReviewWhereInput implements Required<Prisma.ReviewWhereInput> {
 
 @InputType()
 export class ReviewListRelationFilter
-  implements Required<Prisma.ReviewListRelationFilter>
+  implements
+    RestrictProperties<
+      ReviewListRelationFilter,
+      Prisma.ReviewListRelationFilter
+    >
 {
   @Field(() => ReviewWhereInput)
   every: Prisma.ReviewWhereInput

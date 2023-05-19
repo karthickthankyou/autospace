@@ -25,6 +25,11 @@ export type NotificationType = {
     | 'bottom-center'
 }
 
+export type LatLng = {
+  lat: number
+  lng: number
+}
+
 export type SimpleBound = {
   nw_lat: number
   nw_lng: number

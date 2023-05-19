@@ -3,26 +3,30 @@ import { Prisma } from '@prisma/client'
 import {
   DateTimeFilter,
   IntFilter,
+  RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { GarageListRelationFilter } from 'src/models/garages/dto/where.args'
-import { ManagerRelationFilter } from 'src/models/managers/dto/where.args'
+import { ManagerListRelationFilter } from 'src/models/managers/dto/where.args'
 import { ValetListRelationFilter } from 'src/models/valets/dto/where.args'
 
 @InputType()
 export class CompanyWhereUniqueInput
-  implements Required<Prisma.CompanyWhereUniqueInput>
+  implements
+    RestrictProperties<CompanyWhereUniqueInput, Prisma.CompanyWhereUniqueInput>
 {
   @Field(() => Number, { nullable: true })
   id: number
 }
 
 @InputType()
-export class CompanyWhereInput implements Required<Prisma.CompanyWhereInput> {
+export class CompanyWhereInput
+  implements RestrictProperties<CompanyWhereInput, Prisma.CompanyWhereInput>
+{
+  @Field(() => ManagerListRelationFilter, { nullable: true })
+  managers: ManagerListRelationFilter
   @Field(() => ValetListRelationFilter, { nullable: true })
   valets: ValetListRelationFilter
-  @Field(() => ManagerRelationFilter, { nullable: true })
-  manager: Prisma.ManagerRelationFilter
   @Field(() => IntFilter, { nullable: true })
   id: Prisma.IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

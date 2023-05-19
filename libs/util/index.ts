@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import axios from 'axios'
 import { format } from 'date-fns'
+import { LatLng } from '@autospace-org/types'
 
 import { notification$ } from './subjects'
 import { storage } from '@autospace-org/network/src/config/firebase'
@@ -104,4 +106,46 @@ export const getHHMMSS = (timestamp: string) => {
   const hours = date.getHours().toString().padStart(2, '0')
   const minutes = date.getMinutes().toString().padStart(2, '0')
   return `${hours}:${minutes}:00`
+}
+
+export const getDistanceFromLatLonInKm = ({
+  from,
+  to,
+}: {
+  from: { lat: number; lng: number }
+  to: { lat: number; lng: number }
+}) => {
+  const deg2rad = (deg: number) => {
+    return deg * (Math.PI / 180)
+  }
+  var R = 6371 // Radius of the earth in km
+  var dLat = deg2rad(to.lat - from.lat) // deg2rad below
+  var dLon = deg2rad(to.lng - from.lng)
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(from.lat)) *
+      Math.cos(deg2rad(to.lat)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2)
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  var d = R * c // Distance in km
+  return d
+}
+
+export const getDistance = async (origin: LatLng, destination: LatLng) => {
+  if (!origin || !destination) {
+    return
+  }
+  const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}`
+
+  try {
+    const response = await axios.get(url)
+    const data = response.data
+    console.log('Data ', data)
+    const distance = data.routes[0].distance // distance in meters
+
+    return distance / 1000 // convert to kilometers
+  } catch (error) {
+    console.error(error)
+  }
 }

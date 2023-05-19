@@ -143,8 +143,8 @@ export const CreateManySlotsDialog = ({ garageId }: { garageId: number }) => {
               />
             </HtmlLabel>
 
-            <HtmlLabel title="Projection type" error={errors.type?.toString()}>
-              <HtmlSelect placeholder="projection type" {...register(`type`)}>
+            <HtmlLabel title="Slot type" error={errors.type?.toString()}>
+              <HtmlSelect placeholder="Slot type" {...register(`type`)}>
                 {Object.values(SlotType).map((type) => (
                   <option key={type} value={type}>
                     {type}

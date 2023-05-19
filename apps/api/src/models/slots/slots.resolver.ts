@@ -56,12 +56,15 @@ export class SlotsResolver {
       where: { id: garageId },
       include: {
         company: {
-          include: { manager: true },
+          include: { managers: true },
         },
       },
     })
 
-    checkRowLevelPermission(user, garage.company.manager.uid)
+    checkRowLevelPermission(
+      user,
+      garage.company.managers.map((manager) => manager.uid),
+    )
 
     return this.prisma.slot.createMany({ data: args })
   }

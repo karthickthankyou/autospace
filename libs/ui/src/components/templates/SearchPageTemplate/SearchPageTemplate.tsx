@@ -34,6 +34,7 @@ import { ParkingIcon } from '../../atoms/ParkingIcon'
 import { Autocomplete } from '../../atoms/Autocomplete'
 import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
 import { Dialog } from '../../atoms/Dialog'
+import { FormProviderBookSlot } from '@autospace-org/forms/src/bookSlot'
 
 export interface ISearchPageTemplateProps {
   initialProps: {
@@ -159,8 +160,10 @@ export const MarkerWithPopup = ({
 
   return (
     <>
-      <Dialog title="outside" open={showPopup} setOpen={setShowPopup}>
-        <BookSlotPopup dateRange={{ endTime, startTime }} garage={marker} />
+      <Dialog title="Booking" open={showPopup} setOpen={setShowPopup}>
+        <FormProviderBookSlot>
+          <BookSlotPopup dateRange={{ endTime, startTime }} garage={marker} />
+        </FormProviderBookSlot>
       </Dialog>
 
       {/* <Popup

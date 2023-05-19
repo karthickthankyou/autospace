@@ -4,13 +4,15 @@ import {
   DateTimeFilter,
   FloatFilter,
   IntFilter,
+  RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { GarageRelationFilter } from 'src/models/garages/dto/where.args'
 
 @InputType()
 export class AddressWhereUniqueInput
-  implements Required<Prisma.AddressWhereUniqueInput>
+  implements
+    RestrictProperties<AddressWhereUniqueInput, Prisma.AddressWhereUniqueInput>
 {
   @Field(() => Number, { nullable: true })
   garageId: number
@@ -19,7 +21,9 @@ export class AddressWhereUniqueInput
 }
 
 @InputType()
-export class AddressWhereInput implements Required<Prisma.AddressWhereInput> {
+export class AddressWhereInput
+  implements RestrictProperties<AddressWhereInput, Prisma.AddressWhereInput>
+{
   @Field(() => StringFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

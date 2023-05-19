@@ -37,7 +37,7 @@ export class BookingTimelinesResolver {
             garage: {
               select: {
                 company: {
-                  select: { manager: { select: { uid: true } } },
+                  select: { managers: { select: { uid: true } } },
                 },
               },
             },
@@ -46,7 +46,10 @@ export class BookingTimelinesResolver {
       },
     })
 
-    checkRowLevelPermission(user, booking.slot.garage.company.manager.uid)
+    checkRowLevelPermission(
+      user,
+      booking.slot.garage.company.managers.map((manager) => manager.uid),
+    )
 
     const [updatedBooking, bookingTimeline] = await this.prisma.$transaction([
       this.prisma.booking.update({

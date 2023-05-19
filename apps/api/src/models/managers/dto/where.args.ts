@@ -11,7 +11,8 @@ import { CompanyRelationFilter } from 'src/models/companies/dto/where.args'
 
 @InputType()
 export class ManagerWhereUniqueInput
-  implements Required<Prisma.ManagerWhereUniqueInput>
+  implements
+    RestrictProperties<ManagerWhereUniqueInput, Prisma.ManagerWhereUniqueInput>
 {
   @Field(() => String, { nullable: true })
   uid: string
@@ -20,7 +21,9 @@ export class ManagerWhereUniqueInput
 }
 
 @InputType()
-export class ManagerWhereInput implements Required<Prisma.ManagerWhereInput> {
+export class ManagerWhereInput
+  implements RestrictProperties<ManagerWhereInput, Prisma.ManagerWhereInput>
+{
   @Field(() => BookingTimelineListRelationFilter, { nullable: true })
   BookingTimeline: BookingTimelineListRelationFilter
   @Field(() => StringFilter, { nullable: true })

@@ -16,7 +16,8 @@ registerEnumType(SlotType, {
 
 @InputType()
 export class SlotWhereUniqueInput
-  implements Required<Prisma.SlotWhereUniqueInput>
+  implements
+    RestrictProperties<SlotWhereUniqueInput, Prisma.SlotWhereUniqueInput>
 {
   @Field(() => Number, { nullable: true })
   id: number
@@ -35,7 +36,9 @@ export class EnumSlotTypeFilter {
 }
 
 @InputType()
-export class SlotWhereInput implements Required<Prisma.SlotWhereInput> {
+export class SlotWhereInput
+  implements RestrictProperties<SlotWhereInput, Prisma.SlotWhereInput>
+{
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })

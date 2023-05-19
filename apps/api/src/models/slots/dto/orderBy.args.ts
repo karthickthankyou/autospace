@@ -1,11 +1,16 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
 import { BookingOrderByRelationAggregateInput } from 'src/models/bookings/dto/orderBy.args'
 import { GarageOrderByWithRelationInput } from 'src/models/garages/dto/orderBy.args'
 
 @InputType()
 export class SlotOrderByWithRelationInput
-  implements Required<Prisma.SlotOrderByWithRelationInput>
+  implements
+    RestrictProperties<
+      SlotOrderByWithRelationInput,
+      Prisma.SlotOrderByWithRelationInput
+    >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder

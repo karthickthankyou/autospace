@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
 import { AddressOrderByWithRelationInput } from 'src/models/addresses/dto/orderBy.args'
 import { CompanyOrderByWithRelationInput } from 'src/models/companies/dto/orderBy.args'
 import { ReviewOrderByRelationAggregateInput } from 'src/models/reviews/dto/orderBy.args'
@@ -8,7 +9,11 @@ import { VerificationOrderByWithRelationInput } from 'src/models/verifications/d
 
 @InputType()
 export class GarageOrderByWithRelationInput
-  implements Required<Prisma.GarageOrderByWithRelationInput>
+  implements
+    RestrictProperties<
+      GarageOrderByWithRelationInput,
+      Prisma.GarageOrderByWithRelationInput
+    >
 {
   @Field(() => Prisma.SortOrder, { nullable: true })
   images: Prisma.SortOrder
