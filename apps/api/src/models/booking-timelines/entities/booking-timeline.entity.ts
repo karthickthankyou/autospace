@@ -9,6 +9,8 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 export class BookingTimeline
   implements RestrictProperties<BookingTimeline, BookingTimelineType>
 {
+  @Field(() => String, { nullable: true })
+  valetId: string
   id: number
   timestamp: Date
   bookingId: number

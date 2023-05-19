@@ -3,13 +3,13 @@ import { BrandIcon } from '../BrandIcon'
 export interface IBrandProps {
   shortForm?: boolean
   className?: string
-  type?: 'admin' | 'manager' | ''
+  type?: 'admin' | 'manager' | 'valet'
 }
 
 export const Brand = ({
   shortForm = false,
   className,
-  type = '',
+  type = undefined,
 }: IBrandProps) => {
   return (
     <div className={`grid place-items-center ${className}`}>

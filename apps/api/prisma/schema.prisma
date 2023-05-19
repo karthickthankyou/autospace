@@ -29,6 +29,18 @@ model Manager {
     BookingTimeline BookingTimeline[]
 }
 
+model Valet {
+    uid              String            @id
+    createdAt        DateTime          @default(now())
+    updatedAt        DateTime          @updatedAt
+    displayName      String
+    companyId        Int?              @unique
+    company          Company?          @relation(fields: [companyId], references: [id])
+    checkInBookings  Booking[]         @relation("CheckInValet")
+    checkOutBookings Booking[]         @relation("CheckOutValet")
+    bookingTimeline  BookingTimeline[]
+}
+
 model Company {
     id          Int      @id @default(autoincrement())
     createdAt   DateTime @default(now())
@@ -36,6 +48,7 @@ model Company {
     displayName String?
     garages     Garage[]
     manager     Manager?
+    valets      Valet[]
 }
 
 model Garage {
@@ -95,7 +108,13 @@ model Booking {
     customer        Customer          @relation(fields: [customerId], references: [uid])
     slot            Slot              @relation(fields: [slotId], references: [id])
     status          BookingStatus     @default(BOOKED)
-    BookingTimeline BookingTimeline[]
+    bookingTimeline BookingTimeline[]
+    type            BookingType       @default(SELF_PARK)
+
+    checkInValetId  String?
+    checkInValet    Valet?  @relation("CheckInValet", fields: [checkInValetId], references: [uid])
+    checkOutValetId String?
+    checkOutValet   Valet?  @relation("CheckOutValet", fields: [checkOutValetId], references: [uid])
 
     @@index([startTime, endTime])
 }
@@ -107,7 +126,10 @@ model BookingTimeline {
     status    BookingStatus
     managerId String?
     booking   Booking       @relation(fields: [bookingId], references: [id])
-    manager   Manager?      @relation(fields: [managerId], references: [uid])
+    valetId   String?
+    valet     Valet?        @relation(fields: [valetId], references: [uid])
+
+    manager Manager? @relation(fields: [managerId], references: [uid])
 
     @@index([bookingId])
 }
@@ -150,8 +172,17 @@ enum SlotType {
     BICYCLE
 }
 
+enum BookingType {
+    SELF_PARK
+    VALET
+}
+
 enum BookingStatus {
     BOOKED
+    VALET_ASSIGNED_FOR_CHECK_IN
+    VALET_PICKED_UP
     CHECKED_IN
+    VALET_ASSIGNED_FOR_CHECK_OUT
     CHECKED_OUT
+    VALET_RETURNED
 }

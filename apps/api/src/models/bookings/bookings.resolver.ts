@@ -23,7 +23,6 @@ import { checkRowLevelPermission } from 'src/common/guards'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { BookingWhereInput } from './dto/where.args'
 import { BadRequestException } from '@nestjs/common'
-import { BookingStatus } from '@prisma/client'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -101,16 +100,6 @@ export class BookingsResolver {
   @Query(() => Booking, { name: 'booking' })
   findOne(@Args() args: FindUniqueBookingArgs) {
     return this.bookingsService.findOne(args)
-  }
-
-  @Mutation(() => Booking)
-  updateBooking(@Args('updateBookingInput') args: UpdateBookingInput) {
-    return this.bookingsService.update(args)
-  }
-
-  @Mutation(() => Booking)
-  removeBooking(@Args() args: FindUniqueBookingArgs) {
-    return this.bookingsService.remove(args)
   }
 
   @ResolveField(() => Slot)

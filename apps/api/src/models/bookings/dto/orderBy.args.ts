@@ -3,11 +3,25 @@ import { Prisma } from '@prisma/client'
 import { BookingTimelineOrderByRelationAggregateInput } from 'src/models/booking-timelines/dto/orderBy.args'
 import { CustomerOrderByWithRelationInput } from 'src/models/customers/dto/orderBy.args'
 import { SlotOrderByWithRelationInput } from 'src/models/slots/dto/orderBy.args'
+import { ValetOrderByWithRelationInput } from 'src/models/valets/dto/orderBy.args'
 
 @InputType()
 export class BookingOrderByWithRelationInput
   implements Required<Prisma.BookingOrderByWithRelationInput>
 {
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  type: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  checkInValetId: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  checkOutValetId: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  bookingTimeline: BookingTimelineOrderByRelationAggregateInput
+  @Field(() => ValetOrderByWithRelationInput, { nullable: true })
+  checkInValet: ValetOrderByWithRelationInput
+  @Field(() => ValetOrderByWithRelationInput, { nullable: true })
+  checkOutValet: ValetOrderByWithRelationInput
+
   @Field(() => BookingTimelineOrderByRelationAggregateInput, { nullable: true })
   BookingTimeline: BookingTimelineOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder, { nullable: true })

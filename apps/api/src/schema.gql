@@ -204,6 +204,7 @@ input CompanyRelationFilter {
 }
 
 input CompanyWhereInput {
+  valets: ValetListRelationFilter
   manager: ManagerRelationFilter
   id: IntFilter
   createdAt: DateTimeFilter
@@ -215,62 +216,40 @@ input CompanyWhereInput {
   NOT: [CompanyWhereInput!]
 }
 
-input ManagerRelationFilter {
-  is: ManagerWhereInput
-  isNot: ManagerWhereInput
+input ValetListRelationFilter {
+  every: ValetWhereInput
+  some: ValetWhereInput
+  none: ValetWhereInput
 }
 
-input ManagerWhereInput {
-  BookingTimeline: BookingTimelineListRelationFilter
+input ValetWhereInput {
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   displayName: StringFilter
   companyId: IntFilter
   company: CompanyRelationFilter
-  AND: [ManagerWhereInput!]
-  OR: [ManagerWhereInput!]
-  NOT: [ManagerWhereInput!]
+  checkInBookings: BookingListRelationFilter
+  checkOutBookings: BookingListRelationFilter
+  bookingTimeline: BookingTimelineListRelationFilter
+  AND: [ValetWhereInput!]
+  OR: [ValetWhereInput!]
+  NOT: [ValetWhereInput!]
 }
 
-input BookingTimelineListRelationFilter {
-  every: BookingTimelineWhereInput
-  some: BookingTimelineWhereInput
-  none: BookingTimelineWhereInput
-}
-
-input BookingTimelineWhereInput {
-  id: IntFilter
-  timestamp: DateTimeFilter
-  bookingId: IntFilter
-  status: EnumBookingStatusFilter
-  managerId: StringFilter
-  booking: BookingRelationFilter
-  manager: ManagerRelationFilter
-  AND: [BookingTimelineWhereInput!]
-  OR: [BookingTimelineWhereInput!]
-  NOT: [BookingTimelineWhereInput!]
-}
-
-input EnumBookingStatusFilter {
-  equals: BookingStatus
-  in: [BookingStatus!]
-  notIn: [BookingStatus!]
-  not: BookingStatus
-}
-
-enum BookingStatus {
-  BOOKED
-  CHECKED_IN
-  CHECKED_OUT
-}
-
-input BookingRelationFilter {
-  is: BookingWhereInput
-  isNot: BookingWhereInput
+input BookingListRelationFilter {
+  every: BookingWhereInput
+  some: BookingWhereInput
+  none: BookingWhereInput
 }
 
 input BookingWhereInput {
+  type: EnumBookingTypeFilter
+  checkInValetId: StringFilter
+  checkOutValetId: StringFilter
+  bookingTimeline: BookingTimelineListRelationFilter
+  checkInValet: ValetRelationFilter
+  checkOutValet: ValetRelationFilter
   BookingTimeline: BookingTimelineListRelationFilter
   status: EnumBookingStatusFilter
   customer: CustomerRelationFilter
@@ -292,6 +271,84 @@ input BookingWhereInput {
   NOT: [BookingWhereInput!]
 }
 
+input EnumBookingTypeFilter {
+  equals: BookingType
+  in: [BookingType!]
+  notIn: [BookingType!]
+  not: BookingStatus
+}
+
+enum BookingType {
+  SELF_PARK
+  VALET
+}
+
+enum BookingStatus {
+  BOOKED
+  VALET_ASSIGNED_FOR_CHECK_IN
+  VALET_PICKED_UP
+  CHECKED_IN
+  VALET_ASSIGNED_FOR_CHECK_OUT
+  CHECKED_OUT
+  VALET_RETURNED
+}
+
+input BookingTimelineListRelationFilter {
+  every: BookingTimelineWhereInput
+  some: BookingTimelineWhereInput
+  none: BookingTimelineWhereInput
+}
+
+input BookingTimelineWhereInput {
+  valetId: StringFilter
+  valet: ValetRelationFilter
+  id: IntFilter
+  timestamp: DateTimeFilter
+  bookingId: IntFilter
+  status: EnumBookingStatusFilter
+  managerId: StringFilter
+  booking: BookingRelationFilter
+  manager: ManagerRelationFilter
+  AND: [BookingTimelineWhereInput!]
+  OR: [BookingTimelineWhereInput!]
+  NOT: [BookingTimelineWhereInput!]
+}
+
+input ValetRelationFilter {
+  is: ValetWhereInput
+  isNot: ValetWhereInput
+}
+
+input EnumBookingStatusFilter {
+  equals: BookingStatus
+  in: [BookingStatus!]
+  notIn: [BookingStatus!]
+  not: BookingStatus
+}
+
+input BookingRelationFilter {
+  is: BookingWhereInput
+  isNot: BookingWhereInput
+}
+
+input ManagerRelationFilter {
+  is: ManagerWhereInput
+  isNot: ManagerWhereInput
+}
+
+input ManagerWhereInput {
+  BookingTimeline: BookingTimelineListRelationFilter
+  uid: StringFilter
+  createdAt: DateTimeFilter
+  updatedAt: DateTimeFilter
+  displayName: StringFilter
+  companyId: IntFilter
+  company: CompanyRelationFilter
+  AND: [ManagerWhereInput!]
+  OR: [ManagerWhereInput!]
+  NOT: [ManagerWhereInput!]
+}
+
 input CustomerRelationFilter {
   is: CustomerWhereInput
   isNot: CustomerWhereInput
@@ -307,12 +364,6 @@ input CustomerWhereInput {
   AND: [CustomerWhereInput!]
   OR: [CustomerWhereInput!]
   NOT: [CustomerWhereInput!]
-}
-
-input BookingListRelationFilter {
-  every: BookingWhereInput
-  some: BookingWhereInput
-  none: BookingWhereInput
 }
 
 input ReviewListRelationFilter {
@@ -430,6 +481,9 @@ type Verification {
 }
 
 type Booking {
+  type: BookingType!
+  checkInValetId: String
+  checkOutValetId: String
   status: BookingStatus!
   pricePerHour: Int
   totalPrice: Int
@@ -509,6 +563,7 @@ type Review {
 }
 
 type BookingTimeline {
+  valetId: String
   status: BookingStatus!
   id: Int!
   timestamp: DateTime!
@@ -606,12 +661,17 @@ input ReviewOrderByRelationAggregateInput {
 }
 
 input CompanyOrderByWithRelationInput {
+  valets: ValetOrderByRelationAggregateInput
   manager: ManagerOrderByWithRelationInput
   id: SortOrder
   createdAt: SortOrder
   updatedAt: SortOrder
   displayName: SortOrder
   garages: GarageOrderByRelationAggregateInput
+}
+
+input ValetOrderByRelationAggregateInput {
+  _count: SortOrder
 }
 
 input ManagerOrderByWithRelationInput {
@@ -663,6 +723,12 @@ enum AdminScalarFieldEnum {
 }
 
 input BookingOrderByWithRelationInput {
+  type: SortOrder
+  checkInValetId: SortOrder
+  checkOutValetId: SortOrder
+  bookingTimeline: SortOrder
+  checkInValet: ValetOrderByWithRelationInput
+  checkOutValet: ValetOrderByWithRelationInput
   BookingTimeline: BookingTimelineOrderByRelationAggregateInput
   status: SortOrder
   id: SortOrder
@@ -681,6 +747,22 @@ input BookingOrderByWithRelationInput {
   customer: CustomerOrderByWithRelationInput
 }
 
+input ValetOrderByWithRelationInput {
+  uid: SortOrder
+  createdAt: SortOrder
+  updatedAt: SortOrder
+  displayName: SortOrder
+  companyId: SortOrder
+  company: CompanyOrderByWithRelationInput
+  checkInBookings: BookingOrderByRelationAggregateInput
+  checkOutBookings: BookingOrderByRelationAggregateInput
+  bookingTimeline: BookingTimelineOrderByRelationAggregateInput
+}
+
+input BookingOrderByRelationAggregateInput {
+  _count: SortOrder
+}
+
 input SlotOrderByWithRelationInput {
   id: SortOrder
   createdAt: SortOrder
@@ -694,10 +776,6 @@ input SlotOrderByWithRelationInput {
   garageId: SortOrder
   garage: GarageOrderByWithRelationInput
   bookings: BookingOrderByRelationAggregateInput
-}
-
-input BookingOrderByRelationAggregateInput {
-  _count: SortOrder
 }
 
 input CustomerOrderByWithRelationInput {
@@ -727,9 +805,14 @@ enum BookingScalarFieldEnum {
   phoneNumber
   passcode
   status
+  type
+  checkInValetId
+  checkOutValetId
 }
 
 input BookingTimelineOrderByWithRelationInput {
+  valetId: SortOrder
+  valet: ValetOrderByWithRelationInput
   id: SortOrder
   timestamp: SortOrder
   bookingId: SortOrder
@@ -749,6 +832,7 @@ enum BookingTimelineScalarFieldEnum {
   bookingId
   status
   managerId
+  valetId
 }
 
 input CompanyWhereUniqueInput {
@@ -883,8 +967,6 @@ type Mutation {
   updateAdmin(updateAdminInput: UpdateAdminInput!): Admin!
   removeAdmin(where: AdminWhereUniqueInput): Admin!
   createBooking(createBookingInput: CreateBookingInput!): Booking!
-  updateBooking(updateBookingInput: UpdateBookingInput!): Booking!
-  removeBooking(where: BookingWhereUniqueInput): Booking!
   createBookingTimeline(createBookingTimelineInput: CreateBookingTimelineInput!): BookingTimeline!
   updateBookingTimeline(updateBookingTimelineInput: UpdateBookingTimelineInput!): BookingTimeline!
   removeBookingTimeline(where: BookingTimelineWhereUniqueInput): BookingTimeline!
@@ -966,17 +1048,6 @@ input CreateBookingInput {
   phoneNumber: String
   type: SlotType!
   garageId: Int!
-}
-
-input UpdateBookingInput {
-  startTime: DateTime
-  endTime: DateTime
-  customerId: String
-  vehicleNumber: String
-  phoneNumber: String
-  type: SlotType
-  garageId: Int
-  id: Int!
 }
 
 input CreateBookingTimelineInput {

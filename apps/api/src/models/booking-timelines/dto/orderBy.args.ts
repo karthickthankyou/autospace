@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { BookingOrderByWithRelationInput } from 'src/models/bookings/dto/orderBy.args'
 import { ManagerOrderByWithRelationInput } from 'src/models/managers/dto/orderBy.args'
+import { ValetOrderByWithRelationInput } from 'src/models/valets/dto/orderBy.args'
 
 @InputType()
 export class BookingTimelineOrderByWithRelationInput
@@ -12,6 +13,10 @@ export class BookingTimelineOrderByWithRelationInput
       Prisma.BookingTimelineOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  valetId: Prisma.SortOrder
+  @Field(() => ValetOrderByWithRelationInput, { nullable: true })
+  valet: ValetOrderByWithRelationInput
   @Field(() => Prisma.SortOrder, { nullable: true })
   id: Prisma.SortOrder
   @Field(() => Prisma.SortOrder, { nullable: true })

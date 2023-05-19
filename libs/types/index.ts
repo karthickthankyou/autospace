@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react'
-export type Role = 'admin' | 'manager'
+import { ReactNode } from 'react'
+export type Role = 'admin' | 'manager' | 'valet'
 
 export type GetUserType = {
   uid: string

@@ -11,6 +11,7 @@ import {
   EnumBookingStatusFilter,
 } from 'src/models/bookings/dto/where.args'
 import { ManagerRelationFilter } from 'src/models/managers/dto/where.args'
+import { ValetRelationFilter } from 'src/models/valets/dto/where.args'
 
 @InputType()
 export class BookingTimelineWhereUniqueInput
@@ -32,6 +33,10 @@ export class BookingTimelineWhereInput
       Prisma.BookingTimelineWhereInput
     >
 {
+  @Field(() => StringFilter, { nullable: true })
+  valetId: StringFilter
+  @Field(() => ValetRelationFilter, { nullable: true })
+  valet: ValetRelationFilter
   @Field(() => IntFilter, { nullable: true })
   id: IntFilter
   @Field(() => DateTimeFilter, { nullable: true })
