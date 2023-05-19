@@ -9,18 +9,21 @@ import {
   isStartTimeValid,
 } from './util'
 
-export const formSchemaValet = z.object({
-  pickupInfo: z.object({
-    notes: z.string().min(1),
+export const locationInfo = z
+  .object({
+    notes: z.string().min(1).optional(),
     lat: z.number(),
     lng: z.number(),
-  }),
-  returnInfo: z.object({
-    notes: z.string().min(1),
-    lat: z.number(),
-    lng: z.number(),
-  }),
-})
+    distance: z.number().optional(),
+  })
+  .optional()
+
+export const formSchemaValet = z
+  .object({
+    pickupInfo: locationInfo,
+    dropoffInfo: locationInfo,
+  })
+  .optional()
 
 export const formSchemaBookSlot = z.object({
   startTime: z.string(),

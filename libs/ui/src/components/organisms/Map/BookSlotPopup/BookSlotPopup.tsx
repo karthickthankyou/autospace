@@ -9,12 +9,10 @@ import {
   IconBike,
   IconCar,
   IconMotorbike,
-  IconSquareRoundedNumber1,
-  IconSquareRoundedNumber2,
   IconTir,
   IconUser,
 } from '@tabler/icons-react'
-import MapGL, { Source, Layer } from 'react-map-gl'
+import { Source, Layer } from 'react-map-gl'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 
@@ -39,12 +37,9 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { ShowImages } from '../../../molecules/ShowImages'
 import { Switch } from '../../../atoms/Switch'
 import { Panel } from '../Panel'
-import { SearchBox } from '../../../templates/CreateGarage/CreateGarage'
 import { CenterOfMap, DefaultZoomControls } from '../ZoomControls/ZoomControls'
 import { Marker } from '../MapMarker'
 import { ParkingIcon } from '../../../atoms/ParkingIcon'
-import { getDistance } from '@autospace-org/util'
-import { MarkerDragEvent } from 'react-map-gl'
 import { LatLng } from '@autospace-org/types'
 import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 import { LngLatTuple } from '@autospace-org/store/map'
@@ -74,7 +69,6 @@ export const BookSlotPopup = ({
     handleSubmit,
     setValue,
     formState: { errors },
-    watch,
   } = useFormContext<FormTypeBookSlot>()
 
   useEffect(() => {
@@ -82,7 +76,11 @@ export const BookSlotPopup = ({
     if (dateRange?.endTime) setValue('endTime', dateRange.endTime)
   }, [dateRange])
 
-  const { startTime, endTime, type, valet } = watch()
+  const { startTime, endTime, type, valet } = useWatch<FormTypeBookSlot>()
+
+  const [showValet, setShowValet] = useState(false)
+  const [differentDropoffLocation, setDifferentDropoffLocation] =
+    useState(false)
 
   const totalPrice = useTotalPrice({
     pricePerHour: garage.availableSlots.find((slot) => slot.type === type)
@@ -90,15 +88,9 @@ export const BookSlotPopup = ({
     startTime,
     endTime,
     location: garage.address,
-    valet: { pickup: valet?.pickupInfo, deliver: valet?.returnInfo },
+    valet,
+    differentDropoffLocation,
   })
-
-  useEffect(() => {
-    console.log(getDistance(garage.address, valet?.pickupInfo))
-  }, [garage.address, valet?.pickupInfo])
-
-  const [showValet, setShowValet] = useState(false)
-  const [differentLocations, setDifferentLocations] = useState(false)
 
   return (
     <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
@@ -197,117 +189,6 @@ export const BookSlotPopup = ({
             />
           </HtmlLabel>
         </div>
-        <div className="p-2 bg-gray-50">
-          <HtmlLabel title="Need valet?">
-            <Switch
-              checked={showValet}
-              onChange={(e) => setShowValet(e.target.checked)}
-            />
-          </HtmlLabel>
-          {showValet ? (
-            <div>
-              <HtmlLabel title="Different pick up and deliver locations?">
-                <Switch
-                  checked={differentLocations}
-                  onChange={(e) => setDifferentLocations(e.target.checked)}
-                />
-              </HtmlLabel>
-              <Map
-                initialViewState={{
-                  latitude: garage.address.lat,
-                  longitude: garage.address.lng,
-                  zoom: 13,
-                }}
-                height="30vh"
-              >
-                <Marker
-                  latitude={garage.address.lat}
-                  longitude={garage.address.lng}
-                >
-                  <ParkingIcon />
-                </Marker>
-                {showValet ? (
-                  <MarkerWithDirection
-                    sourceId="pickup_route"
-                    destination={{
-                      lat: valet?.pickupInfo?.lat,
-                      lng: valet?.pickupInfo?.lng,
-                    }}
-                    origin={garage.address}
-                    onDragEnd={({ lngLat }) => {
-                      const { lat, lng } = lngLat
-                      setValue('valet.pickupInfo.lat', lat || 0)
-                      setValue('valet.pickupInfo.lng', lng || 0)
-                    }}
-                  >
-                    <div className="flex flex-col items-center">
-                      <IconUser />
-                      <span>
-                        Pickup {!differentLocations ? '& deliver' : null}
-                      </span>
-                    </div>
-                  </MarkerWithDirection>
-                ) : null}
-
-                {differentLocations ? (
-                  <MarkerWithDirection
-                    sourceId="deliver_route"
-                    destination={{
-                      lat: valet?.returnInfo?.lat,
-                      lng: valet?.returnInfo?.lng,
-                    }}
-                    origin={garage.address}
-                    onDragEnd={({ lngLat }) => {
-                      const { lat, lng } = lngLat
-                      setValue('valet.returnInfo.lat', lat || 0)
-                      setValue('valet.returnInfo.lng', lng || 0)
-                    }}
-                  >
-                    <div className="flex flex-col items-center">
-                      <IconUser />
-                      <span>Deliver</span>
-                    </div>
-                  </MarkerWithDirection>
-                ) : null}
-
-                <Panel position="left-top">
-                  <DefaultZoomControls>
-                    <CenterOfMap
-                      Icon={IconUser}
-                      onClick={(latLng) => {
-                        const lat = parseFloat(latLng.lat.toFixed(6))
-                        const lng = parseFloat(latLng.lng.toFixed(6))
-
-                        setValue('valet.pickupInfo.lat', lat, {
-                          shouldValidate: true,
-                        })
-                        setValue('valet.pickupInfo.lng', lng, {
-                          shouldValidate: true,
-                        })
-                      }}
-                    />
-                    {differentLocations ? (
-                      <CenterOfMap
-                        Icon={IconUser}
-                        onClick={(latLng) => {
-                          const lat = parseFloat(latLng.lat.toFixed(6))
-                          const lng = parseFloat(latLng.lng.toFixed(6))
-
-                          setValue('valet.returnInfo.lat', lat, {
-                            shouldValidate: true,
-                          })
-                          setValue('valet.returnInfo.lng', lng, {
-                            shouldValidate: true,
-                          })
-                        }}
-                      />
-                    ) : null}
-                  </DefaultZoomControls>
-                </Panel>
-              </Map>
-            </div>
-          ) : null}
-        </div>
 
         <HtmlLabel title="Start time" error={errors.startTime?.message}>
           <HtmlInput
@@ -343,9 +224,200 @@ export const BookSlotPopup = ({
           </HtmlLabel>
         </div>
         <RadioGroup />
+        <div className="p-2 space-y-3 bg-gray-50">
+          <div className="text-xl font-bold">Valet</div>
+          <HtmlLabel title="Need valet?">
+            <p className="text-sm text-gray">
+              Our valets will whisk your car away to its reserved spot and bring
+              it back when you're ready. It's like magic, but with cars!
+            </p>
+            <Switch
+              checked={showValet}
+              onChange={(e) => {
+                setShowValet(e.target.checked)
+                console.log('e.target.checked ', e.target.checked)
+                if (!e.target.checked) {
+                  setValue('valet', undefined, {
+                    shouldValidate: true,
+                  })
+                  setDifferentDropoffLocation(false)
+                } else {
+                  setValue('valet.pickupInfo', {
+                    lat: garage.address.lat,
+                    lng: garage.address.lng,
+                  })
+                  setValue('valet.dropoffInfo', undefined)
+                }
+              }}
+            />
+          </HtmlLabel>
+          {showValet ? (
+            <div>
+              <HtmlLabel title="Add a different drop off location?">
+                <p className="text-sm text-gray">
+                  Want your car delivered somewhere else? No problem! Choose a
+                  different drop-off point and we'll make sure your ride is
+                  there waiting for you.
+                </p>
+                <Switch
+                  checked={differentDropoffLocation}
+                  onChange={(e) => {
+                    setDifferentDropoffLocation(e.target.checked)
+                    if (!e.target.checked) {
+                      setValue('valet.dropoffInfo', undefined, {
+                        shouldValidate: true,
+                      })
+                    } else {
+                      setValue('valet.dropoffInfo', {
+                        lat: garage.address.lat,
+                        lng: garage.address.lng,
+                      })
+                    }
+                  }}
+                />
+              </HtmlLabel>
+              <Map
+                initialViewState={{
+                  latitude: garage.address.lat,
+                  longitude: garage.address.lng,
+                  zoom: 13,
+                }}
+                height="30vh"
+              >
+                <Marker
+                  latitude={garage.address.lat}
+                  longitude={garage.address.lng}
+                >
+                  <ParkingIcon />
+                </Marker>
+                {showValet &&
+                valet?.pickupInfo?.lng &&
+                valet?.pickupInfo?.lat ? (
+                  <>
+                    <Marker
+                      pitchAlignment="auto"
+                      longitude={valet?.pickupInfo?.lng}
+                      latitude={valet?.pickupInfo?.lat}
+                      draggable
+                      onDragEnd={({ lngLat }) => {
+                        const { lat, lng } = lngLat
+                        setValue('valet.pickupInfo.lat', lat || 0)
+                        setValue('valet.pickupInfo.lng', lng || 0)
+                      }}
+                    >
+                      <div className="flex flex-col items-center">
+                        <IconUser />
+                        <span>
+                          Pickup{' '}
+                          {!differentDropoffLocation ? '& drop off' : null}
+                        </span>
+                      </div>
+                    </Marker>
+                    <Directions
+                      sourceId={'pickup_route'}
+                      origin={garage.address}
+                      destination={{
+                        lat: valet?.pickupInfo?.lat,
+                        lng: valet?.pickupInfo?.lng,
+                      }}
+                      setDistance={(distance) => {
+                        setValue('valet.pickupInfo.distance', distance)
+                      }}
+                    />
+                  </>
+                ) : null}
+
+                {differentDropoffLocation &&
+                valet?.dropoffInfo?.lng &&
+                valet?.dropoffInfo?.lat ? (
+                  <>
+                    <Marker
+                      pitchAlignment="auto"
+                      longitude={valet?.dropoffInfo?.lng}
+                      latitude={valet?.dropoffInfo?.lat}
+                      draggable
+                      onDragEnd={({ lngLat }) => {
+                        const { lat, lng } = lngLat
+                        setValue('valet.dropoffInfo.lat', lat || 0)
+                        setValue('valet.dropoffInfo.lng', lng || 0)
+                      }}
+                    >
+                      <div className="flex flex-col items-center">
+                        <IconUser />
+                        <span>Drop off</span>
+                      </div>
+                    </Marker>
+                    <Directions
+                      sourceId={'dropoff_route'}
+                      origin={garage.address}
+                      destination={{
+                        lat: valet?.dropoffInfo?.lat,
+                        lng: valet?.dropoffInfo?.lng,
+                      }}
+                      setDistance={(distance) => {
+                        setValue('valet.dropoffInfo.distance', distance)
+                      }}
+                    />
+                  </>
+                ) : null}
+
+                <Panel position="left-top">
+                  <DefaultZoomControls>
+                    <CenterOfMap
+                      Icon={IconUser}
+                      onClick={(latLng) => {
+                        const lat = parseFloat(latLng.lat.toFixed(6))
+                        const lng = parseFloat(latLng.lng.toFixed(6))
+
+                        setValue('valet.pickupInfo.lat', lat, {
+                          shouldValidate: true,
+                        })
+                        setValue('valet.pickupInfo.lng', lng, {
+                          shouldValidate: true,
+                        })
+                      }}
+                    />
+                    {differentDropoffLocation ? (
+                      <CenterOfMap
+                        Icon={IconUser}
+                        onClick={(latLng) => {
+                          const lat = parseFloat(latLng.lat.toFixed(6))
+                          const lng = parseFloat(latLng.lng.toFixed(6))
+
+                          setValue('valet.dropoffInfo.lat', lat, {
+                            shouldValidate: true,
+                          })
+                          setValue('valet.dropoffInfo.lng', lng, {
+                            shouldValidate: true,
+                          })
+                        }}
+                      />
+                    ) : null}
+                  </DefaultZoomControls>
+                </Panel>
+              </Map>
+            </div>
+          ) : null}
+        </div>
         {totalPrice ? (
           <div className="mt-4">
-            <div className="text-lg font-bold">Rs. {totalPrice}</div>
+            <CostTitleValue title="Parking" price={totalPrice.parkingCharge} />
+            <CostTitleValue
+              title="Valet Pickup"
+              price={totalPrice.valetChargePickup}
+            />
+            <CostTitleValue
+              title="Valet Dropoff"
+              price={totalPrice.valetChargeDropoff}
+            />
+            <CostTitleValue
+              title="Total"
+              price={
+                totalPrice.parkingCharge +
+                totalPrice.valetChargePickup +
+                totalPrice.valetChargeDropoff
+              }
+            />
           </div>
         ) : null}
         <Button type="submit" loading={loading} className="w-full mt-2">
@@ -356,10 +428,29 @@ export const BookSlotPopup = ({
   )
 }
 
+export const CostTitleValue = ({
+  title,
+  price,
+}: {
+  title: string
+  price: ReactNode
+}) => {
+  if (!price) return null
+  return (
+    <div className="flex justify-between text-lg font-bold">
+      <div>{title}</div> <div>Rs. {price}</div>
+    </div>
+  )
+}
+
 export const createBookingSession = async (
   uid: string,
   redirectUrl: string,
-  totalPrice: number,
+  totalPrice: {
+    parkingCharge: number
+    valetChargeDropoff: number
+    valetChargePickup: number
+  },
 ) => {
   const checkoutSession = await axios.post('http://localhost:3000/stripe', {
     totalPrice,
@@ -378,61 +469,27 @@ export const createBookingSession = async (
   return result
 }
 
-export const MarkerWithDirection = ({
-  destination,
-  origin,
-  onDragEnd,
-  children,
-  sourceId,
-}: {
-  origin: LatLng
-  destination: Partial<LatLng>
-  onDragEnd: (e: MarkerDragEvent) => void
-  children: ReactNode
-  sourceId: string
-}) => {
-  if (!destination.lng || !destination.lat) {
-    return null
-  }
-
-  return (
-    <>
-      <Marker
-        pitchAlignment="auto"
-        longitude={destination.lng}
-        latitude={destination.lat}
-        draggable
-        onDragEnd={onDragEnd}
-      >
-        {children}
-      </Marker>
-      <Directions
-        sourceId={sourceId}
-        origin={origin}
-        destination={{ lat: destination.lat, lng: destination.lng }}
-      />
-    </>
-  )
-}
-
 export const Directions = React.memo(
   ({
     origin: originRaw,
     destination: destinationRaw,
     sourceId,
+    setDistance,
   }: {
     origin: LatLng
-    destination: LatLng
+    destination: Partial<LatLng>
     sourceId: string
+    setDistance: (distance?: number) => void
   }) => {
     const [coordinates, setCoordinates] = useState<LngLatTuple[]>([])
 
-    const { origin, destination } = useDebouncedValue({
-      origin: originRaw,
-      destination: destinationRaw,
-    })
-
-    console.log('coordinates ', coordinates, origin, destination)
+    const { origin, destination } = useDebouncedValue(
+      {
+        origin: originRaw,
+        destination: destinationRaw,
+      },
+      200,
+    )
 
     useEffect(() => {
       ;(async () => {
@@ -442,7 +499,6 @@ export const Directions = React.memo(
         }
 
         const response = await fetch(
-          // pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ
           `https://api.mapbox.com/directions/v5/mapbox/walking/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&steps=true&overview=simplified`,
         )
         const data = await response.json()
@@ -450,7 +506,7 @@ export const Directions = React.memo(
           data?.routes[0]?.legs[0]?.steps.map(
             (step: { maneuver: { location: any } }) => step.maneuver.location,
           ) || []
-        console.log('coordinates', coordinates)
+        setDistance(data.routes[0].distance || 0)
         setCoordinates(coordinates)
       })()
     }, [origin, destination])
