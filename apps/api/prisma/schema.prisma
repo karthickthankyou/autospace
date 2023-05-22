@@ -64,6 +64,21 @@ model Garage {
     reviews      Review[]
     slots        Slot[]
     verification Verification?
+    services     Service[]
+}
+
+model Service {
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String
+    description String
+    price       Int
+    duration    Int
+    Garage      Garage?  @relation(fields: [garageId], references: [id])
+    garageId    Int?
+    Booking     Booking? @relation(fields: [bookingId], references: [id])
+    bookingId   Int?
 }
 
 model Address {
@@ -110,6 +125,7 @@ model Booking {
     slot            Slot              @relation(fields: [slotId], references: [id])
     status          BookingStatus     @default(BOOKED)
     bookingTimeline BookingTimeline[]
+    services        Service[]
 
     valetAssignment ValetAssignment?
 

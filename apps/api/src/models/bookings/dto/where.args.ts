@@ -9,6 +9,7 @@ import {
 } from 'src/common/dtos/common.input'
 import { BookingTimelineListRelationFilter } from 'src/models/booking-timelines/dto/where.args'
 import { CustomerRelationFilter } from 'src/models/customers/dto/where.args'
+import { ServiceListRelationFilter } from 'src/models/services/dto/where.args'
 import { SlotRelationFilter } from 'src/models/slots/dto/where.args'
 import { ValetAssignmentRelationFilter } from 'src/models/valet-assignments/dto/where.args'
 
@@ -37,6 +38,8 @@ export class EnumBookingStatusFilter {
 export class BookingWhereInput
   implements RestrictProperties<BookingWhereInput, Prisma.BookingWhereInput>
 {
+  @Field(() => ServiceListRelationFilter, { nullable: true })
+  services: ServiceListRelationFilter
   @Field(() => ValetAssignmentRelationFilter, { nullable: true })
   valetAssignment: ValetAssignmentRelationFilter
 

@@ -1,31 +1,21 @@
 import { useEffect, useState } from 'react'
-import { SlotType, Garage } from '@autospace-org/network/src/generated'
 import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
-import { DeepPartialSkipArrayKey } from 'react-hook-form'
-
+import { useWatch } from 'react-hook-form'
 import { differenceInTime } from '@autospace-org/util/date'
 
 export type TotalPriceType = {
   pricePerHour?: number
-  startTime?: string
-  endTime?: string
-  location?: { lat: number; lng: number }
-  valet?: DeepPartialSkipArrayKey<FormTypeBookSlot['valet']>
-  differentDropoffLocation?: boolean
 }
 
 export const VALET_CHARGE_PER_METER = 0.02
 
-export const useTotalPrice = ({
-  pricePerHour,
-  startTime,
-  endTime,
-  valet,
-  differentDropoffLocation,
-}: TotalPriceType) => {
+export const useTotalPrice = ({ pricePerHour }: TotalPriceType) => {
+  const { startTime, endTime, valet, services } = useWatch<FormTypeBookSlot>()
+
   const [parkingCharge, setParkingCharge] = useState(0)
   const [valetChargePickup, setValetChargePickup] = useState(0)
   const [valetChargeDropoff, setValetChargeDropoff] = useState(0)
+  const [servicesCharge, setServicesCharge] = useState(0)
 
   useEffect(() => {
     if (!startTime || !endTime) return
@@ -52,9 +42,21 @@ export const useTotalPrice = ({
 
     setValetChargePickup(Math.floor(pickupCharge))
     setValetChargeDropoff(
-      Math.floor(differentDropoffLocation ? dropoffCharge : pickupCharge),
+      Math.floor(valet?.differentLocations ? dropoffCharge : pickupCharge),
     )
   }, [valet])
 
-  return { parkingCharge, valetChargePickup, valetChargeDropoff }
+  useEffect(() => {
+    const charges =
+      services?.reduce((total, curr) => total + (curr?.price || 0), 0) || 0
+
+    setServicesCharge(charges)
+  }, [services])
+
+  return {
+    parkingCharge,
+    valetChargePickup,
+    valetChargeDropoff,
+    servicesCharge,
+  }
 }

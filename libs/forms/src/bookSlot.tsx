@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { BookingType, SlotType } from '@autospace-org/network/src/generated'
+import { SlotType } from '@autospace-org/network/src/generated'
 import { ReactNode, useEffect } from 'react'
 import {
   getCurrentTimeAndOneHourLater,
@@ -17,11 +17,19 @@ export const locationInfo = z
     distance: z.number().optional(),
   })
   .optional()
+export const serviceInfo = z
+  .object({
+    id: z.number(),
+    price: z.number(),
+    duration: z.number(),
+  })
+  .optional()
 
 export const formSchemaValet = z
   .object({
     pickupInfo: locationInfo,
     dropoffInfo: locationInfo,
+    differentLocations: z.boolean().optional(),
   })
   .optional()
 
@@ -30,6 +38,7 @@ export const formSchemaBookSlot = z.object({
   endTime: z.string(),
 
   valet: formSchemaValet,
+  services: z.array(serviceInfo).optional(),
 
   vehicleNumber: z.string().min(1, { message: 'Vehicle number is required' }),
   type: z.nativeEnum(SlotType, {

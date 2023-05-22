@@ -2,12 +2,14 @@ import axios from 'axios'
 import { Map } from '@autospace-org/ui/src/components/organisms/Map'
 
 import { loadStripe } from '@stripe/stripe-js'
-import { useTotalPrice } from '@autospace-org/hooks/src/useTotalPrice'
 
 import { RadioGroup } from '@headlessui/react'
 import {
+  IconAlertCircle,
   IconBike,
   IconCar,
+  IconCircleMinus,
+  IconCirclePlus,
   IconMotorbike,
   IconTir,
   IconUser,
@@ -32,7 +34,6 @@ import { Form } from '../../../atoms/Form'
 import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
 import { notification$ } from '@autospace-org/util/subjects'
 import { useUserStore } from '@autospace-org/store/user'
-import { DateRange } from '@autospace-org/forms/src/util'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { ShowImages } from '../../../molecules/ShowImages'
 import { Switch } from '../../../atoms/Switch'
@@ -40,10 +41,11 @@ import { Panel } from '../Panel'
 import { CenterOfMap, DefaultZoomControls } from '../ZoomControls/ZoomControls'
 import { Marker } from '../MapMarker'
 import { ParkingIcon } from '../../../atoms/ParkingIcon'
-import { LatLng } from '@autospace-org/types'
+import { LatLng, TotalPrice } from '@autospace-org/types'
 import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 import { LngLatTuple } from '@autospace-org/store/map'
 import React from 'react'
+import { differenceInTime } from '@autospace-org/util/date'
 
 const IconTypes = {
   [SlotType.Bicycle]: <IconBike />,
@@ -54,43 +56,43 @@ const IconTypes = {
 
 export const BookSlotPopup = ({
   garage,
-  dateRange,
 }: {
   garage: SearchGaragesQuery['searchGarages'][0]
-  dateRange: Partial<DateRange>
 }) => {
   const uid = useUserStore((state) => state.uid)
 
-  const [createBooking, { loading, error }] = useCreateBookingMutation()
+  const [createBooking, { loading }] = useCreateBookingMutation()
 
   const {
     control,
     register,
     handleSubmit,
     setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useFormContext<FormTypeBookSlot>()
 
-  useEffect(() => {
-    if (dateRange?.startTime) setValue('startTime', dateRange.startTime)
-    if (dateRange?.endTime) setValue('endTime', dateRange.endTime)
-  }, [dateRange])
-
   const { startTime, endTime, type, valet } = useWatch<FormTypeBookSlot>()
 
-  const [showValet, setShowValet] = useState(false)
-  const [differentDropoffLocation, setDifferentDropoffLocation] =
-    useState(false)
+  useEffect(() => {
+    if (startTime) setValue('startTime', startTime)
+    if (endTime) setValue('endTime', endTime)
+  }, [startTime, endTime])
 
-  const totalPrice = useTotalPrice({
-    pricePerHour: garage.availableSlots.find((slot) => slot.type === type)
-      ?.pricePerHour,
-    startTime,
-    endTime,
-    location: garage.address,
-    valet,
-    differentDropoffLocation,
-  })
+  //   const totalPrice = useTotalPrice({
+  //     pricePerHour: garage.availableSlots.find((slot) => slot.type === type)
+  //       ?.pricePerHour,
+  //   })
+
+  const totalPrice = {
+    parkingCharge: 0,
+    valetChargePickup: 0,
+    valetChargeDropoff: 0,
+    servicesCharge: 0,
+  }
+
+  console.log('Running ...')
 
   return (
     <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
@@ -106,6 +108,15 @@ export const BookSlotPopup = ({
           }
 
           try {
+            const res = await createBookingSession(
+              uid!,
+              'http://localhost:3001',
+              totalPrice,
+            )
+            if (res?.error) {
+              notification$.next({ message: 'Booking failed.' })
+              return
+            }
             const { errors } = await createBooking({
               variables: {
                 createBookingInput: {
@@ -116,6 +127,25 @@ export const BookSlotPopup = ({
                   type,
                   garageId: garage.id,
                   vehicleNumber: data.vehicleNumber,
+
+                  ...(data.valet?.pickupInfo && data.valet?.dropoffInfo
+                    ? {
+                        valetAssignment: {
+                          pickupLat: data.valet?.pickupInfo?.lat,
+                          pickupLng: data.valet?.pickupInfo?.lng,
+                          returnLat: data.valet?.dropoffInfo?.lat,
+                          returnLng: data.valet?.dropoffInfo?.lng,
+                        },
+                      }
+                    : {}),
+
+                  services:
+                    data.services?.reduce<{ id: number }[]>((acc, service) => {
+                      if (service?.id) {
+                        acc.push({ id: service.id })
+                      }
+                      return acc
+                    }, []) || [],
                 },
               },
             })
@@ -124,11 +154,6 @@ export const BookSlotPopup = ({
                 notification$.next({ message: error.message }),
               )
             }
-            const res = await createBookingSession(
-              uid!,
-              'http://localhost:3001',
-              totalPrice,
-            )
           } catch (error) {
             console.error(error)
           }
@@ -224,181 +249,24 @@ export const BookSlotPopup = ({
           </HtmlLabel>
         </div>
         <RadioGroup />
-        <div className="p-2 space-y-3 bg-gray-50">
-          <div className="text-xl font-bold">Valet</div>
-          <HtmlLabel title="Need valet?">
-            <p className="text-sm text-gray">
-              Our valets will whisk your car away to its reserved spot and bring
-              it back when you're ready. It's like magic, but with cars!
-            </p>
-            <Switch
-              checked={showValet}
-              onChange={(e) => {
-                setShowValet(e.target.checked)
-                console.log('e.target.checked ', e.target.checked)
-                if (!e.target.checked) {
-                  setValue('valet', undefined, {
-                    shouldValidate: true,
-                  })
-                  setDifferentDropoffLocation(false)
-                } else {
-                  setValue('valet.pickupInfo', {
-                    lat: garage.address.lat,
-                    lng: garage.address.lng,
-                  })
-                  setValue('valet.dropoffInfo', undefined)
-                }
-              }}
-            />
-          </HtmlLabel>
-          {showValet ? (
-            <div>
-              <HtmlLabel title="Add a different drop off location?">
-                <p className="text-sm text-gray">
-                  Want your car delivered somewhere else? No problem! Choose a
-                  different drop-off point and we'll make sure your ride is
-                  there waiting for you.
-                </p>
-                <Switch
-                  checked={differentDropoffLocation}
-                  onChange={(e) => {
-                    setDifferentDropoffLocation(e.target.checked)
-                    if (!e.target.checked) {
-                      setValue('valet.dropoffInfo', undefined, {
-                        shouldValidate: true,
-                      })
-                    } else {
-                      setValue('valet.dropoffInfo', {
-                        lat: garage.address.lat,
-                        lng: garage.address.lng,
-                      })
-                    }
-                  }}
-                />
-              </HtmlLabel>
-              <Map
-                initialViewState={{
-                  latitude: garage.address.lat,
-                  longitude: garage.address.lng,
-                  zoom: 13,
-                }}
-                height="30vh"
-              >
-                <Marker
-                  latitude={garage.address.lat}
-                  longitude={garage.address.lng}
-                >
-                  <ParkingIcon />
-                </Marker>
-                {showValet &&
-                valet?.pickupInfo?.lng &&
-                valet?.pickupInfo?.lat ? (
-                  <>
-                    <Marker
-                      pitchAlignment="auto"
-                      longitude={valet?.pickupInfo?.lng}
-                      latitude={valet?.pickupInfo?.lat}
-                      draggable
-                      onDragEnd={({ lngLat }) => {
-                        const { lat, lng } = lngLat
-                        setValue('valet.pickupInfo.lat', lat || 0)
-                        setValue('valet.pickupInfo.lng', lng || 0)
-                      }}
-                    >
-                      <div className="flex flex-col items-center">
-                        <IconUser />
-                        <span>
-                          Pickup{' '}
-                          {!differentDropoffLocation ? '& drop off' : null}
-                        </span>
-                      </div>
-                    </Marker>
-                    <Directions
-                      sourceId={'pickup_route'}
-                      origin={garage.address}
-                      destination={{
-                        lat: valet?.pickupInfo?.lat,
-                        lng: valet?.pickupInfo?.lng,
-                      }}
-                      setDistance={(distance) => {
-                        setValue('valet.pickupInfo.distance', distance)
-                      }}
-                    />
-                  </>
-                ) : null}
+        <ManageValets garage={garage} />
 
-                {differentDropoffLocation &&
-                valet?.dropoffInfo?.lng &&
-                valet?.dropoffInfo?.lat ? (
-                  <>
-                    <Marker
-                      pitchAlignment="auto"
-                      longitude={valet?.dropoffInfo?.lng}
-                      latitude={valet?.dropoffInfo?.lat}
-                      draggable
-                      onDragEnd={({ lngLat }) => {
-                        const { lat, lng } = lngLat
-                        setValue('valet.dropoffInfo.lat', lat || 0)
-                        setValue('valet.dropoffInfo.lng', lng || 0)
-                      }}
-                    >
-                      <div className="flex flex-col items-center">
-                        <IconUser />
-                        <span>Drop off</span>
-                      </div>
-                    </Marker>
-                    <Directions
-                      sourceId={'dropoff_route'}
-                      origin={garage.address}
-                      destination={{
-                        lat: valet?.dropoffInfo?.lat,
-                        lng: valet?.dropoffInfo?.lng,
-                      }}
-                      setDistance={(distance) => {
-                        setValue('valet.dropoffInfo.distance', distance)
-                      }}
-                    />
-                  </>
-                ) : null}
+        <div className="mt-4 mb-2 text-lg font-bold">Services</div>
+        <ManageServices
+          services={garage.services || []}
+          onChange={(services) => setValue('services', services)}
+          parkingDuration={
+            startTime && endTime
+              ? differenceInTime({ endTime, startTime, unit: 'minutes' })
+              : 0
+          }
+          setError={(error) => {
+            console.log('Set error ', error)
+            if (error) setError('services', { message: error })
+            else clearErrors('services')
+          }}
+        />
 
-                <Panel position="left-top">
-                  <DefaultZoomControls>
-                    <CenterOfMap
-                      Icon={IconUser}
-                      onClick={(latLng) => {
-                        const lat = parseFloat(latLng.lat.toFixed(6))
-                        const lng = parseFloat(latLng.lng.toFixed(6))
-
-                        setValue('valet.pickupInfo.lat', lat, {
-                          shouldValidate: true,
-                        })
-                        setValue('valet.pickupInfo.lng', lng, {
-                          shouldValidate: true,
-                        })
-                      }}
-                    />
-                    {differentDropoffLocation ? (
-                      <CenterOfMap
-                        Icon={IconUser}
-                        onClick={(latLng) => {
-                          const lat = parseFloat(latLng.lat.toFixed(6))
-                          const lng = parseFloat(latLng.lng.toFixed(6))
-
-                          setValue('valet.dropoffInfo.lat', lat, {
-                            shouldValidate: true,
-                          })
-                          setValue('valet.dropoffInfo.lng', lng, {
-                            shouldValidate: true,
-                          })
-                        }}
-                      />
-                    ) : null}
-                  </DefaultZoomControls>
-                </Panel>
-              </Map>
-            </div>
-          ) : null}
-        </div>
         {totalPrice ? (
           <div className="mt-4">
             <CostTitleValue title="Parking" price={totalPrice.parkingCharge} />
@@ -411,11 +279,16 @@ export const BookSlotPopup = ({
               price={totalPrice.valetChargeDropoff}
             />
             <CostTitleValue
+              title="Services"
+              price={totalPrice.servicesCharge}
+            />
+            <CostTitleValue
               title="Total"
               price={
                 totalPrice.parkingCharge +
                 totalPrice.valetChargePickup +
-                totalPrice.valetChargeDropoff
+                totalPrice.valetChargeDropoff +
+                totalPrice.servicesCharge
               }
             />
           </div>
@@ -446,11 +319,7 @@ export const CostTitleValue = ({
 export const createBookingSession = async (
   uid: string,
   redirectUrl: string,
-  totalPrice: {
-    parkingCharge: number
-    valetChargeDropoff: number
-    valetChargePickup: number
-  },
+  totalPrice: TotalPrice,
 ) => {
   const checkoutSession = await axios.post('http://localhost:3000/stripe', {
     totalPrice,
@@ -488,7 +357,7 @@ export const Directions = React.memo(
         origin: originRaw,
         destination: destinationRaw,
       },
-      200,
+      1000,
     )
 
     useEffect(() => {
@@ -536,6 +405,286 @@ export const Directions = React.memo(
           }}
         />
       </Source>
+    )
+  },
+)
+
+export type GarageCarService = NonNullable<
+  SearchGaragesQuery['searchGarages'][0]['services']
+>[0]
+
+export const ManageServices = React.memo(
+  ({
+    services,
+    onChange,
+    parkingDuration,
+    setError,
+  }: {
+    services: GarageCarService[]
+    onChange: (services: GarageCarService[]) => void
+    setError: (error?: string) => void
+    parkingDuration: number
+  }) => {
+    const [selectedServices, setSelectedServices] = useState<number[]>([])
+    console.log('selectedServices ', selectedServices)
+
+    const handleToggle = (service: GarageCarService) => {
+      console.log('0')
+      if (selectedServices.includes(service.id)) {
+        console.log('1')
+        setSelectedServices(selectedServices.filter((i) => i !== service.id))
+      } else {
+        console.log('2')
+        setSelectedServices([...selectedServices, service.id])
+      }
+    }
+
+    useEffect(() => {
+      const filteredServices = services.filter((service) =>
+        selectedServices.includes(service.id),
+      )
+
+      onChange(filteredServices)
+    }, [selectedServices, services])
+
+    const totalServicesDuration = services
+      .filter((service) => selectedServices.includes(service.id))
+      .reduce((total, currentService) => total + currentService.duration, 0)
+
+    useEffect(() => {
+      if (parkingDuration < totalServicesDuration) {
+        setError('Insufficient parking duration.')
+      } else {
+        setError()
+      }
+    }, [parkingDuration, totalServicesDuration])
+
+    const isServiceDisabled = (service: GarageCarService) => {
+      return (
+        !selectedServices.includes(service.id) &&
+        totalServicesDuration + service.duration > parkingDuration
+      )
+    }
+
+    return (
+      <div className="flex flex-col gap-2">
+        {services?.map((service) => (
+          <div key={service.id} className="flex items-center gap-3">
+            <div className="flex-1">
+              <div className="font-bold">{service.name}</div>
+              <div className="text-sm text-gray">{service.description}</div>
+              {/* {isServiceDisabled(service) ? (
+              <div className="flex items-center gap-1 text-xs">
+                <IconAlertCircle className="w-4 h-4" />{' '}
+                <div>Increase your stay to enable this service.</div>
+              </div>
+            ) : null} */}
+            </div>
+            <div className="text-right">
+              <div className="font-bold">Rs. {service.price}</div>
+              <div className="text-sm text-gray">{service.duration} min</div>
+            </div>
+            <button
+              type="button"
+              className="p-2"
+              // disabled={isServiceDisabled(service)}
+              onClick={(e) => {
+                // e.stopPropagation()
+                handleToggle(service)
+              }}
+            >
+              {selectedServices?.includes(service.id) ? (
+                <IconCircleMinus className="w-6 h-6 " />
+              ) : (
+                <IconCirclePlus className="w-6 h-6 " />
+              )}
+            </button>
+          </div>
+        ))}
+      </div>
+    )
+  },
+)
+
+export const ManageValets = React.memo(
+  ({ garage }: { garage: SearchGaragesQuery['searchGarages'][number] }) => {
+    const [showValet, setShowValet] = useState(false)
+
+    const { setValue } = useFormContext<FormTypeBookSlot>()
+    const { valet } = useWatch<FormTypeBookSlot>()
+
+    return (
+      <div className="p-2 space-y-3 bg-gray-50">
+        <div className="text-xl font-bold">Valet</div>
+        <HtmlLabel title="Need valet?">
+          <p className="text-sm text-gray">
+            Our valets will whisk your car away to its reserved spot and bring
+            it back when you're ready. It's like magic, but with cars!
+          </p>
+          <Switch
+            checked={showValet}
+            onChange={(e) => {
+              setShowValet(e.target.checked)
+
+              if (!e.target.checked) {
+                setValue('valet', undefined, {
+                  shouldValidate: true,
+                })
+                setValue('valet.differentLocations', false)
+              } else {
+                setValue('valet.pickupInfo', {
+                  lat: garage.address.lat,
+                  lng: garage.address.lng,
+                })
+                setValue('valet.dropoffInfo', undefined)
+              }
+            }}
+          />
+        </HtmlLabel>
+        {showValet ? (
+          <div>
+            <HtmlLabel title="Add a different drop off location?">
+              <p className="text-sm text-gray">
+                Want your car delivered somewhere else? No problem! Choose a
+                different drop-off point and we'll make sure your ride is there
+                waiting for you.
+              </p>
+              <Switch
+                checked={valet?.differentLocations}
+                onChange={(e) => {
+                  setValue('valet.differentLocations', e.target.checked)
+
+                  if (!e.target.checked) {
+                    setValue('valet.dropoffInfo', undefined)
+                  } else {
+                    setValue('valet.dropoffInfo', {
+                      lat: garage.address.lat,
+                      lng: garage.address.lng,
+                    })
+                  }
+                }}
+              />
+            </HtmlLabel>
+            <Map
+              initialViewState={{
+                latitude: garage.address.lat,
+                longitude: garage.address.lng,
+                zoom: 13,
+              }}
+              height="30vh"
+            >
+              <Marker
+                latitude={garage.address.lat}
+                longitude={garage.address.lng}
+              >
+                <ParkingIcon />
+              </Marker>
+              {valet?.pickupInfo?.lng && valet?.pickupInfo?.lat ? (
+                <>
+                  <Marker
+                    pitchAlignment="auto"
+                    longitude={valet?.pickupInfo?.lng}
+                    latitude={valet?.pickupInfo?.lat}
+                    draggable
+                    onDragEnd={({ lngLat }) => {
+                      const { lat, lng } = lngLat
+                      setValue('valet.pickupInfo.lat', lat || 0)
+                      setValue('valet.pickupInfo.lng', lng || 0)
+                    }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <IconUser />
+                      <span>
+                        Pickup {!valet.differentLocations ? '& drop off' : null}
+                      </span>
+                    </div>
+                  </Marker>
+                  <Directions
+                    sourceId={'pickup_route'}
+                    origin={garage.address}
+                    destination={{
+                      lat: valet?.pickupInfo?.lat,
+                      lng: valet?.pickupInfo?.lng,
+                    }}
+                    setDistance={(distance) => {
+                      setValue('valet.pickupInfo.distance', distance)
+                    }}
+                  />
+                </>
+              ) : null}
+
+              {valet?.differentLocations &&
+              valet?.dropoffInfo?.lng &&
+              valet?.dropoffInfo?.lat ? (
+                <>
+                  <Marker
+                    pitchAlignment="auto"
+                    longitude={valet?.dropoffInfo?.lng}
+                    latitude={valet?.dropoffInfo?.lat}
+                    draggable
+                    onDragEnd={({ lngLat }) => {
+                      const { lat, lng } = lngLat
+                      setValue('valet.dropoffInfo.lat', lat || 0)
+                      setValue('valet.dropoffInfo.lng', lng || 0)
+                    }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <IconUser />
+                      <span>Drop off</span>
+                    </div>
+                  </Marker>
+                  <Directions
+                    sourceId={'dropoff_route'}
+                    origin={garage.address}
+                    destination={{
+                      lat: valet?.dropoffInfo?.lat,
+                      lng: valet?.dropoffInfo?.lng,
+                    }}
+                    setDistance={(distance) => {
+                      setValue('valet.dropoffInfo.distance', distance)
+                    }}
+                  />
+                </>
+              ) : null}
+
+              <Panel position="left-top">
+                <DefaultZoomControls>
+                  <CenterOfMap
+                    Icon={IconUser}
+                    onClick={(latLng) => {
+                      const lat = parseFloat(latLng.lat.toFixed(6))
+                      const lng = parseFloat(latLng.lng.toFixed(6))
+
+                      setValue('valet.pickupInfo.lat', lat, {
+                        shouldValidate: true,
+                      })
+                      setValue('valet.pickupInfo.lng', lng, {
+                        shouldValidate: true,
+                      })
+                    }}
+                  />
+                  {valet?.differentLocations ? (
+                    <CenterOfMap
+                      Icon={IconUser}
+                      onClick={(latLng) => {
+                        const lat = parseFloat(latLng.lat.toFixed(6))
+                        const lng = parseFloat(latLng.lng.toFixed(6))
+
+                        setValue('valet.dropoffInfo.lat', lat, {
+                          shouldValidate: true,
+                        })
+                        setValue('valet.dropoffInfo.lng', lng, {
+                          shouldValidate: true,
+                        })
+                      }}
+                    />
+                  ) : null}
+                </DefaultZoomControls>
+              </Panel>
+            </Map>
+          </div>
+        ) : null}
+      </div>
     )
   },
 )

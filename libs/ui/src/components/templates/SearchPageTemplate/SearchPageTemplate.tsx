@@ -152,28 +152,21 @@ export const MarkerWithPopup = ({
 }: {
   marker: SearchGaragesQuery['searchGarages'][number]
 }) => {
-  //   const [open, setOpen] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   useKeypress(['Escape'], () => setShowPopup(false))
 
-  const { startTime, endTime } = useWatch<FormTypeSearchGarage>()
-
   return (
     <>
-      <Dialog title="Booking" open={showPopup} setOpen={setShowPopup}>
+      <Dialog
+        title="Booking"
+        widthClassName="max-w-3xl"
+        open={showPopup}
+        setOpen={setShowPopup}
+      >
         <FormProviderBookSlot>
-          <BookSlotPopup dateRange={{ endTime, startTime }} garage={marker} />
+          <BookSlotPopup garage={marker} />
         </FormProviderBookSlot>
       </Dialog>
-
-      {/* <Popup
-        show={showPopup}
-        setShow={setShowPopup}
-        latitude={marker.address.lat}
-        longitude={marker.address.lng}
-      >
-        <Button onClick={() => setOpen(true)}>Click</Button>
-      </Popup> */}
 
       <Marker
         latitude={marker.address.lat}

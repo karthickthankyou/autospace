@@ -16,6 +16,8 @@ export class BookingsService {
     type,
     vehicleNumber,
     phoneNumber,
+    services,
+    valetAssignment,
   }: CreateBookingInput) {
     const passcode = generateSixDigitNumber().toString()
 
@@ -25,7 +27,6 @@ export class BookingsService {
       garageId,
       type,
     })
-    console.log('s;pt ', slot)
 
     if (!slot?.id) {
       throw new NotFoundException('No slots found.')
@@ -40,6 +41,16 @@ export class BookingsService {
         phoneNumber,
         passcode,
         slotId: slot.id,
+        services: {
+          connect: services,
+        },
+        ...(valetAssignment
+          ? {
+              valetAssignment: {
+                create: valetAssignment,
+              },
+            }
+          : {}),
       },
     })
     console.log('booking ', booking)

@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 import { BookingTimelineOrderByRelationAggregateInput } from 'src/models/booking-timelines/dto/orderBy.args'
 import { CustomerOrderByWithRelationInput } from 'src/models/customers/dto/orderBy.args'
+import { ServiceOrderByRelationAggregateInput } from 'src/models/services/dto/orderBy.args'
 import { SlotOrderByWithRelationInput } from 'src/models/slots/dto/orderBy.args'
 import { ValetAssignmentOrderByWithRelationInput } from 'src/models/valet-assignments/dto/orderBy.args'
 
@@ -14,6 +15,8 @@ export class BookingOrderByWithRelationInput
       Prisma.BookingOrderByWithRelationInput
     >
 {
+  @Field(() => ServiceOrderByRelationAggregateInput, { nullable: true })
+  services: ServiceOrderByRelationAggregateInput
   @Field(() => ValetAssignmentOrderByWithRelationInput, { nullable: true })
   valetAssignment: ValetAssignmentOrderByWithRelationInput
 

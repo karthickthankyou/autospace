@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import Stripe from 'stripe'
 import { CreateStripeDto } from './dto/create-stripe-session.dto'
+import { toTitleCase } from 'src/common/util'
 
 @Injectable()
 export default class StripeService {
@@ -15,18 +16,18 @@ export default class StripeService {
   async createStripeSession({ totalPrice, uid, redirectUrl }: CreateStripeDto) {
     const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: [
-        {
+      line_items: Object.entries(totalPrice)
+        .filter(([name, price]) => price > 0)
+        .map(([name, price]) => ({
           quantity: 1,
           price_data: {
             product_data: {
-              name: 'Booking parking slot',
+              name: toTitleCase(name),
             },
             currency: 'inr',
-            unit_amount: +totalPrice * 100,
+            unit_amount: price * 100,
           },
-        },
-      ],
+        })),
       mode: 'payment',
       success_url: `${redirectUrl}/bookings`,
       cancel_url: `${redirectUrl}/booking-failed`,

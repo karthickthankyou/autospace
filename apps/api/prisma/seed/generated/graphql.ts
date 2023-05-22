@@ -92,7 +92,6 @@ export type Admin = {
 export type AdminOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrder>
   displayName?: InputMaybe<SortOrder>
-  role?: InputMaybe<SortOrder>
   uid?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
   verifications?: InputMaybe<VerificationOrderByRelationAggregateInput>
@@ -132,8 +131,6 @@ export type AggregateCountOutput = {
 
 export type Booking = {
   __typename?: 'Booking'
-  checkInValetId?: Maybe<Scalars['String']>
-  checkOutValetId?: Maybe<Scalars['String']>
   createdAt: Scalars['DateTime']
   customer: Customer
   customerId: Scalars['String']
@@ -147,7 +144,6 @@ export type Booking = {
   startTime: Scalars['DateTime']
   status: BookingStatus
   totalPrice?: Maybe<Scalars['Int']>
-  type: BookingType
   updatedAt: Scalars['DateTime']
   vehicleNumber: Scalars['String']
 }
@@ -163,12 +159,7 @@ export type BookingOrderByRelationAggregateInput = {
 }
 
 export type BookingOrderByWithRelationInput = {
-  BookingTimeline?: InputMaybe<BookingTimelineOrderByRelationAggregateInput>
   bookingTimeline?: InputMaybe<SortOrder>
-  checkInValet?: InputMaybe<ValetOrderByWithRelationInput>
-  checkInValetId?: InputMaybe<SortOrder>
-  checkOutValet?: InputMaybe<ValetOrderByWithRelationInput>
-  checkOutValetId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   customer?: InputMaybe<CustomerOrderByWithRelationInput>
   customerId?: InputMaybe<SortOrder>
@@ -177,12 +168,12 @@ export type BookingOrderByWithRelationInput = {
   passcode?: InputMaybe<SortOrder>
   phoneNumber?: InputMaybe<SortOrder>
   pricePerHour?: InputMaybe<SortOrder>
+  services?: InputMaybe<ServiceOrderByRelationAggregateInput>
   slot?: InputMaybe<SlotOrderByWithRelationInput>
   slotId?: InputMaybe<SortOrder>
   startTime?: InputMaybe<SortOrder>
   status?: InputMaybe<SortOrder>
   totalPrice?: InputMaybe<SortOrder>
-  type?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
   valetAssignment?: InputMaybe<ValetAssignmentOrderByWithRelationInput>
   vehicleNumber?: InputMaybe<SortOrder>
@@ -205,7 +196,6 @@ export enum BookingScalarFieldEnum {
   StartTime = 'startTime',
   Status = 'status',
   TotalPrice = 'totalPrice',
-  Type = 'type',
   UpdatedAt = 'updatedAt',
   VehicleNumber = 'vehicleNumber',
 }
@@ -280,21 +270,11 @@ export type BookingTimelineWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
 }
 
-export enum BookingType {
-  SelfPark = 'SELF_PARK',
-  Valet = 'VALET',
-}
-
 export type BookingWhereInput = {
   AND?: InputMaybe<Array<BookingWhereInput>>
-  BookingTimeline?: InputMaybe<BookingTimelineListRelationFilter>
   NOT?: InputMaybe<Array<BookingWhereInput>>
   OR?: InputMaybe<Array<BookingWhereInput>>
   bookingTimeline?: InputMaybe<BookingTimelineListRelationFilter>
-  checkInValet?: InputMaybe<ValetRelationFilter>
-  checkInValetId?: InputMaybe<StringFilter>
-  checkOutValet?: InputMaybe<ValetRelationFilter>
-  checkOutValetId?: InputMaybe<StringFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   customer?: InputMaybe<CustomerRelationFilter>
   customerId?: InputMaybe<StringFilter>
@@ -303,12 +283,12 @@ export type BookingWhereInput = {
   passcode?: InputMaybe<StringFilter>
   phoneNumber?: InputMaybe<StringFilter>
   pricePerHour?: InputMaybe<FloatFilter>
+  services?: InputMaybe<ServiceListRelationFilter>
   slot?: InputMaybe<SlotRelationFilter>
   slotId?: InputMaybe<IntFilter>
   startTime?: InputMaybe<DateTimeFilter>
   status?: InputMaybe<EnumBookingStatusFilter>
   totalPrice?: InputMaybe<FloatFilter>
-  type?: InputMaybe<EnumBookingTypeFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
   valetAssignment?: InputMaybe<ValetAssignmentRelationFilter>
   vehicleNumber?: InputMaybe<StringFilter>
@@ -372,6 +352,10 @@ export type CompanyWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
 }
 
+export type ConnectService = {
+  id: Scalars['Int']
+}
+
 export type CreateAddressInput = {
   address: Scalars['String']
   garageId: Scalars['Int']
@@ -390,8 +374,10 @@ export type CreateBookingInput = {
   endTime: Scalars['DateTime']
   garageId: Scalars['Int']
   phoneNumber?: InputMaybe<Scalars['String']>
+  services: Array<ConnectService>
   startTime: Scalars['DateTime']
   type: SlotType
+  valetAssignment?: InputMaybe<CreateValetAssignmentInputWithoutBookingId>
   vehicleNumber: Scalars['String']
 }
 
@@ -431,6 +417,14 @@ export type CreateReviewInput = {
   rating: Scalars['Int']
 }
 
+export type CreateServiceInput = {
+  description: Scalars['String']
+  duration: Scalars['Int']
+  garageId: Scalars['Int']
+  name: Scalars['String']
+  price: Scalars['Int']
+}
+
 export type CreateSlotInput = {
   displayName?: InputMaybe<Scalars['String']>
   garageId: Scalars['Int']
@@ -449,6 +443,13 @@ export type CreateSlotInputWithoutGarageId = {
   pricePerHour: Scalars['Int']
   type?: InputMaybe<SlotType>
   width?: InputMaybe<Scalars['Int']>
+}
+
+export type CreateValetAssignmentInputWithoutBookingId = {
+  pickupLat?: InputMaybe<Scalars['Float']>
+  pickupLng?: InputMaybe<Scalars['Float']>
+  returnLat?: InputMaybe<Scalars['Float']>
+  returnLng?: InputMaybe<Scalars['Float']>
 }
 
 export type CreateVerificationInput = {
@@ -525,13 +526,6 @@ export type EnumBookingStatusFilter = {
   notIn?: InputMaybe<Array<BookingStatus>>
 }
 
-export type EnumBookingTypeFilter = {
-  equals?: InputMaybe<BookingType>
-  in?: InputMaybe<Array<BookingType>>
-  not?: InputMaybe<BookingStatus>
-  notIn?: InputMaybe<Array<BookingType>>
-}
-
 export type EnumSlotTypeFilter = {
   equals?: InputMaybe<SlotType>
   in?: InputMaybe<Array<SlotType>>
@@ -561,6 +555,7 @@ export type Garage = {
   displayName: Scalars['String']
   id: Scalars['Int']
   images?: Maybe<Array<Scalars['String']>>
+  services?: Maybe<Array<Service>>
   slotCounts: Array<SlotTypeCount>
   slots: Array<Slot>
   updatedAt: Scalars['DateTime']
@@ -599,6 +594,7 @@ export type GarageOrderByWithRelationInput = {
   id?: InputMaybe<SortOrder>
   images?: InputMaybe<SortOrder>
   reviews?: InputMaybe<ReviewOrderByRelationAggregateInput>
+  services?: InputMaybe<ServiceOrderByRelationAggregateInput>
   slots?: InputMaybe<SlotOrderByRelationAggregateInput>
   updatedAt?: InputMaybe<SortOrder>
   verification?: InputMaybe<VerificationOrderByWithRelationInput>
@@ -632,6 +628,7 @@ export type GarageWhereInput = {
   id?: InputMaybe<IntFilter>
   images?: InputMaybe<StringListFilter>
   reviews?: InputMaybe<ReviewListRelationFilter>
+  services?: InputMaybe<ServiceListRelationFilter>
   slots?: InputMaybe<SlotListRelationFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
   verification?: InputMaybe<VerificationRelationFilter>
@@ -755,6 +752,7 @@ export type Mutation = {
   createManager: Manager
   createManySlots: ReturnCount
   createReview: Review
+  createService: Service
   createSlot: Slot
   createVerification: Verification
   login: LoginOutput
@@ -769,6 +767,7 @@ export type Mutation = {
   removeGarage: Garage
   removeManager: Manager
   removeReview: Review
+  removeService: Service
   removeSlot: Slot
   removeVerification: Verification
   setAdmin: Scalars['Boolean']
@@ -781,6 +780,7 @@ export type Mutation = {
   updateGarage: Garage
   updateManager: Manager
   updateReview: Review
+  updateService: Service
   updateSlot: Slot
   updateVerification: Verification
 }
@@ -823,6 +823,10 @@ export type MutationCreateManySlotsArgs = {
 
 export type MutationCreateReviewArgs = {
   createReviewInput: CreateReviewInput
+}
+
+export type MutationCreateServiceArgs = {
+  createServiceInput: CreateServiceInput
 }
 
 export type MutationCreateSlotArgs = {
@@ -877,6 +881,10 @@ export type MutationRemoveReviewArgs = {
   where?: InputMaybe<ReviewWhereUniqueInput>
 }
 
+export type MutationRemoveServiceArgs = {
+  where?: InputMaybe<ServiceWhereUniqueInput>
+}
+
 export type MutationRemoveSlotArgs = {
   where?: InputMaybe<SlotWhereUniqueInput>
 }
@@ -925,6 +933,10 @@ export type MutationUpdateReviewArgs = {
   updateReviewInput: UpdateReviewInput
 }
 
+export type MutationUpdateServiceArgs = {
+  updateServiceInput: UpdateServiceInput
+}
+
 export type MutationUpdateSlotArgs = {
   updateSlotInput: UpdateSlotInput
 }
@@ -959,6 +971,8 @@ export type Query = {
   review: Review
   reviews: Array<Review>
   searchGarages: Array<Garage>
+  service: Service
+  services: Array<Service>
   slot: Slot
   slots: Array<Slot>
   verification: Verification
@@ -1110,6 +1124,19 @@ export type QuerySearchGaragesArgs = {
   slotsFilter?: InputMaybe<SlotWhereInput>
 }
 
+export type QueryServiceArgs = {
+  where?: InputMaybe<ServiceWhereUniqueInput>
+}
+
+export type QueryServicesArgs = {
+  cursor?: InputMaybe<ServiceWhereUniqueInput>
+  distinct?: InputMaybe<Array<ServiceScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ServiceOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ServiceWhereInput>
+}
+
 export type QuerySlotArgs = {
   where?: InputMaybe<SlotWhereUniqueInput>
 }
@@ -1244,6 +1271,76 @@ export type ReviewWhereUniqueInput = {
 export enum RoleEnum {
   Admin = 'admin',
   Manager = 'manager',
+}
+
+export type Service = {
+  __typename?: 'Service'
+  bookingId: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  description: Scalars['String']
+  duration: Scalars['Int']
+  garageId: Scalars['Int']
+  id: Scalars['Int']
+  name: Scalars['String']
+  price: Scalars['Int']
+  updatedAt: Scalars['DateTime']
+}
+
+export type ServiceListRelationFilter = {
+  every?: InputMaybe<ServiceWhereInput>
+  none?: InputMaybe<ServiceWhereInput>
+  some?: InputMaybe<ServiceWhereInput>
+}
+
+export type ServiceOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
+}
+
+export type ServiceOrderByWithRelationInput = {
+  Booking?: InputMaybe<BookingOrderByWithRelationInput>
+  Garage?: InputMaybe<GarageOrderByWithRelationInput>
+  bookingId?: InputMaybe<SortOrder>
+  createdAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
+  duration?: InputMaybe<SortOrder>
+  garageId?: InputMaybe<SortOrder>
+  id?: InputMaybe<SortOrder>
+  name?: InputMaybe<SortOrder>
+  price?: InputMaybe<SortOrder>
+  updatedAt?: InputMaybe<SortOrder>
+}
+
+export enum ServiceScalarFieldEnum {
+  BookingId = 'bookingId',
+  CreatedAt = 'createdAt',
+  Description = 'description',
+  Duration = 'duration',
+  GarageId = 'garageId',
+  Id = 'id',
+  Name = 'name',
+  Price = 'price',
+  UpdatedAt = 'updatedAt',
+}
+
+export type ServiceWhereInput = {
+  AND?: InputMaybe<Array<ServiceWhereInput>>
+  Booking?: InputMaybe<BookingRelationFilter>
+  Garage?: InputMaybe<GarageRelationFilter>
+  NOT?: InputMaybe<Array<ServiceWhereInput>>
+  OR?: InputMaybe<Array<ServiceWhereInput>>
+  bookingId?: InputMaybe<IntFilter>
+  createdAt?: InputMaybe<DateTimeFilter>
+  description?: InputMaybe<StringFilter>
+  duration?: InputMaybe<IntFilter>
+  garageId?: InputMaybe<IntFilter>
+  id?: InputMaybe<IntFilter>
+  name?: InputMaybe<StringFilter>
+  price?: InputMaybe<IntFilter>
+  updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ServiceWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>
 }
 
 export type SetRoleInput = {
@@ -1426,6 +1523,15 @@ export type UpdateReviewInput = {
   rating?: InputMaybe<Scalars['Int']>
 }
 
+export type UpdateServiceInput = {
+  description?: InputMaybe<Scalars['String']>
+  duration?: InputMaybe<Scalars['Int']>
+  garageId?: InputMaybe<Scalars['Int']>
+  id: Scalars['Int']
+  name?: InputMaybe<Scalars['String']>
+  price?: InputMaybe<Scalars['Int']>
+}
+
 export type UpdateSlotInput = {
   displayName?: InputMaybe<Scalars['String']>
   garageId?: InputMaybe<Scalars['Int']>
@@ -1441,6 +1547,16 @@ export type UpdateVerificationInput = {
   adminId?: InputMaybe<Scalars['String']>
   garageId: Scalars['Int']
   verified?: InputMaybe<Scalars['Boolean']>
+}
+
+export type ValetAssignmentListRelationFilter = {
+  every?: InputMaybe<ValetAssignmentWhereInput>
+  none?: InputMaybe<ValetAssignmentWhereInput>
+  some?: InputMaybe<ValetAssignmentWhereInput>
+}
+
+export type ValetAssignmentOrderByRelationAggregateInput = {
+  _count?: InputMaybe<SortOrder>
 }
 
 export type ValetAssignmentOrderByWithRelationInput = {
@@ -1493,12 +1609,12 @@ export type ValetOrderByRelationAggregateInput = {
 
 export type ValetOrderByWithRelationInput = {
   bookingTimeline?: InputMaybe<BookingTimelineOrderByRelationAggregateInput>
-  checkInBookings?: InputMaybe<BookingOrderByRelationAggregateInput>
-  checkOutBookings?: InputMaybe<BookingOrderByRelationAggregateInput>
   company?: InputMaybe<CompanyOrderByWithRelationInput>
   companyId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   displayName?: InputMaybe<SortOrder>
+  pickupAssignments?: InputMaybe<ValetAssignmentOrderByRelationAggregateInput>
+  returnAssignments?: InputMaybe<ValetAssignmentOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
   updatedAt?: InputMaybe<SortOrder>
 }
@@ -1513,12 +1629,12 @@ export type ValetWhereInput = {
   NOT?: InputMaybe<Array<ValetWhereInput>>
   OR?: InputMaybe<Array<ValetWhereInput>>
   bookingTimeline?: InputMaybe<BookingTimelineListRelationFilter>
-  checkInBookings?: InputMaybe<BookingListRelationFilter>
-  checkOutBookings?: InputMaybe<BookingListRelationFilter>
   company?: InputMaybe<CompanyRelationFilter>
   companyId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   displayName?: InputMaybe<StringFilter>
+  pickupAssignments?: InputMaybe<ValetAssignmentListRelationFilter>
+  returnAssignments?: InputMaybe<ValetAssignmentListRelationFilter>
   uid?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
 }

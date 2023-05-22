@@ -20,6 +20,7 @@ import { FirebaseModule } from './common/firebase/firebase.module'
 import { AuthModule } from './common/auth/auth.module'
 import { StripeModule } from './models/stripe/stripe.module'
 import { BookingTimelinesModule } from './models/booking-timelines/booking-timelines.module'
+import { ServicesModule } from './models/services/services.module'
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { BookingTimelinesModule } from './models/booking-timelines/booking-timel
     ManagersModule,
     ReviewsModule,
     SlotsModule,
+    ServicesModule,
     VerificationsModule,
   ],
   controllers: [AppController],

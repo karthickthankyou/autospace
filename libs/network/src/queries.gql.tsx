@@ -107,6 +107,13 @@ export const searchGarages = gql`
         lng
         address
       }
+      services {
+        id
+        name
+        description
+        price
+        duration
+      }
       images
       displayName
       availableSlots(slotsFilter: $slotsFilter, dateFilter: $dateFilter) {

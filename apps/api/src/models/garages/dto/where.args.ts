@@ -10,6 +10,7 @@ import {
 import { AddressRelationFilter } from 'src/models/addresses/dto/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dto/where.args'
 import { ReviewListRelationFilter } from 'src/models/reviews/dto/where.args'
+import { ServiceListRelationFilter } from 'src/models/services/dto/where.args'
 import { SlotListRelationFilter } from 'src/models/slots/dto/where.args'
 import { VerificationRelationFilter } from 'src/models/verifications/dto/where.args'
 
@@ -26,6 +27,8 @@ export class GarageWhereUniqueInput
 export class GarageWhereInput
   implements RestrictProperties<GarageWhereInput, Prisma.GarageWhereInput>
 {
+  @Field(() => ServiceListRelationFilter, { nullable: true })
+  services: ServiceListRelationFilter
   @Field(() => StringListFilter, { nullable: true })
   images: StringListFilter
   @Field(() => IntFilter, { nullable: true })

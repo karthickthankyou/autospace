@@ -31,6 +31,7 @@ import {
 import { GetUserType } from '@autospace-org/types'
 import { BadRequestException } from '@nestjs/common'
 import { Verification } from '../verifications/entities/verification.entity'
+import { Service } from '../services/entities/service.entity'
 
 @Resolver(() => Garage)
 export class GaragesResolver {
@@ -218,6 +219,13 @@ export class GaragesResolver {
   @ResolveField(() => Verification, { nullable: true })
   async verification(@Parent() parent: Garage) {
     return this.prisma.verification.findUnique({
+      where: { garageId: parent.id },
+    })
+  }
+
+  @ResolveField(() => [Service], { nullable: true })
+  async services(@Parent() parent: Garage) {
+    return this.prisma.service.findMany({
       where: { garageId: parent.id },
     })
   }

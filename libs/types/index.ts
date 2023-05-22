@@ -57,3 +57,13 @@ export type Viewport = {
   longitude: number
   zoom: number
 }
+
+export type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType[number]
+
+export type TotalPrice = {
+  parkingCharge: number
+  valetChargeDropoff: number
+  valetChargePickup: number
+  servicesCharge: number
+}
