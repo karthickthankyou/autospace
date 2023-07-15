@@ -22,14 +22,35 @@ export class ValetsResolver {
     private readonly prisma: PrismaService,
   ) {}
 
+  // Only managers can create valets
   @Mutation(() => Valet)
-  createValet(@Args('createValetInput') args: CreateValetInput) {
-    return this.valetsService.create(args)
+  async createValet(
+    @Args('createValetInput') args: CreateValetInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const company = await this.prisma.company.findFirst({
+      where: { managers: { some: { uid: { equals: user.uid } } } },
+    })
+    return this.valetsService.create(args, company.id)
   }
 
   @Query(() => [Valet], { name: 'valets' })
   findAll(@Args() args: FindManyValetArgs) {
     return this.valetsService.findAll(args)
+  }
+
+  @Query(() => [Valet], { name: 'companyValets' })
+  async companyValets(
+    @Args() args: FindManyValetArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const company = await this.prisma.company.findFirst({
+      where: { managers: { some: { uid: user.uid } } },
+    })
+    return this.valetsService.findAll({
+      ...args,
+      where: { ...args.where, companyId: { equals: company.id } },
+    })
   }
 
   @Query(() => Valet, { name: 'valet' })
@@ -50,7 +71,6 @@ export class ValetsResolver {
   @Mutation(() => Booking)
   async assignValetForCheckInCheckOut(
     @Args('bookingId') bookingId: number,
-    @Args('valetId') valetId: string,
     @Args('status') status: BookingStatus,
     @GetUser() user: GetUserType,
   ) {
@@ -68,7 +88,7 @@ export class ValetsResolver {
     })
 
     checkRowLevelPermission(user, [
-      ...booking.slot.garage.company.managers.map((manager) => manager.uid),
+      //   ...booking.slot.garage.company.managers.map((manager) => manager.uid),
       ...booking.slot.garage.company.valets.map((valet) => valet.uid),
     ])
 
@@ -79,12 +99,12 @@ export class ValetsResolver {
           status,
           ...(status === BookingStatus.VALET_ASSIGNED_FOR_CHECK_IN && {
             valetAssignment: {
-              update: { pickupValetId: valetId },
+              update: { pickupValetId: user.uid },
             },
           }),
           ...(status === BookingStatus.VALET_ASSIGNED_FOR_CHECK_OUT && {
             valetAssignment: {
-              update: { returnValetId: valetId },
+              update: { returnValetId: user.uid },
             },
           }),
         },
@@ -92,7 +112,7 @@ export class ValetsResolver {
       this.prisma.bookingTimeline.create({
         data: {
           bookingId,
-          valetId,
+          valetId: user.uid,
           status,
         },
       }),

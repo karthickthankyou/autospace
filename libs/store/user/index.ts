@@ -32,7 +32,7 @@ export const useUserStore = create<UserSliceType>(
       ...initialState,
       setUser: (payload: Partial<UserSliceType>) =>
         set((state) => ({ ...state, ...payload, loaded: true })),
-      resetUser: () => set(initialState),
+      resetUser: () => set({ loaded: true }),
     }),
     { name: 'user' },
   ),

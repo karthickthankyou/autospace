@@ -15,59 +15,55 @@ export const getYesterday = () => {
 }
 
 export const useImageUpload = () => {
+  const [uploading, setUploading] = useState(false)
   const [percent, setPercent] = useState(0)
-  const [images, setImages] = useState<string[]>([])
-  const setValueFunction = useRef<(key: string[]) => void>()
 
-  useEffect(() => {
-    if (setValueFunction.current) {
-      console.log('Passing Images', images)
-      setValueFunction.current(images)
-    }
-  }, [setValueFunction, images])
-
-  const handleUpload = (
-    e: ChangeEvent<HTMLInputElement>,
-    setValue: (images: string[]) => void,
-  ) => {
-    console.log('before')
-    setValueFunction.current = setValue
-    console.log('after')
-    const files = e.target.files
+  const handleUpload = async (files: any): Promise<string[]> => {
     if (!files?.length) {
-      //   setError('images')
       notification$.next({
         message: 'Images empty.',
         type: 'error',
       })
-      return
+      return []
     }
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i]
-      const storageRef = ref(storage, `/files/${file.name}`) // progress can be paused and resumed. It also exposes progress updates. // Receives the storage reference and the file to upload.
+    setUploading(true)
+
+    const uploadTasks = Array.from(files).map((file: any) => {
+      console.log('file name ', file.name, file)
+      const storageRef = ref(storage, `/files/${file.name}`)
       const uploadTask = uploadBytesResumable(storageRef, file)
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const percent = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
-          ) // update progress
-          setPercent(percent)
-        },
-        (err) => console.log(err),
-        () => {
-          // download url
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            notification$.next({ message: `Image uploaded.` })
-            setImages((state) => [...state, url])
-          })
-        },
-      )
+
+      return new Promise<string>((resolve, reject) => {
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const percent = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100,
+            )
+            setPercent(percent)
+          },
+          reject,
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then(resolve).catch(reject)
+          },
+        )
+      })
+    })
+
+    try {
+      const imageUrls = await Promise.all(uploadTasks)
+      notification$.next({ message: `Image uploaded.` })
+      setUploading(false)
+      return imageUrls
+    } catch (err) {
+      console.log(err)
+      setUploading(false)
+      return []
     }
   }
 
-  return [{ percent, images }, handleUpload] as const
+  return [{ uploading, percent }, handleUpload] as const
 }
 
 export const useKeypress = (keys: string[], action: () => void) => {

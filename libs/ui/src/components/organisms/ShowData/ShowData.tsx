@@ -44,7 +44,7 @@ export const ShowData = ({
   className = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
 }: IShowDataProps) => {
   return (
-    <div>
+    <div className="min-h-[calc(100vh-4rem)]">
       {error && (
         <AlertSection>
           {' '}

@@ -34,11 +34,15 @@ model Valet {
     createdAt         DateTime          @default(now())
     updatedAt         DateTime          @updatedAt
     displayName       String
-    companyId         Int?              @unique
+    companyId         Int?
+    image             String?
+    licenceID         String            @default("")
     company           Company?          @relation(fields: [companyId], references: [id])
     bookingTimeline   BookingTimeline[]
     pickupAssignments ValetAssignment[] @relation("PickupValet")
     returnAssignments ValetAssignment[] @relation("ReturnValet")
+
+    @@unique([companyId, uid])
 }
 
 model Company {

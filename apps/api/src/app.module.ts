@@ -22,6 +22,7 @@ import { StripeModule } from './models/stripe/stripe.module'
 import { BookingTimelinesModule } from './models/booking-timelines/booking-timelines.module'
 import { ServicesModule } from './models/services/services.module'
 import { SentryModule } from './common/sentry/sentry.module'
+import { ValetsModule } from './models/valets/valets.module'
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { SentryModule } from './common/sentry/sentry.module'
     ReviewsModule,
     SlotsModule,
     ServicesModule,
+    ValetsModule,
     VerificationsModule,
   ],
   controllers: [AppController],

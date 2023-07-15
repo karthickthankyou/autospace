@@ -7,17 +7,21 @@ import {
   StringFilter,
 } from 'src/common/dtos/common.input'
 import { BookingTimelineListRelationFilter } from 'src/models/booking-timelines/dto/where.args'
-import { BookingListRelationFilter } from 'src/models/bookings/dto/where.args'
 import { CompanyRelationFilter } from 'src/models/companies/dto/where.args'
 import { ValetAssignmentListRelationFilter } from 'src/models/valet-assignments/dto/where.args'
 
+@InputType()
+export class ValetCompanyIdUidCompoundUniqueInput {
+  companyId: number
+  uid: string
+}
 @InputType()
 export class ValetWhereUniqueInput
   implements
     RestrictProperties<ValetWhereUniqueInput, Prisma.ValetWhereUniqueInput>
 {
-  @Field(() => Number, { nullable: true })
-  companyId: number
+  @Field(() => ValetCompanyIdUidCompoundUniqueInput, { nullable: true })
+  companyId_uid: ValetCompanyIdUidCompoundUniqueInput
   @Field(() => String, { nullable: true })
   uid: string
 }
@@ -26,6 +30,10 @@ export class ValetWhereUniqueInput
 export class ValetWhereInput
   implements RestrictProperties<ValetWhereInput, Prisma.ValetWhereInput>
 {
+  @Field(() => StringFilter, { nullable: true })
+  licenceID: StringFilter
+  @Field(() => StringFilter, { nullable: true })
+  image: StringFilter
   @Field(() => ValetAssignmentListRelationFilter, { nullable: true })
   pickupAssignments: ValetAssignmentListRelationFilter
   @Field(() => ValetAssignmentListRelationFilter, { nullable: true })

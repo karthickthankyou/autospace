@@ -4,6 +4,9 @@ import { Valet } from '../entities/valet.entity'
 @InputType()
 export class CreateValetInput extends PickType(
   Valet,
-  ['uid', 'displayName', 'companyId'],
+  ['displayName', 'image', 'licenceID'],
   InputType,
-) {}
+) {
+  email: string
+  password: string
+}

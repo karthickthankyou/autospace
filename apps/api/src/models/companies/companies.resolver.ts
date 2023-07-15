@@ -21,6 +21,7 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@autospace-org/types'
 import { AuthService } from 'src/common/auth/auth.service'
+import { Valet } from '../valets/entities/valet.entity'
 
 @Resolver(() => Company)
 export class CompaniesResolver {

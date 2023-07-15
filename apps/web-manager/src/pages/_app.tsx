@@ -11,31 +11,30 @@ import { Header } from '@autospace-org/ui/src/components/organisms/Header'
 import { MenuItem } from '@autospace-org/types'
 
 const MENUITEMS: MenuItem[] = [
-  { label: 'About', href: '/about', loggedIn: false },
-  { label: 'Garages', href: '/garages', loggedIn: true },
+  { label: 'Garages', href: '/', loggedIn: true },
+  { label: 'Valets', href: '/valets', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,
   { label: 'Contact', href: '/contact', loggedIn: false },
   { label: 'FAQs', href: '/faqs', loggedIn: false },
+  { label: 'About', href: '/about', loggedIn: false },
   { label: 'How it works', href: '/how-it-works', loggedIn: false },
 ]
 
 export default function App({ Component, pageProps }: AppProps) {
-  const hideNav = useIsPathInArray(['/login', '/register'])
-
   return (
     <ApolloProvider>
       <AppLevelListeners />
-      {!hideNav ? (
-        <Header
-          type="manager"
-          menuItems={MENUITEMS}
-          sideMenuItems={SUBMENUITEMS}
-        />
-      ) : null}
+
+      <Header
+        type="manager"
+        menuItems={MENUITEMS}
+        sideMenuItems={SUBMENUITEMS}
+      />
+
       <Component {...pageProps} />
-      {!hideNav ? <Footer /> : null}
+      <Footer />
       <Notifications />
     </ApolloProvider>
   )

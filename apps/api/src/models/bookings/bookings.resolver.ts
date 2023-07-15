@@ -22,6 +22,8 @@ import { checkRowLevelPermission } from 'src/common/guards'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { BookingWhereInput } from './dto/where.args'
 import { BadRequestException } from '@nestjs/common'
+import { BookingStatus } from '@prisma/client'
+import { ValetAssignment } from '../valet-assignments/entities/valet-assignment.entity'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
@@ -51,6 +53,54 @@ export class BookingsResolver {
     }
     checkRowLevelPermission(user, args.where.customerId.equals)
     return this.bookingsService.findAll(args)
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Booking], { name: 'valetPickups' })
+  async valetPickups(
+    @Args() args: FindManyBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const valet = await this.prisma.valet.findUnique({
+      where: { uid: user.uid },
+    })
+    if (!valet) {
+      throw new BadRequestException('You are not a valet.')
+    }
+    return this.prisma.booking.findMany({
+      where: {
+        slot: { garage: { companyId: valet.companyId } },
+        // status: { equals: BookingStatus.BOOKED },
+        valetAssignment: {
+          pickupLat: { not: undefined },
+          pickupValetId: null,
+        },
+      },
+    })
+  }
+
+  @AllowAuthenticated()
+  @Query(() => [Booking], { name: 'valetDrops' })
+  async valetDrops(
+    @Args() args: FindManyBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
+    const valet = await this.prisma.valet.findUnique({
+      where: { uid: user.uid },
+    })
+    if (!valet) {
+      throw new BadRequestException('You are not a valet.')
+    }
+    return this.prisma.booking.findMany({
+      where: {
+        slot: { garage: { companyId: valet.companyId } },
+        // status: { equals: BookingStatus.CHECKED_IN },
+        valetAssignment: {
+          returnLat: { not: null },
+          returnValetId: null,
+        },
+      },
+    })
   }
 
   @AllowAuthenticated()
@@ -107,6 +157,13 @@ export class BookingsResolver {
   customer(@Parent() booking: Booking) {
     return this.prisma.customer.findFirst({
       where: { uid: booking.customerId },
+    })
+  }
+
+  @ResolveField(() => ValetAssignment)
+  valetAssignment(@Parent() booking: Booking) {
+    return this.prisma.valetAssignment.findFirst({
+      where: { bookingId: booking.id },
     })
   }
 }

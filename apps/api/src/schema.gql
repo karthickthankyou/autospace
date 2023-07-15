@@ -228,6 +228,8 @@ input ValetRelationFilter {
 }
 
 input ValetWhereInput {
+  licenceID: StringFilter
+  image: StringFilter
   pickupAssignments: ValetAssignmentListRelationFilter
   returnAssignments: ValetAssignmentListRelationFilter
   uid: StringFilter
@@ -540,6 +542,19 @@ type Booking {
   vehicleNumber: String!
   slot: Slot!
   customer: Customer!
+  valetAssignment: ValetAssignment!
+}
+
+type ValetAssignment {
+  pickupValetId: String
+  returnValetId: String
+  pickupLat: Float!
+  pickupLng: Float!
+  returnLat: Float
+  returnLng: Float
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  bookingId: Int!
 }
 
 type Slot {
@@ -624,6 +639,16 @@ type BookingTimeline {
   managerId: String!
 }
 
+type Valet {
+  image: String
+  licenceID: String!
+  companyId: Int!
+  uid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  displayName: String!
+}
+
 type Query {
   addresses(where: AddressWhereInput, orderBy: [AddressOrderByWithRelationInput!], cursor: AddressWhereUniqueInput, take: Int, skip: Int, distinct: [AddressScalarFieldEnum!]): [Address!]!
   address(where: AddressWhereUniqueInput): Address!
@@ -631,6 +656,8 @@ type Query {
   admin(where: AdminWhereUniqueInput): Admin!
   adminsCount(where: AdminWhereInput): AggregateCountOutput!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  valetPickups(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  valetDrops(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   bookingsForGarage(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   bookingsCount(where: BookingWhereInput): AggregateCountOutput!
   booking(where: BookingWhereUniqueInput): Booking!
@@ -654,6 +681,9 @@ type Query {
   slot(where: SlotWhereUniqueInput): Slot!
   services(where: ServiceWhereInput, orderBy: [ServiceOrderByWithRelationInput!], cursor: ServiceWhereUniqueInput, take: Int, skip: Int, distinct: [ServiceScalarFieldEnum!]): [Service!]!
   service(where: ServiceWhereUniqueInput): Service!
+  valets(where: ValetWhereInput, orderBy: [ValetOrderByWithRelationInput!], cursor: ValetWhereUniqueInput, take: Int, skip: Int, distinct: [ValetScalarFieldEnum!]): [Valet!]!
+  companyValets(where: ValetWhereInput, orderBy: [ValetOrderByWithRelationInput!], cursor: ValetWhereUniqueInput, take: Int, skip: Int, distinct: [ValetScalarFieldEnum!]): [Valet!]!
+  valet(where: ValetWhereUniqueInput): Valet!
   verifications(where: VerificationWhereInput, orderBy: [VerificationOrderByWithRelationInput!], cursor: VerificationWhereUniqueInput, take: Int, skip: Int, distinct: [VerificationScalarFieldEnum!]): [Verification!]!
   verification(where: VerificationWhereUniqueInput): Verification!
 }
@@ -809,6 +839,8 @@ input ValetAssignmentOrderByWithRelationInput {
 }
 
 input ValetOrderByWithRelationInput {
+  licenceID: SortOrder
+  image: SortOrder
   pickupAssignments: ValetAssignmentOrderByRelationAggregateInput
   returnAssignments: ValetAssignmentOrderByRelationAggregateInput
   uid: SortOrder
@@ -1047,6 +1079,26 @@ enum ServiceScalarFieldEnum {
   bookingId
 }
 
+input ValetWhereUniqueInput {
+  companyId_uid: ValetCompanyIdUidCompoundUniqueInput
+  uid: String
+}
+
+input ValetCompanyIdUidCompoundUniqueInput {
+  companyId: Int!
+  uid: String!
+}
+
+enum ValetScalarFieldEnum {
+  uid
+  createdAt
+  updatedAt
+  displayName
+  companyId
+  image
+  licenceID
+}
+
 input VerificationWhereUniqueInput {
   garageId: Int
 }
@@ -1098,6 +1150,10 @@ type Mutation {
   createService(createServiceInput: CreateServiceInput!): Service!
   updateService(updateServiceInput: UpdateServiceInput!): Service!
   removeService(where: ServiceWhereUniqueInput): Service!
+  createValet(createValetInput: CreateValetInput!): Valet!
+  updateValet(updateValetInput: UpdateValetInput!): Valet!
+  removeValet(where: ValetWhereUniqueInput): Valet!
+  assignValetForCheckInCheckOut(bookingId: Int!, status: String!): Booking!
   createVerification(createVerificationInput: CreateVerificationInput!): Verification!
   updateVerification(updateVerificationInput: UpdateVerificationInput!): Verification!
   removeVerification(where: VerificationWhereUniqueInput): Verification!
@@ -1295,6 +1351,23 @@ input UpdateServiceInput {
   duration: Int
   garageId: Int
   id: Int!
+}
+
+input CreateValetInput {
+  image: String
+  licenceID: String!
+  displayName: String!
+  email: String!
+  password: String!
+}
+
+input UpdateValetInput {
+  image: String
+  licenceID: String
+  displayName: String
+  email: String
+  password: String
+  uid: String!
 }
 
 input CreateVerificationInput {

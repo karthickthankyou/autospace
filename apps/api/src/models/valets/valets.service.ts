@@ -3,13 +3,22 @@ import { FindManyValetArgs, FindUniqueValetArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateValetInput } from './dto/create-valet.input'
 import { UpdateValetInput } from './dto/update-valet.input'
+import { AuthService } from 'src/common/auth/auth.service'
 
 @Injectable()
 export class ValetsService {
-  constructor(private readonly prisma: PrismaService) {}
-  create(createValetInput: CreateValetInput) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly auth: AuthService,
+  ) {}
+  async create(
+    { displayName, email, image, password, licenceID }: CreateValetInput,
+    companyId: number,
+  ) {
+    // Todo: We can generate password and send it to the registered email.
+    const user = await this.auth.register({ email, password, displayName })
     return this.prisma.valet.create({
-      data: createValetInput,
+      data: { displayName, uid: user.uid, image: image, companyId, licenceID },
     })
   }
 

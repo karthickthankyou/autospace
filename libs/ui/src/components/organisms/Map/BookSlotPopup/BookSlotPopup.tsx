@@ -134,7 +134,9 @@ export const BookSlotPopup = ({
         })}
       >
         <div className="mb-2 text-lg font-bold">{garage.displayName}</div>
-        <div className="mb-2">{garage.address.address}</div>
+        <div className="mb-2 text-2xl font-extralight">
+          {garage.address.address}
+        </div>
         <ShowImages images={garage.images || []} />
         <DateRangeBookingInfo startTime={startTime} endTime={endTime} />
 
@@ -224,22 +226,6 @@ export const BookSlotPopup = ({
         </div>
         <RadioGroup />
         <ManageValets garage={garage} />
-
-        <div className="mt-4 mb-2 text-lg font-bold">Services</div>
-        {/* <ManageServices
-          services={garage.services || []}
-          onChange={(services) => setValue('services', services)}
-          parkingDuration={
-            startTime && endTime
-              ? differenceInTime({ endTime, startTime, unit: 'minutes' })
-              : 0
-          }
-          setError={(error) => {
-            console.log('Set error ', error)
-            if (error) setError('services', { message: error })
-            else clearErrors('services')
-          }}
-        /> */}
 
         {totalPriceObj ? (
           <div className="mt-4">
@@ -491,47 +477,47 @@ export const ManageValets = React.memo(
     const { valet } = useWatch<FormTypeBookSlot>()
 
     return (
-      <div className="p-2 space-y-3 bg-gray-50">
+      <div className="p-2 space-y-3 bg-gray-25">
         <div className="text-xl font-bold">Valet</div>
-        <HtmlLabel title="Need valet?">
-          <p className="text-sm text-gray">
-            Our valets will whisk your car away to its reserved spot and bring
-            it back when you're ready. It's like magic, but with cars!
-          </p>
-          <Switch
-            checked={showValet}
-            onChange={(e) => {
-              setShowValet(e.target.checked)
 
-              if (!e.target.checked) {
-                setValue('valet', undefined, {
-                  shouldValidate: true,
-                })
-                setValue('valet.differentLocations', false)
-              } else {
-                setValue('valet.pickupInfo', {
-                  lat: garage.address.lat,
-                  lng: garage.address.lng,
-                })
-                setValue('valet.dropoffInfo', undefined)
-              }
-            }}
-          />
-        </HtmlLabel>
+        <p className="text-sm text-gray">
+          Our valets will whisk your car away to its reserved spot and bring it
+          back when you're ready. It's like magic, but with cars!
+        </p>
+        <Switch
+          checked={showValet}
+          onChange={(e) => {
+            setShowValet(e)
+
+            if (!e) {
+              setValue('valet', undefined, {
+                shouldValidate: true,
+              })
+              setValue('valet.differentLocations', false)
+            } else {
+              setValue('valet.pickupInfo', {
+                lat: garage.address.lat,
+                lng: garage.address.lng,
+              })
+              setValue('valet.dropoffInfo', undefined)
+            }
+          }}
+          label={'Need valet?'}
+        />
+
         {showValet ? (
           <div>
-            <HtmlLabel title="Add a different drop off location?">
+            <div className="mb-6 space-y-3">
               <p className="text-sm text-gray">
                 Want your car delivered somewhere else? No problem! Choose a
                 different drop-off point and we'll make sure your ride is there
                 waiting for you.
               </p>
               <Switch
-                checked={valet?.differentLocations}
+                checked={valet?.differentLocations || false}
                 onChange={(e) => {
-                  setValue('valet.differentLocations', e.target.checked)
-
-                  if (!e.target.checked) {
+                  setValue('valet.differentLocations', e)
+                  if (!e) {
                     setValue('valet.dropoffInfo', undefined)
                   } else {
                     setValue('valet.dropoffInfo', {
@@ -540,8 +526,10 @@ export const ManageValets = React.memo(
                     })
                   }
                 }}
+                label={'Add a different drop off location?'}
               />
-            </HtmlLabel>
+            </div>
+
             <Map
               initialViewState={{
                 latitude: garage.address.lat,

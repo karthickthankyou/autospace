@@ -372,3 +372,145 @@ export const admins = gql`
     }
   }
 `
+
+export const valetPickups = gql`
+  query valetPickups(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: BookingWhereUniqueInput
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    valetPickups(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      id
+      vehicleNumber
+      startTime
+      endTime
+      valetAssignment {
+        pickupLat
+        pickupLng
+        pickupValetId
+      }
+      slot {
+        garage {
+          address {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
+export const valetDrops = gql`
+  query valetDrops(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: BookingWhereUniqueInput
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    valetDrops(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      id
+      vehicleNumber
+      startTime
+      endTime
+      valetAssignment {
+        returnLat
+        returnLng
+        returnValetId
+      }
+      slot {
+        garage {
+          address {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
+export const valets = gql`
+  query valets(
+    $distinct: [ValetScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: ValetWhereUniqueInput
+    $orderBy: [ValetOrderByWithRelationInput!]
+    $where: ValetWhereInput
+  ) {
+    valets(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      updatedAt
+      uid
+      displayName
+      createdAt
+      companyId
+      image
+    }
+  }
+`
+
+export const companyValets = gql`
+  query companyValets(
+    $distinct: [ValetScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: ValetWhereUniqueInput
+    $orderBy: [ValetOrderByWithRelationInput!]
+    $where: ValetWhereInput
+  ) {
+    companyValets(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      displayName
+      uid
+      createdAt
+      updatedAt
+      companyId
+      image
+    }
+  }
+`
+
+export const createValet = gql`
+  mutation createValet($createValetInput: CreateValetInput!) {
+    createValet(createValetInput: $createValetInput) {
+      uid
+      displayName
+      createdAt
+      updatedAt
+      companyId
+    }
+  }
+`

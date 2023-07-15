@@ -1,11 +1,7 @@
 import { CompanyInfo } from '../../organisms/CompanyInfo'
 import { AlertSection } from '../../organisms/AlertSection'
 import { LinkButton } from '../../atoms/LinkButton'
-import {
-  useGetManagerLazyQuery,
-  useMyCompanyLazyQuery,
-} from '@autospace-org/network/src/generated'
-import { CreateManagerDialog } from './CreateManagerDialog'
+import { useMyCompanyLazyQuery } from '@autospace-org/network/src/generated'
 import { useEffect } from 'react'
 import { useUserStore } from '@autospace-org/store/user'
 import { LoaderPanel } from '../../molecules/Loader'

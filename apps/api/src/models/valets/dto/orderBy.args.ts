@@ -14,6 +14,10 @@ export class ValetOrderByWithRelationInput
       Prisma.ValetOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  licenceID: Prisma.SortOrder
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  image: Prisma.SortOrder
   @Field(() => ValetAssignmentOrderByRelationAggregateInput, { nullable: true })
   pickupAssignments: ValetAssignmentOrderByRelationAggregateInput
   @Field(() => ValetAssignmentOrderByRelationAggregateInput, { nullable: true })

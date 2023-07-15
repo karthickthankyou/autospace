@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useFormContext, useWatch, useFieldArray } from 'react-hook-form'
+import {
+  useFormContext,
+  useWatch,
+  useFieldArray,
+  Controller,
+} from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
 import { Map } from '../../organisms/Map'
@@ -55,11 +60,11 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
     handleSubmit,
     setValue,
     reset,
-
+    control,
     formState: { errors },
   } = useFormContext<FormTypeCreateGarage>()
 
-  const [{ percent }, uploadImages] = useImageUpload()
+  const [{ percent, uploading }, uploadImages] = useImageUpload()
 
   const [createGarage, { loading }] = useCreateGarageMutation()
   const router = useRouter()
@@ -78,6 +83,8 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
       <Form
         onSubmit={handleSubmit(
           async ({ description, displayName, location, slotTypes, images }) => {
+            const uploadedImages = await uploadImages(images)
+
             const { data, errors } = await createGarage({
               variables: {
                 createGarageInput: {
@@ -85,7 +92,7 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
                   displayName,
                   address: location,
                   slots: slotTypes,
-                  images,
+                  images: uploadedImages,
                 },
               },
             })
@@ -110,17 +117,17 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
           <HtmlTextArea cols={5} {...register('location.address')} />
         </HtmlLabel>
         <HtmlLabel title="Images" error={errors.images?.message}>
-          <HtmlInput
-            multiple={true}
-            type="file"
-            placeholder="Upload images"
-            accept="image/*"
-            onChange={(e) => {
-              uploadImages(e, (images: string[]) => {
-                console.trace('-- - --- - set value called.... ')
-                if (images) setValue('images', images)
-              })
-            }}
+          <Controller
+            control={control}
+            name={`images`}
+            render={({ field }) => (
+              <HtmlInput
+                type="file"
+                accept="image/*"
+                multiple={true}
+                onChange={(e) => field.onChange(e?.target?.files)}
+              />
+            )}
           />
           {percent > 0 ? (
             <ProgressBar variant="determinate" value={percent} />

@@ -145,6 +145,7 @@ export type Booking = {
   status: BookingStatus
   totalPrice?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
+  valetAssignment: ValetAssignment
   vehicleNumber: Scalars['String']
 }
 
@@ -447,6 +448,14 @@ export type CreateValetAssignmentInputWithoutBookingId = {
   returnLng?: InputMaybe<Scalars['Float']>
 }
 
+export type CreateValetInput = {
+  displayName: Scalars['String']
+  email: Scalars['String']
+  image?: InputMaybe<Scalars['String']>
+  licenceID: Scalars['String']
+  password: Scalars['String']
+}
+
 export type CreateVerificationInput = {
   adminId: Scalars['String']
   garageId: Scalars['Int']
@@ -737,6 +746,7 @@ export type MinimalSlotGroupBy = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  assignValetForCheckInCheckOut: Booking
   createAddress: Address
   createAdmin: Admin
   createBooking: Booking
@@ -749,6 +759,7 @@ export type Mutation = {
   createReview: Review
   createService: Service
   createSlot: Slot
+  createValet: Valet
   createVerification: Verification
   login: LoginOutput
   logout: Scalars['Boolean']
@@ -764,6 +775,7 @@ export type Mutation = {
   removeReview: Review
   removeService: Service
   removeSlot: Slot
+  removeValet: Valet
   removeVerification: Verification
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
@@ -777,7 +789,13 @@ export type Mutation = {
   updateReview: Review
   updateService: Service
   updateSlot: Slot
+  updateValet: Valet
   updateVerification: Verification
+}
+
+export type MutationAssignValetForCheckInCheckOutArgs = {
+  bookingId: Scalars['Int']
+  status: Scalars['String']
 }
 
 export type MutationCreateAddressArgs = {
@@ -826,6 +844,10 @@ export type MutationCreateServiceArgs = {
 
 export type MutationCreateSlotArgs = {
   createSlotInput: CreateSlotInput
+}
+
+export type MutationCreateValetArgs = {
+  createValetInput: CreateValetInput
 }
 
 export type MutationCreateVerificationArgs = {
@@ -884,6 +906,10 @@ export type MutationRemoveSlotArgs = {
   where?: InputMaybe<SlotWhereUniqueInput>
 }
 
+export type MutationRemoveValetArgs = {
+  where?: InputMaybe<ValetWhereUniqueInput>
+}
+
 export type MutationRemoveVerificationArgs = {
   where?: InputMaybe<VerificationWhereUniqueInput>
 }
@@ -936,6 +962,10 @@ export type MutationUpdateSlotArgs = {
   updateSlotInput: UpdateSlotInput
 }
 
+export type MutationUpdateValetArgs = {
+  updateValetInput: UpdateValetInput
+}
+
 export type MutationUpdateVerificationArgs = {
   updateVerificationInput: UpdateVerificationInput
 }
@@ -955,6 +985,7 @@ export type Query = {
   bookingsForGarage: Array<Booking>
   companies: Array<Company>
   company: Company
+  companyValets: Array<Valet>
   customer: Customer
   customers: Array<Customer>
   garage: Garage
@@ -971,6 +1002,10 @@ export type Query = {
   services: Array<Service>
   slot: Slot
   slots: Array<Slot>
+  valet: Valet
+  valetDrops: Array<Booking>
+  valetPickups: Array<Booking>
+  valets: Array<Valet>
   verification: Verification
   verifications: Array<Verification>
 }
@@ -1055,6 +1090,15 @@ export type QueryCompaniesArgs = {
 
 export type QueryCompanyArgs = {
   where?: InputMaybe<CompanyWhereUniqueInput>
+}
+
+export type QueryCompanyValetsArgs = {
+  cursor?: InputMaybe<ValetWhereUniqueInput>
+  distinct?: InputMaybe<Array<ValetScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ValetOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ValetWhereInput>
 }
 
 export type QueryCustomerArgs = {
@@ -1150,6 +1194,37 @@ export type QuerySlotsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<SlotWhereInput>
+}
+
+export type QueryValetArgs = {
+  where?: InputMaybe<ValetWhereUniqueInput>
+}
+
+export type QueryValetDropsArgs = {
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookingOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookingWhereInput>
+}
+
+export type QueryValetPickupsArgs = {
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookingOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookingWhereInput>
+}
+
+export type QueryValetsArgs = {
+  cursor?: InputMaybe<ValetWhereUniqueInput>
+  distinct?: InputMaybe<Array<ValetScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ValetOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ValetWhereInput>
 }
 
 export type QueryVerificationArgs = {
@@ -1545,10 +1620,43 @@ export type UpdateSlotInput = {
   width?: InputMaybe<Scalars['Int']>
 }
 
+export type UpdateValetInput = {
+  displayName?: InputMaybe<Scalars['String']>
+  email?: InputMaybe<Scalars['String']>
+  image?: InputMaybe<Scalars['String']>
+  licenceID?: InputMaybe<Scalars['String']>
+  password?: InputMaybe<Scalars['String']>
+  uid: Scalars['String']
+}
+
 export type UpdateVerificationInput = {
   adminId?: InputMaybe<Scalars['String']>
   garageId: Scalars['Int']
   verified?: InputMaybe<Scalars['Boolean']>
+}
+
+export type Valet = {
+  __typename?: 'Valet'
+  companyId: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  displayName: Scalars['String']
+  image?: Maybe<Scalars['String']>
+  licenceID: Scalars['String']
+  uid: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
+export type ValetAssignment = {
+  __typename?: 'ValetAssignment'
+  bookingId: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  pickupLat: Scalars['Float']
+  pickupLng: Scalars['Float']
+  pickupValetId?: Maybe<Scalars['String']>
+  returnLat?: Maybe<Scalars['Float']>
+  returnLng?: Maybe<Scalars['Float']>
+  returnValetId?: Maybe<Scalars['String']>
+  updatedAt: Scalars['DateTime']
 }
 
 export type ValetAssignmentListRelationFilter = {
@@ -1599,6 +1707,11 @@ export type ValetAssignmentWhereInput = {
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
+export type ValetCompanyIdUidCompoundUniqueInput = {
+  companyId: Scalars['Int']
+  uid: Scalars['String']
+}
+
 export type ValetListRelationFilter = {
   every?: InputMaybe<ValetWhereInput>
   none?: InputMaybe<ValetWhereInput>
@@ -1615,6 +1728,8 @@ export type ValetOrderByWithRelationInput = {
   companyId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   displayName?: InputMaybe<SortOrder>
+  image?: InputMaybe<SortOrder>
+  licenceID?: InputMaybe<SortOrder>
   pickupAssignments?: InputMaybe<ValetAssignmentOrderByRelationAggregateInput>
   returnAssignments?: InputMaybe<ValetAssignmentOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
@@ -1626,6 +1741,16 @@ export type ValetRelationFilter = {
   isNot?: InputMaybe<ValetWhereInput>
 }
 
+export enum ValetScalarFieldEnum {
+  CompanyId = 'companyId',
+  CreatedAt = 'createdAt',
+  DisplayName = 'displayName',
+  Image = 'image',
+  LicenceId = 'licenceID',
+  Uid = 'uid',
+  UpdatedAt = 'updatedAt',
+}
+
 export type ValetWhereInput = {
   AND?: InputMaybe<Array<ValetWhereInput>>
   NOT?: InputMaybe<Array<ValetWhereInput>>
@@ -1635,10 +1760,17 @@ export type ValetWhereInput = {
   companyId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   displayName?: InputMaybe<StringFilter>
+  image?: InputMaybe<StringFilter>
+  licenceID?: InputMaybe<StringFilter>
   pickupAssignments?: InputMaybe<ValetAssignmentListRelationFilter>
   returnAssignments?: InputMaybe<ValetAssignmentListRelationFilter>
   uid?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ValetWhereUniqueInput = {
+  companyId_uid?: InputMaybe<ValetCompanyIdUidCompoundUniqueInput>
+  uid?: InputMaybe<Scalars['String']>
 }
 
 export type Verification = {

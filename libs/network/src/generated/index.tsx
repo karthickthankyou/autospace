@@ -146,6 +146,7 @@ export type Booking = {
   status: BookingStatus
   totalPrice?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
+  valetAssignment: ValetAssignment
   vehicleNumber: Scalars['String']
 }
 
@@ -448,6 +449,14 @@ export type CreateValetAssignmentInputWithoutBookingId = {
   returnLng?: InputMaybe<Scalars['Float']>
 }
 
+export type CreateValetInput = {
+  displayName: Scalars['String']
+  email: Scalars['String']
+  image?: InputMaybe<Scalars['String']>
+  licenceID: Scalars['String']
+  password: Scalars['String']
+}
+
 export type CreateVerificationInput = {
   adminId: Scalars['String']
   garageId: Scalars['Int']
@@ -738,6 +747,7 @@ export type MinimalSlotGroupBy = {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  assignValetForCheckInCheckOut: Booking
   createAddress: Address
   createAdmin: Admin
   createBooking: Booking
@@ -750,6 +760,7 @@ export type Mutation = {
   createReview: Review
   createService: Service
   createSlot: Slot
+  createValet: Valet
   createVerification: Verification
   login: LoginOutput
   logout: Scalars['Boolean']
@@ -765,6 +776,7 @@ export type Mutation = {
   removeReview: Review
   removeService: Service
   removeSlot: Slot
+  removeValet: Valet
   removeVerification: Verification
   setAdmin: Scalars['Boolean']
   setRole: Scalars['Boolean']
@@ -778,7 +790,13 @@ export type Mutation = {
   updateReview: Review
   updateService: Service
   updateSlot: Slot
+  updateValet: Valet
   updateVerification: Verification
+}
+
+export type MutationAssignValetForCheckInCheckOutArgs = {
+  bookingId: Scalars['Int']
+  status: Scalars['String']
 }
 
 export type MutationCreateAddressArgs = {
@@ -827,6 +845,10 @@ export type MutationCreateServiceArgs = {
 
 export type MutationCreateSlotArgs = {
   createSlotInput: CreateSlotInput
+}
+
+export type MutationCreateValetArgs = {
+  createValetInput: CreateValetInput
 }
 
 export type MutationCreateVerificationArgs = {
@@ -885,6 +907,10 @@ export type MutationRemoveSlotArgs = {
   where?: InputMaybe<SlotWhereUniqueInput>
 }
 
+export type MutationRemoveValetArgs = {
+  where?: InputMaybe<ValetWhereUniqueInput>
+}
+
 export type MutationRemoveVerificationArgs = {
   where?: InputMaybe<VerificationWhereUniqueInput>
 }
@@ -937,6 +963,10 @@ export type MutationUpdateSlotArgs = {
   updateSlotInput: UpdateSlotInput
 }
 
+export type MutationUpdateValetArgs = {
+  updateValetInput: UpdateValetInput
+}
+
 export type MutationUpdateVerificationArgs = {
   updateVerificationInput: UpdateVerificationInput
 }
@@ -956,6 +986,7 @@ export type Query = {
   bookingsForGarage: Array<Booking>
   companies: Array<Company>
   company: Company
+  companyValets: Array<Valet>
   customer: Customer
   customers: Array<Customer>
   garage: Garage
@@ -972,6 +1003,10 @@ export type Query = {
   services: Array<Service>
   slot: Slot
   slots: Array<Slot>
+  valet: Valet
+  valetDrops: Array<Booking>
+  valetPickups: Array<Booking>
+  valets: Array<Valet>
   verification: Verification
   verifications: Array<Verification>
 }
@@ -1056,6 +1091,15 @@ export type QueryCompaniesArgs = {
 
 export type QueryCompanyArgs = {
   where?: InputMaybe<CompanyWhereUniqueInput>
+}
+
+export type QueryCompanyValetsArgs = {
+  cursor?: InputMaybe<ValetWhereUniqueInput>
+  distinct?: InputMaybe<Array<ValetScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ValetOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ValetWhereInput>
 }
 
 export type QueryCustomerArgs = {
@@ -1151,6 +1195,37 @@ export type QuerySlotsArgs = {
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
   where?: InputMaybe<SlotWhereInput>
+}
+
+export type QueryValetArgs = {
+  where?: InputMaybe<ValetWhereUniqueInput>
+}
+
+export type QueryValetDropsArgs = {
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookingOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookingWhereInput>
+}
+
+export type QueryValetPickupsArgs = {
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<BookingOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<BookingWhereInput>
+}
+
+export type QueryValetsArgs = {
+  cursor?: InputMaybe<ValetWhereUniqueInput>
+  distinct?: InputMaybe<Array<ValetScalarFieldEnum>>
+  orderBy?: InputMaybe<Array<ValetOrderByWithRelationInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  where?: InputMaybe<ValetWhereInput>
 }
 
 export type QueryVerificationArgs = {
@@ -1546,10 +1621,43 @@ export type UpdateSlotInput = {
   width?: InputMaybe<Scalars['Int']>
 }
 
+export type UpdateValetInput = {
+  displayName?: InputMaybe<Scalars['String']>
+  email?: InputMaybe<Scalars['String']>
+  image?: InputMaybe<Scalars['String']>
+  licenceID?: InputMaybe<Scalars['String']>
+  password?: InputMaybe<Scalars['String']>
+  uid: Scalars['String']
+}
+
 export type UpdateVerificationInput = {
   adminId?: InputMaybe<Scalars['String']>
   garageId: Scalars['Int']
   verified?: InputMaybe<Scalars['Boolean']>
+}
+
+export type Valet = {
+  __typename?: 'Valet'
+  companyId: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  displayName: Scalars['String']
+  image?: Maybe<Scalars['String']>
+  licenceID: Scalars['String']
+  uid: Scalars['String']
+  updatedAt: Scalars['DateTime']
+}
+
+export type ValetAssignment = {
+  __typename?: 'ValetAssignment'
+  bookingId: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  pickupLat: Scalars['Float']
+  pickupLng: Scalars['Float']
+  pickupValetId?: Maybe<Scalars['String']>
+  returnLat?: Maybe<Scalars['Float']>
+  returnLng?: Maybe<Scalars['Float']>
+  returnValetId?: Maybe<Scalars['String']>
+  updatedAt: Scalars['DateTime']
 }
 
 export type ValetAssignmentListRelationFilter = {
@@ -1600,6 +1708,11 @@ export type ValetAssignmentWhereInput = {
   updatedAt?: InputMaybe<DateTimeFilter>
 }
 
+export type ValetCompanyIdUidCompoundUniqueInput = {
+  companyId: Scalars['Int']
+  uid: Scalars['String']
+}
+
 export type ValetListRelationFilter = {
   every?: InputMaybe<ValetWhereInput>
   none?: InputMaybe<ValetWhereInput>
@@ -1616,6 +1729,8 @@ export type ValetOrderByWithRelationInput = {
   companyId?: InputMaybe<SortOrder>
   createdAt?: InputMaybe<SortOrder>
   displayName?: InputMaybe<SortOrder>
+  image?: InputMaybe<SortOrder>
+  licenceID?: InputMaybe<SortOrder>
   pickupAssignments?: InputMaybe<ValetAssignmentOrderByRelationAggregateInput>
   returnAssignments?: InputMaybe<ValetAssignmentOrderByRelationAggregateInput>
   uid?: InputMaybe<SortOrder>
@@ -1627,6 +1742,16 @@ export type ValetRelationFilter = {
   isNot?: InputMaybe<ValetWhereInput>
 }
 
+export enum ValetScalarFieldEnum {
+  CompanyId = 'companyId',
+  CreatedAt = 'createdAt',
+  DisplayName = 'displayName',
+  Image = 'image',
+  LicenceId = 'licenceID',
+  Uid = 'uid',
+  UpdatedAt = 'updatedAt',
+}
+
 export type ValetWhereInput = {
   AND?: InputMaybe<Array<ValetWhereInput>>
   NOT?: InputMaybe<Array<ValetWhereInput>>
@@ -1636,10 +1761,17 @@ export type ValetWhereInput = {
   companyId?: InputMaybe<IntFilter>
   createdAt?: InputMaybe<DateTimeFilter>
   displayName?: InputMaybe<StringFilter>
+  image?: InputMaybe<StringFilter>
+  licenceID?: InputMaybe<StringFilter>
   pickupAssignments?: InputMaybe<ValetAssignmentListRelationFilter>
   returnAssignments?: InputMaybe<ValetAssignmentListRelationFilter>
   uid?: InputMaybe<StringFilter>
   updatedAt?: InputMaybe<DateTimeFilter>
+}
+
+export type ValetWhereUniqueInput = {
+  companyId_uid?: InputMaybe<ValetCompanyIdUidCompoundUniqueInput>
+  uid?: InputMaybe<Scalars['String']>
 }
 
 export type Verification = {
@@ -2117,6 +2249,140 @@ export type AdminsQuery = {
   adminsCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
+export type ValetPickupsQueryVariables = Exact<{
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum> | BookingScalarFieldEnum>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<BookingOrderByWithRelationInput> | BookingOrderByWithRelationInput
+  >
+  where?: InputMaybe<BookingWhereInput>
+}>
+
+export type ValetPickupsQuery = {
+  __typename?: 'Query'
+  valetPickups: Array<{
+    __typename?: 'Booking'
+    id: number
+    vehicleNumber: string
+    startTime: any
+    endTime: any
+    valetAssignment: {
+      __typename?: 'ValetAssignment'
+      pickupLat: number
+      pickupLng: number
+      pickupValetId?: string | null
+    }
+    slot: {
+      __typename?: 'Slot'
+      garage: {
+        __typename?: 'Garage'
+        address: { __typename?: 'Address'; lat: number; lng: number }
+      }
+    }
+  }>
+}
+
+export type ValetDropsQueryVariables = Exact<{
+  distinct?: InputMaybe<Array<BookingScalarFieldEnum> | BookingScalarFieldEnum>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<BookingWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<BookingOrderByWithRelationInput> | BookingOrderByWithRelationInput
+  >
+  where?: InputMaybe<BookingWhereInput>
+}>
+
+export type ValetDropsQuery = {
+  __typename?: 'Query'
+  valetDrops: Array<{
+    __typename?: 'Booking'
+    id: number
+    vehicleNumber: string
+    startTime: any
+    endTime: any
+    valetAssignment: {
+      __typename?: 'ValetAssignment'
+      returnLat?: number | null
+      returnLng?: number | null
+      returnValetId?: string | null
+    }
+    slot: {
+      __typename?: 'Slot'
+      garage: {
+        __typename?: 'Garage'
+        address: { __typename?: 'Address'; lat: number; lng: number }
+      }
+    }
+  }>
+}
+
+export type ValetsQueryVariables = Exact<{
+  distinct?: InputMaybe<Array<ValetScalarFieldEnum> | ValetScalarFieldEnum>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<ValetWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<ValetOrderByWithRelationInput> | ValetOrderByWithRelationInput
+  >
+  where?: InputMaybe<ValetWhereInput>
+}>
+
+export type ValetsQuery = {
+  __typename?: 'Query'
+  valets: Array<{
+    __typename?: 'Valet'
+    updatedAt: any
+    uid: string
+    displayName: string
+    createdAt: any
+    companyId: number
+    image?: string | null
+  }>
+}
+
+export type CompanyValetsQueryVariables = Exact<{
+  distinct?: InputMaybe<Array<ValetScalarFieldEnum> | ValetScalarFieldEnum>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+  cursor?: InputMaybe<ValetWhereUniqueInput>
+  orderBy?: InputMaybe<
+    Array<ValetOrderByWithRelationInput> | ValetOrderByWithRelationInput
+  >
+  where?: InputMaybe<ValetWhereInput>
+}>
+
+export type CompanyValetsQuery = {
+  __typename?: 'Query'
+  companyValets: Array<{
+    __typename?: 'Valet'
+    displayName: string
+    uid: string
+    createdAt: any
+    updatedAt: any
+    companyId: number
+    image?: string | null
+  }>
+}
+
+export type CreateValetMutationVariables = Exact<{
+  createValetInput: CreateValetInput
+}>
+
+export type CreateValetMutation = {
+  __typename?: 'Mutation'
+  createValet: {
+    __typename?: 'Valet'
+    uid: string
+    displayName: string
+    createdAt: any
+    updatedAt: any
+    companyId: number
+  }
+}
+
 export const namedOperations = {
   Query: {
     Garages: 'Garages',
@@ -2127,6 +2393,10 @@ export const namedOperations = {
     getManager: 'getManager',
     myCompany: 'myCompany',
     admins: 'admins',
+    valetPickups: 'valetPickups',
+    valetDrops: 'valetDrops',
+    valets: 'valets',
+    companyValets: 'companyValets',
   },
   Mutation: {
     CreateManager: 'CreateManager',
@@ -2143,6 +2413,7 @@ export const namedOperations = {
     createGarage: 'createGarage',
     createAdmin: 'createAdmin',
     removeAdmin: 'removeAdmin',
+    createValet: 'createValet',
   },
   Fragment: {
     BookingFields: 'BookingFields',
@@ -3494,4 +3765,396 @@ export type AdminsLazyQueryHookResult = ReturnType<typeof useAdminsLazyQuery>
 export type AdminsQueryResult = Apollo.QueryResult<
   AdminsQuery,
   AdminsQueryVariables
+>
+export const ValetPickupsDocument = /*#__PURE__*/ gql`
+  query valetPickups(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: BookingWhereUniqueInput
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    valetPickups(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      id
+      vehicleNumber
+      startTime
+      endTime
+      valetAssignment {
+        pickupLat
+        pickupLng
+        pickupValetId
+      }
+      slot {
+        garage {
+          address {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useValetPickupsQuery__
+ *
+ * To run a query within a React component, call `useValetPickupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useValetPickupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useValetPickupsQuery({
+ *   variables: {
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useValetPickupsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ValetPickupsQuery,
+    ValetPickupsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ValetPickupsQuery, ValetPickupsQueryVariables>(
+    ValetPickupsDocument,
+    options,
+  )
+}
+export function useValetPickupsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ValetPickupsQuery,
+    ValetPickupsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ValetPickupsQuery, ValetPickupsQueryVariables>(
+    ValetPickupsDocument,
+    options,
+  )
+}
+export type ValetPickupsQueryHookResult = ReturnType<
+  typeof useValetPickupsQuery
+>
+export type ValetPickupsLazyQueryHookResult = ReturnType<
+  typeof useValetPickupsLazyQuery
+>
+export type ValetPickupsQueryResult = Apollo.QueryResult<
+  ValetPickupsQuery,
+  ValetPickupsQueryVariables
+>
+export const ValetDropsDocument = /*#__PURE__*/ gql`
+  query valetDrops(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: BookingWhereUniqueInput
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    valetDrops(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      id
+      vehicleNumber
+      startTime
+      endTime
+      valetAssignment {
+        returnLat
+        returnLng
+        returnValetId
+      }
+      slot {
+        garage {
+          address {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useValetDropsQuery__
+ *
+ * To run a query within a React component, call `useValetDropsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useValetDropsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useValetDropsQuery({
+ *   variables: {
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useValetDropsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    ValetDropsQuery,
+    ValetDropsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ValetDropsQuery, ValetDropsQueryVariables>(
+    ValetDropsDocument,
+    options,
+  )
+}
+export function useValetDropsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ValetDropsQuery,
+    ValetDropsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ValetDropsQuery, ValetDropsQueryVariables>(
+    ValetDropsDocument,
+    options,
+  )
+}
+export type ValetDropsQueryHookResult = ReturnType<typeof useValetDropsQuery>
+export type ValetDropsLazyQueryHookResult = ReturnType<
+  typeof useValetDropsLazyQuery
+>
+export type ValetDropsQueryResult = Apollo.QueryResult<
+  ValetDropsQuery,
+  ValetDropsQueryVariables
+>
+export const ValetsDocument = /*#__PURE__*/ gql`
+  query valets(
+    $distinct: [ValetScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: ValetWhereUniqueInput
+    $orderBy: [ValetOrderByWithRelationInput!]
+    $where: ValetWhereInput
+  ) {
+    valets(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      updatedAt
+      uid
+      displayName
+      createdAt
+      companyId
+      image
+    }
+  }
+`
+
+/**
+ * __useValetsQuery__
+ *
+ * To run a query within a React component, call `useValetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useValetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useValetsQuery({
+ *   variables: {
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useValetsQuery(
+  baseOptions?: Apollo.QueryHookOptions<ValetsQuery, ValetsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ValetsQuery, ValetsQueryVariables>(
+    ValetsDocument,
+    options,
+  )
+}
+export function useValetsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ValetsQuery, ValetsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ValetsQuery, ValetsQueryVariables>(
+    ValetsDocument,
+    options,
+  )
+}
+export type ValetsQueryHookResult = ReturnType<typeof useValetsQuery>
+export type ValetsLazyQueryHookResult = ReturnType<typeof useValetsLazyQuery>
+export type ValetsQueryResult = Apollo.QueryResult<
+  ValetsQuery,
+  ValetsQueryVariables
+>
+export const CompanyValetsDocument = /*#__PURE__*/ gql`
+  query companyValets(
+    $distinct: [ValetScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $cursor: ValetWhereUniqueInput
+    $orderBy: [ValetOrderByWithRelationInput!]
+    $where: ValetWhereInput
+  ) {
+    companyValets(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      cursor: $cursor
+      orderBy: $orderBy
+      where: $where
+    ) {
+      displayName
+      uid
+      createdAt
+      updatedAt
+      companyId
+      image
+    }
+  }
+`
+
+/**
+ * __useCompanyValetsQuery__
+ *
+ * To run a query within a React component, call `useCompanyValetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyValetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyValetsQuery({
+ *   variables: {
+ *      distinct: // value for 'distinct'
+ *      skip: // value for 'skip'
+ *      take: // value for 'take'
+ *      cursor: // value for 'cursor'
+ *      orderBy: // value for 'orderBy'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useCompanyValetsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    CompanyValetsQuery,
+    CompanyValetsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CompanyValetsQuery, CompanyValetsQueryVariables>(
+    CompanyValetsDocument,
+    options,
+  )
+}
+export function useCompanyValetsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CompanyValetsQuery,
+    CompanyValetsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CompanyValetsQuery, CompanyValetsQueryVariables>(
+    CompanyValetsDocument,
+    options,
+  )
+}
+export type CompanyValetsQueryHookResult = ReturnType<
+  typeof useCompanyValetsQuery
+>
+export type CompanyValetsLazyQueryHookResult = ReturnType<
+  typeof useCompanyValetsLazyQuery
+>
+export type CompanyValetsQueryResult = Apollo.QueryResult<
+  CompanyValetsQuery,
+  CompanyValetsQueryVariables
+>
+export const CreateValetDocument = /*#__PURE__*/ gql`
+  mutation createValet($createValetInput: CreateValetInput!) {
+    createValet(createValetInput: $createValetInput) {
+      uid
+      displayName
+      createdAt
+      updatedAt
+      companyId
+    }
+  }
+`
+export type CreateValetMutationFn = Apollo.MutationFunction<
+  CreateValetMutation,
+  CreateValetMutationVariables
+>
+
+/**
+ * __useCreateValetMutation__
+ *
+ * To run a mutation, you first call `useCreateValetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateValetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createValetMutation, { data, loading, error }] = useCreateValetMutation({
+ *   variables: {
+ *      createValetInput: // value for 'createValetInput'
+ *   },
+ * });
+ */
+export function useCreateValetMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateValetMutation,
+    CreateValetMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateValetMutation, CreateValetMutationVariables>(
+    CreateValetDocument,
+    options,
+  )
+}
+export type CreateValetMutationHookResult = ReturnType<
+  typeof useCreateValetMutation
+>
+export type CreateValetMutationResult =
+  Apollo.MutationResult<CreateValetMutation>
+export type CreateValetMutationOptions = Apollo.BaseMutationOptions<
+  CreateValetMutation,
+  CreateValetMutationVariables
 >

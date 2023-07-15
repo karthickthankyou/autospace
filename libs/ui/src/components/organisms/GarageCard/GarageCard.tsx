@@ -26,6 +26,8 @@ import { ShowData } from '../ShowData'
 import { Tab, Tabs } from '../../molecules/Tabs'
 import { TabPanel } from '../../molecules/Tabs/Tabs'
 import { Reveal } from '../../molecules/Reveal'
+import { PlainButton } from '../../atoms/PlainButton'
+import Image from 'next/image'
 
 export interface IGarageCardProps {
   garage: GaragesQuery['garages'][number]
@@ -34,9 +36,18 @@ export interface IGarageCardProps {
 export const GarageCard = ({ garage }: IGarageCardProps) => {
   return (
     <div className="overflow-hidden ">
-      <AutoImageChanger images={garage.images || []} durationPerImage={2000} />
+      <div className="p-1 border-2 shadow-lg border-primary">
+        <Image
+          src={garage?.images?.[0] || ''}
+          alt=""
+          width={200}
+          height={200}
+          className="w-full aspect-square"
+        />
+      </div>
+      {/* <AutoImageChanger images={garage.images || []} durationPerImage={2000} /> */}
 
-      <div className="flex justify-between">
+      <div className="flex justify-between my-2">
         <h3 className="font-semibold ">{garage.displayName}</h3>
         <ListBookings garageId={garage.id} />
       </div>
@@ -169,9 +180,12 @@ export const ListBookings = ({ garageId }: { garageId: number }) => {
 
   return (
     <>
-      <button onClick={() => setOpen(true)}>
-        <IconList className="w-8 h-8 p-1" />
-      </button>
+      <PlainButton
+        className="text-sm underline underline-offset-4"
+        onClick={() => setOpen(true)}
+      >
+        Bookings
+      </PlainButton>
       <Dialog
         widthClassName="max-w-2xl"
         open={open}
