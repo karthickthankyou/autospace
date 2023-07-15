@@ -972,6 +972,7 @@ export type Query = {
   review: Review
   reviews: Array<Review>
   searchGarages: Array<Garage>
+  searchGaragesCount: AggregateCountOutput
   service: Service
   services: Array<Service>
   slot: Slot
@@ -1121,6 +1122,12 @@ export type QueryReviewsArgs = {
 export type QuerySearchGaragesArgs = {
   dateFilter: DateFilterInput
   garageFilter?: InputMaybe<GarageFilter>
+  locationFilter: LocationFilterInput
+  slotsFilter?: InputMaybe<SlotWhereInput>
+}
+
+export type QuerySearchGaragesCountArgs = {
+  dateFilter: DateFilterInput
   locationFilter: LocationFilterInput
   slotsFilter?: InputMaybe<SlotWhereInput>
 }
@@ -1823,6 +1830,18 @@ export type SearchGaragesQuery = {
       pricePerHour: number
     }>
   }>
+  searchGaragesCount: { __typename?: 'AggregateCountOutput'; count: number }
+}
+
+export type SearchGaragesCountQueryVariables = Exact<{
+  dateFilter: DateFilterInput
+  locationFilter: LocationFilterInput
+  slotsFilter?: InputMaybe<SlotWhereInput>
+}>
+
+export type SearchGaragesCountQuery = {
+  __typename?: 'Query'
+  searchGaragesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
 
 export type CreateBookingMutationVariables = Exact<{
@@ -2107,6 +2126,7 @@ export const namedOperations = {
   Query: {
     Garages: 'Garages',
     SearchGarages: 'SearchGarages',
+    searchGaragesCount: 'searchGaragesCount',
     bookings: 'bookings',
     bookingsForGarage: 'bookingsForGarage',
     getManager: 'getManager',
@@ -2531,6 +2551,13 @@ export const SearchGaragesDocument = /*#__PURE__*/ gql`
         pricePerHour
       }
     }
+    searchGaragesCount(
+      dateFilter: $dateFilter
+      locationFilter: $locationFilter
+      slotsFilter: $slotsFilter
+    ) {
+      count
+    }
   }
 `
 
@@ -2586,6 +2613,74 @@ export type SearchGaragesLazyQueryHookResult = ReturnType<
 export type SearchGaragesQueryResult = Apollo.QueryResult<
   SearchGaragesQuery,
   SearchGaragesQueryVariables
+>
+export const SearchGaragesCountDocument = /*#__PURE__*/ gql`
+  query searchGaragesCount(
+    $dateFilter: DateFilterInput!
+    $locationFilter: LocationFilterInput!
+    $slotsFilter: SlotWhereInput
+  ) {
+    searchGaragesCount(
+      dateFilter: $dateFilter
+      locationFilter: $locationFilter
+      slotsFilter: $slotsFilter
+    ) {
+      count
+    }
+  }
+`
+
+/**
+ * __useSearchGaragesCountQuery__
+ *
+ * To run a query within a React component, call `useSearchGaragesCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchGaragesCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchGaragesCountQuery({
+ *   variables: {
+ *      dateFilter: // value for 'dateFilter'
+ *      locationFilter: // value for 'locationFilter'
+ *      slotsFilter: // value for 'slotsFilter'
+ *   },
+ * });
+ */
+export function useSearchGaragesCountQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    SearchGaragesCountQuery,
+    SearchGaragesCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<
+    SearchGaragesCountQuery,
+    SearchGaragesCountQueryVariables
+  >(SearchGaragesCountDocument, options)
+}
+export function useSearchGaragesCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    SearchGaragesCountQuery,
+    SearchGaragesCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    SearchGaragesCountQuery,
+    SearchGaragesCountQueryVariables
+  >(SearchGaragesCountDocument, options)
+}
+export type SearchGaragesCountQueryHookResult = ReturnType<
+  typeof useSearchGaragesCountQuery
+>
+export type SearchGaragesCountLazyQueryHookResult = ReturnType<
+  typeof useSearchGaragesCountLazyQuery
+>
+export type SearchGaragesCountQueryResult = Apollo.QueryResult<
+  SearchGaragesCountQuery,
+  SearchGaragesCountQueryVariables
 >
 export const CreateBookingDocument = /*#__PURE__*/ gql`
   mutation createBooking($createBookingInput: CreateBookingInput!) {

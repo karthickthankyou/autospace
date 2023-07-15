@@ -644,6 +644,7 @@ type Query {
   garages(where: GarageWhereInput, orderBy: [GarageOrderByWithRelationInput!], cursor: GarageWhereUniqueInput, take: Int, skip: Int, distinct: [GarageScalarFieldEnum!]): [Garage!]!
   garage(where: GarageWhereUniqueInput): Garage!
   searchGarages(dateFilter: DateFilterInput!, locationFilter: LocationFilterInput!, slotsFilter: SlotWhereInput, garageFilter: GarageFilter): [Garage!]!
+  searchGaragesCount(dateFilter: DateFilterInput!, locationFilter: LocationFilterInput!, slotsFilter: SlotWhereInput): AggregateCountOutput!
   garagesCount(where: GarageWhereInput): AggregateCountOutput!
   managers(where: ManagerWhereInput, orderBy: [ManagerOrderByWithRelationInput!], cursor: ManagerWhereUniqueInput, take: Int, skip: Int, distinct: [ManagerScalarFieldEnum!]): [Manager!]!
   manager(where: ManagerWhereUniqueInput): Manager!

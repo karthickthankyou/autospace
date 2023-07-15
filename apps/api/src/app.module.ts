@@ -21,6 +21,7 @@ import { AuthModule } from './common/auth/auth.module'
 import { StripeModule } from './models/stripe/stripe.module'
 import { BookingTimelinesModule } from './models/booking-timelines/booking-timelines.module'
 import { ServicesModule } from './models/services/services.module'
+import { SentryModule } from './common/sentry/sentry.module'
 
 @Module({
   imports: [
@@ -34,6 +35,8 @@ import { ServicesModule } from './models/services/services.module'
       },
       context: ({ req, res }) => ({ req, res }),
     }),
+
+    SentryModule,
 
     PrismaModule,
     FirebaseModule,

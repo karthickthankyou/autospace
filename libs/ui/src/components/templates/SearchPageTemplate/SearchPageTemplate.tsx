@@ -22,6 +22,7 @@ import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
 import {
   SearchGaragesQuery,
+  useSearchGaragesCountLazyQuery,
   useSearchGaragesLazyQuery,
 } from '@autospace-org/network/src/generated'
 import { Marker } from '../../organisms/Map/MapMarker'
@@ -182,16 +183,35 @@ export const MarkerWithPopup = ({
   )
 }
 
+export const ZOOM_LIMIT = 10
+
 export const ShowMarkers = () => {
   const [garages, setGarages] = useState<SearchGaragesQuery['searchGarages']>(
     [],
   )
+
+  const { current: map } = useMap()
   const [searchGarages, { loading, data }] = useSearchGaragesLazyQuery()
+  const [searchGaragesCount, { loading: loadingCount, data: dataCount }] =
+    useSearchGaragesCountLazyQuery()
 
   const { variables } = useConvertSearchFormToVariables()
 
+  const TOO_ZOOMED_OUT = (map?.getZoom() || 0) < ZOOM_LIMIT
+
   useEffect(() => {
+    if (TOO_ZOOMED_OUT && variables) {
+      searchGaragesCount({
+        variables: {
+          dateFilter: variables.dateFilter,
+          locationFilter: variables.locationFilter,
+          slotsFilter: variables.slotsFilter,
+        },
+      })
+      return
+    }
     if (variables) {
+      console.log('zoom level ', map?.getZoom())
       searchGarages({ variables })
     }
   }, [variables])
@@ -211,9 +231,17 @@ export const ShowMarkers = () => {
     )
   }
 
+  if (TOO_ZOOMED_OUT) {
+    return (
+      <Panel position="center-center">
+        <div className="p-2 bg-white">Too zoomed out</div>
+      </Panel>
+    )
+  }
+
   return (
     <>
-      {loading ? (
+      {loading || loadingCount ? (
         <Panel position="center-bottom">
           <IconRefresh className="animate-spin-reverse" />
         </Panel>

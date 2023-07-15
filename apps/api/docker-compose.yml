@@ -2,26 +2,17 @@ version: '3.8'
 
 services:
   db:
+    container_name: autospace_db
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+      - 1006:5432
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: root
-    ports:
-      - '5431:80'
-    depends_on:
-      - db
 
 volumes:
   db_data:

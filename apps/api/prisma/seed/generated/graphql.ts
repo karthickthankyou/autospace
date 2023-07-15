@@ -971,6 +971,7 @@ export type Query = {
   review: Review
   reviews: Array<Review>
   searchGarages: Array<Garage>
+  searchGaragesCount: AggregateCountOutput
   service: Service
   services: Array<Service>
   slot: Slot
@@ -1120,6 +1121,12 @@ export type QueryReviewsArgs = {
 export type QuerySearchGaragesArgs = {
   dateFilter: DateFilterInput
   garageFilter?: InputMaybe<GarageFilter>
+  locationFilter: LocationFilterInput
+  slotsFilter?: InputMaybe<SlotWhereInput>
+}
+
+export type QuerySearchGaragesCountArgs = {
+  dateFilter: DateFilterInput
   locationFilter: LocationFilterInput
   slotsFilter?: InputMaybe<SlotWhereInput>
 }

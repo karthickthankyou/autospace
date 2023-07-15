@@ -122,6 +122,29 @@ export const searchGarages = gql`
         pricePerHour
       }
     }
+    searchGaragesCount(
+      dateFilter: $dateFilter
+      locationFilter: $locationFilter
+      slotsFilter: $slotsFilter
+    ) {
+      count
+    }
+  }
+`
+
+export const searchGaragesCount = gql`
+  query searchGaragesCount(
+    $dateFilter: DateFilterInput!
+    $locationFilter: LocationFilterInput!
+    $slotsFilter: SlotWhereInput
+  ) {
+    searchGaragesCount(
+      dateFilter: $dateFilter
+      locationFilter: $locationFilter
+      slotsFilter: $slotsFilter
+    ) {
+      count
+    }
   }
 `
 

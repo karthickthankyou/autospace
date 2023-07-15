@@ -20,8 +20,14 @@ export const Brand = ({
           </div>
         ) : (
           <div className="flex items-center gap-1 font-medium tracking-tighter font-playfair">
-            <BrandIcon /> Autospace
-            <span className="text-xs">{type}</span>
+            <BrandIcon />
+            <div>
+              <div className="flex gap-1">
+                <div>Autospace</div>
+                <span className="text-xs">{type}</span>
+              </div>
+              <div className="text-xs text-gray">Karthick Ragavendran</div>
+            </div>
           </div>
         )}
       </div>

@@ -120,6 +120,58 @@ export class GaragesResolver {
     })
   }
 
+  @Query(() => AggregateCountOutput, {
+    name: 'searchGaragesCount',
+  })
+  async searchGaragesCount(
+    @Args('dateFilter') dateFilter: DateFilterInput,
+    @Args('locationFilter') locationFilter: LocationFilterInput,
+    @Args('slotsFilter', { nullable: true }) slotsFilter: SlotWhereInput,
+  ) {
+    const { start, end } = dateFilter
+    const { nw_lat, nw_lng, se_lat, se_lng } = locationFilter
+
+    let startDate = new Date(start)
+    let endDate = new Date(end)
+    const currentDate = new Date()
+
+    if (startDate.getTime() < currentDate.getTime()) {
+      // Set startDate as current time
+      startDate = new Date()
+    }
+    if (startDate.getTime() > endDate.getTime()) {
+      const updatedEndDate = new Date(startDate)
+      updatedEndDate.setSeconds(updatedEndDate.getSeconds() + 3600)
+      endDate = updatedEndDate
+      //   throw new Error('Start date must be before end date')
+    }
+
+    const garages = await this.prisma.garage.aggregate({
+      _count: { _all: true },
+      where: {
+        verification: { verified: true },
+        address: {
+          lat: { lte: nw_lat, gte: se_lat },
+          lng: { gte: nw_lng, lte: se_lng },
+        },
+        slots: {
+          some: {
+            ...slotsFilter,
+            bookings: {
+              none: {
+                OR: [
+                  { startTime: { lt: endDate }, endTime: { gt: startDate } },
+                  { startTime: { gt: startDate }, endTime: { lt: endDate } },
+                ],
+              },
+            },
+          },
+        },
+      },
+    })
+    return { count: garages._count._all }
+  }
+
   @Mutation(() => Garage)
   updateGarage(@Args('updateGarageInput') args: UpdateGarageInput) {
     return this.garagesService.update(args)
