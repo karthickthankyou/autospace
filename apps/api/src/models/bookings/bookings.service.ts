@@ -16,10 +16,28 @@ export class BookingsService {
     type,
     vehicleNumber,
     phoneNumber,
-    services,
     valetAssignment,
   }: CreateBookingInput) {
+    // Create customer
+    const customer = await this.prisma.customer.findUnique({
+      where: { uid: customerId },
+    })
+
+    if (!customer?.uid) {
+      await this.prisma.customer.create({
+        data: { uid: customerId },
+      })
+    }
+
     const passcode = generateSixDigitNumber().toString()
+
+    // If startTime or endTime are strings, convert them to Date objects
+    if (typeof startTime === 'string') {
+      startTime = new Date(startTime)
+    }
+    if (typeof endTime === 'string') {
+      endTime = new Date(endTime)
+    }
 
     const slot = await this.getFreeSlot({
       endTime,
@@ -28,7 +46,9 @@ export class BookingsService {
       type,
     })
 
-    if (!slot?.id) {
+    console.log('slot ', slot, slot?.id)
+
+    if (!slot) {
       throw new NotFoundException('No slots found.')
     }
 
@@ -41,9 +61,6 @@ export class BookingsService {
         phoneNumber,
         passcode,
         slotId: slot.id,
-        services: {
-          connect: services,
-        },
         ...(valetAssignment
           ? {
               valetAssignment: {

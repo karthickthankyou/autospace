@@ -5,6 +5,9 @@ import { Reveal } from '../../molecules/Reveal'
 import { StartEndDateCard } from '../DateCard/DateCard'
 import { BookingsQuery } from '@autospace-org/network/src/generated'
 import { AutoImageChanger } from '../../molecules/AutoImageChanger'
+import { BookingStatusTimeline } from '../BookingStatusTimeline'
+import { TitleValue } from '../../atoms/TitleValue'
+import { TitleStrongValue } from '../../atoms/TitleValue/TitleValue'
 
 export interface IBookingCardProps {
   booking: NonNullable<BookingsQuery['bookings']>[number]
@@ -13,32 +16,39 @@ export interface IBookingCardProps {
 export const CustomerBookingCard = ({ booking }: IBookingCardProps) => {
   return (
     <div className="bg-white ">
+      <AutoImageChanger
+        images={booking.slot.garage.images || []}
+        durationPerImage={5}
+      />
       <div className="p-4 ">
         <StartEndDateCard
           startTime={booking.startTime}
           endTime={booking.endTime}
         />
       </div>
-      <AutoImageChanger
-        images={booking.slot.garage.images || []}
-        durationPerImage={5}
-      />
-      <div className="flex items-center justify-between gap-1 p-4 mt-2 bg-topo">
-        <div>{booking.slot.garage.address.address}</div>
-        <MapLink
-          lat={booking.slot.garage.address.lat}
-          lng={booking.slot.garage.address.lng}
-        />
-      </div>
-      <div className="flex flex-col items-center gap-1 p-4 ">
-        <div className="text-sm">{booking.vehicleNumber}</div>
-        <div className="text-sm">{booking.status}</div>
-        <div className="px-1 font-semibold border border-black">
+
+      <div className="flex flex-col items-start gap-2 p-4 ">
+        <TitleStrongValue title={'Vehicle number'}>
+          {booking.vehicleNumber}
+        </TitleStrongValue>
+        <TitleStrongValue title={'Status'}>
+          {booking.status.split('_').join(' ')}
+        </TitleStrongValue>
+        <TitleStrongValue title={'Slot ID'}>
           {booking.slot.displayName}
-        </div>
-      </div>
-      <div className="p-4 ">
-        <Reveal secret={booking.passcode || ''} />
+        </TitleStrongValue>
+        <TitleStrongValue title={'Address'}>
+          <div className="flex justify-between gap-2">
+            <div>{booking.slot.garage.address.address}</div>
+            <MapLink
+              lat={booking.slot.garage.address.lat}
+              lng={booking.slot.garage.address.lng}
+            />
+          </div>
+        </TitleStrongValue>
+        <TitleStrongValue title={'Code'}>
+          <Reveal secret={booking.passcode || ''} />
+        </TitleStrongValue>
       </div>
     </div>
   )

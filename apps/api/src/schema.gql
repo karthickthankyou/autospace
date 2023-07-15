@@ -478,10 +478,10 @@ type SlotTypeCount {
 }
 
 type Admin {
+  displayName: String
   uid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  displayName: String!
   verifications: [Verification!]!
   verificationsCount: Int!
 }
@@ -542,18 +542,6 @@ type Booking {
   customer: Customer!
 }
 
-type Service {
-  bookingId: Int!
-  id: Int!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  name: String!
-  description: String!
-  price: Int!
-  duration: Int!
-  garageId: Int!
-}
-
 type Slot {
   displayName: String
   pricePerHour: Int!
@@ -603,6 +591,18 @@ type MinimalSlotGroupBy {
   pricePerHour: Int!
   type: SlotType
   count: Int!
+}
+
+type Service {
+  bookingId: Int!
+  id: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String!
+  price: Int!
+  duration: Int!
+  garageId: Int!
 }
 
 type Review {
@@ -1145,8 +1145,8 @@ input UpdateAddressInput {
 }
 
 input UpdateAdminInput {
-  uid: String!
   displayName: String
+  uid: String!
 }
 
 input CreateBookingInput {
@@ -1154,22 +1154,17 @@ input CreateBookingInput {
   endTime: DateTime!
   customerId: String!
   vehicleNumber: String!
-  phoneNumber: String
   type: SlotType!
   valetAssignment: CreateValetAssignmentInputWithoutBookingId
-  services: [ConnectService!]!
+  phoneNumber: String
   garageId: Int!
 }
 
 input CreateValetAssignmentInputWithoutBookingId {
-  pickupLat: Float
-  pickupLng: Float
+  pickupLat: Float!
+  pickupLng: Float!
   returnLat: Float
   returnLng: Float
-}
-
-input ConnectService {
-  id: Int!
 }
 
 input CreateBookingTimelineInput {

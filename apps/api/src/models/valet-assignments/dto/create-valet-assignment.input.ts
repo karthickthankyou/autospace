@@ -1,5 +1,6 @@
-import { InputType, PickType } from '@nestjs/graphql'
+import { Field, Float, InputType, PickType } from '@nestjs/graphql'
 import { ValetAssignment } from '../entities/valet-assignment.entity'
+import { CreateBookingInput } from 'prisma/seed/generated/graphql'
 
 @InputType()
 export class CreateValetAssignmentInput extends PickType(
@@ -9,8 +10,16 @@ export class CreateValetAssignmentInput extends PickType(
 ) {}
 
 @InputType()
-export class CreateValetAssignmentInputWithoutBookingId extends PickType(
-  ValetAssignment,
-  ['pickupLat', 'pickupLng', 'returnLat', 'returnLng'],
-  InputType,
-) {}
+export class CreateValetAssignmentInputWithoutBookingId {
+  @Field(() => Float)
+  pickupLat: number
+
+  @Field(() => Float)
+  pickupLng: number
+
+  @Field(() => Float, { nullable: true })
+  returnLat?: number
+
+  @Field(() => Float, { nullable: true })
+  returnLng?: number
+}

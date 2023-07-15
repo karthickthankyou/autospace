@@ -7,5 +7,6 @@ export class Admin implements RestrictProperties<Admin, AdminType> {
   uid: string
   createdAt: Date
   updatedAt: Date
+  @Field(() => String, { nullable: true })
   displayName: string
 }

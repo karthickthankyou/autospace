@@ -19,7 +19,7 @@ export const Brand = ({
             <BrandIcon /> A.
           </div>
         ) : (
-          <div className="flex items-center gap-1 font-medium tracking-tighter font-playfair">
+          <div className="flex items-center gap-2 font-medium tracking-tighter font-playfair">
             <BrandIcon />
             <div>
               <div className="flex gap-1">

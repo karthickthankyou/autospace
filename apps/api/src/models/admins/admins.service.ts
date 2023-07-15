@@ -13,6 +13,22 @@ export class AdminsService {
     })
   }
 
+  async createIfNotExist(createAdminInput: CreateAdminInput) {
+    const admin = await this.prisma.admin.findUnique({
+      where: {
+        uid: createAdminInput.uid,
+      },
+    })
+
+    if (!admin) {
+      return this.prisma.admin.create({
+        data: createAdminInput,
+      })
+    } else {
+      return admin
+    }
+  }
+
   findAll(args: FindManyAdminArgs) {
     return this.prisma.admin.findMany(args)
   }

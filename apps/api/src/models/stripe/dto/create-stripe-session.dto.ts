@@ -1,7 +1,8 @@
 import { TotalPrice } from '@autospace-org/types'
+import { CreateBookingInput } from 'prisma/seed/generated/graphql'
 
 export class CreateStripeDto {
   uid: string
-  totalPrice: TotalPrice
-  redirectUrl: string
+  totalPriceObj: TotalPrice
+  bookingData: CreateBookingInput
 }

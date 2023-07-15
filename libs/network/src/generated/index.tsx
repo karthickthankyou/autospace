@@ -83,7 +83,7 @@ export type AddressWhereUniqueInput = {
 export type Admin = {
   __typename?: 'Admin'
   createdAt: Scalars['DateTime']
-  displayName: Scalars['String']
+  displayName?: Maybe<Scalars['String']>
   uid: Scalars['String']
   updatedAt: Scalars['DateTime']
   verifications: Array<Verification>
@@ -353,10 +353,6 @@ export type CompanyWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>
 }
 
-export type ConnectService = {
-  id: Scalars['Int']
-}
-
 export type CreateAddressInput = {
   address: Scalars['String']
   garageId: Scalars['Int']
@@ -375,7 +371,6 @@ export type CreateBookingInput = {
   endTime: Scalars['DateTime']
   garageId: Scalars['Int']
   phoneNumber?: InputMaybe<Scalars['String']>
-  services: Array<ConnectService>
   startTime: Scalars['DateTime']
   type: SlotType
   valetAssignment?: InputMaybe<CreateValetAssignmentInputWithoutBookingId>
@@ -447,8 +442,8 @@ export type CreateSlotInputWithoutGarageId = {
 }
 
 export type CreateValetAssignmentInputWithoutBookingId = {
-  pickupLat?: InputMaybe<Scalars['Float']>
-  pickupLng?: InputMaybe<Scalars['Float']>
+  pickupLat: Scalars['Float']
+  pickupLng: Scalars['Float']
   returnLat?: InputMaybe<Scalars['Float']>
   returnLng?: InputMaybe<Scalars['Float']>
 }
@@ -2077,7 +2072,7 @@ export type CreateAdminMutation = {
   createAdmin: {
     __typename?: 'Admin'
     createdAt: any
-    displayName: string
+    displayName?: string | null
     uid: string
     updatedAt: any
   }
@@ -2092,7 +2087,7 @@ export type RemoveAdminMutation = {
   removeAdmin: {
     __typename?: 'Admin'
     createdAt: any
-    displayName: string
+    displayName?: string | null
     updatedAt: any
     uid: string
   }
@@ -2115,7 +2110,7 @@ export type AdminsQuery = {
     __typename?: 'Admin'
     uid: string
     updatedAt: any
-    displayName: string
+    displayName?: string | null
     createdAt: any
     verificationsCount: number
   }>

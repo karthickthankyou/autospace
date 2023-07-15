@@ -37,13 +37,7 @@ export class BookingsResolver {
     @GetUser() user: GetUserType,
   ) {
     checkRowLevelPermission(user, args.customerId)
-    const customer = await this.prisma.customer.findUnique({
-      where: { uid: args.customerId },
-    })
 
-    if (!customer?.uid) {
-      await this.prisma.customer.create({ data: { uid: args.customerId } })
-    }
     return this.bookingsService.create(args)
   }
 

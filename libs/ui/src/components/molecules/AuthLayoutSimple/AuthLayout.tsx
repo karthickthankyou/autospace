@@ -11,7 +11,7 @@ export interface IAuthLayoutProps {
 
 export const AuthLayout = ({ title, children }: IAuthLayoutProps) => {
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50 ">
+    <div className="flex items-center justify-center h-[calc(100vh-4rem)] bg-gray-50 ">
       <div className="w-full max-w-lg p-4 mx-auto mb-16 bg-white shadow">
         <h1 className="flex gap-2 mb-2 text-xl">
           <BrandIcon /> <div>{title}</div>

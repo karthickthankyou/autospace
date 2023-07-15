@@ -18,7 +18,7 @@ export const Tab = (props: TabProps) => {
     <TabMui
       disableRipple
       classes={{
-        root: 'px-0 py-2 min-w-0 min-h-0 capitalize',
+        root: 'px-0 py-2 min-w-0 min-h-0 capitalize z-10',
         selected: 'text-black font-semibold',
       }}
       {...props}

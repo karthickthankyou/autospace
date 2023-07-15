@@ -8,19 +8,21 @@ export class ValetAssignment
 {
   createdAt: Date
   updatedAt: Date
+  bookingId: number
+
   @Field(() => String, { nullable: true })
   pickupValetId: string
   @Field(() => String, { nullable: true })
   returnValetId: string
-  @Field(() => Float, { nullable: true })
+
+  @Field(() => Float)
   pickupLat: number
-  @Field(() => Float, { nullable: true })
+  @Field(() => Float)
   pickupLng: number
   @Field(() => Float, { nullable: true })
   returnLat: number
   @Field(() => Float, { nullable: true })
   returnLng: number
-  bookingId: number
   // Todo fill all properties. To make it nullable add below.
   // @Field(() => String, { nullable: true })
 }

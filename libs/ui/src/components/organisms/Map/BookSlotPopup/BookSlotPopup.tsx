@@ -5,7 +5,6 @@ import { loadStripe } from '@stripe/stripe-js'
 
 import { RadioGroup } from '@headlessui/react'
 import {
-  IconAlertCircle,
   IconBike,
   IconCar,
   IconCircleMinus,
@@ -19,6 +18,7 @@ import { Source, Layer } from 'react-map-gl'
 import { useFormContext, useWatch } from 'react-hook-form'
 
 import {
+  CreateBookingInput,
   SearchGaragesQuery,
   SlotType,
   useCreateBookingMutation,
@@ -27,7 +27,7 @@ import { Button } from '../../../atoms/Button'
 import { Controller } from 'react-hook-form'
 
 import { DateRangeBookingInfo } from '../../../molecules/DateRangeBookingInfo'
-
+import { useTotalPrice } from '@autospace-org/hooks/src/useTotalPrice'
 import { HtmlLabel } from '../../../atoms/HtmlLabel'
 import { HtmlInput } from '../../../atoms/HtmlInput'
 import { Form } from '../../../atoms/Form'
@@ -80,19 +80,10 @@ export const BookSlotPopup = ({
     if (endTime) setValue('endTime', endTime)
   }, [startTime, endTime])
 
-  //   const totalPrice = useTotalPrice({
-  //     pricePerHour: garage.availableSlots.find((slot) => slot.type === type)
-  //       ?.pricePerHour,
-  //   })
-
-  const totalPrice = {
-    parkingCharge: 0,
-    valetChargePickup: 0,
-    valetChargeDropoff: 0,
-    servicesCharge: 0,
-  }
-
-  console.log('Running ...')
+  const totalPriceObj = useTotalPrice({
+    pricePerHour: garage.availableSlots.find((slot) => slot.type === type)
+      ?.pricePerHour,
+  })
 
   return (
     <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
@@ -108,51 +99,34 @@ export const BookSlotPopup = ({
           }
 
           try {
+            const bookingData = {
+              phoneNumber: data.phoneNumber,
+              customerId: uid,
+              endTime,
+              startTime,
+              type,
+              garageId: garage.id,
+              vehicleNumber: data.vehicleNumber,
+
+              ...(data.valet?.pickupInfo && data.valet?.dropoffInfo
+                ? {
+                    valetAssignment: {
+                      pickupLat: data.valet?.pickupInfo?.lat,
+                      pickupLng: data.valet?.pickupInfo?.lng,
+                      returnLat: data.valet?.dropoffInfo?.lat,
+                      returnLng: data.valet?.dropoffInfo?.lng,
+                    },
+                  }
+                : {}),
+            }
             const res = await createBookingSession(
               uid!,
-              'http://localhost:3001',
-              totalPrice,
+              totalPriceObj,
+              bookingData,
             )
             if (res?.error) {
               notification$.next({ message: 'Booking failed.' })
               return
-            }
-            const { errors } = await createBooking({
-              variables: {
-                createBookingInput: {
-                  phoneNumber: data.phoneNumber,
-                  customerId: uid,
-                  endTime,
-                  startTime,
-                  type,
-                  garageId: garage.id,
-                  vehicleNumber: data.vehicleNumber,
-
-                  ...(data.valet?.pickupInfo && data.valet?.dropoffInfo
-                    ? {
-                        valetAssignment: {
-                          pickupLat: data.valet?.pickupInfo?.lat,
-                          pickupLng: data.valet?.pickupInfo?.lng,
-                          returnLat: data.valet?.dropoffInfo?.lat,
-                          returnLng: data.valet?.dropoffInfo?.lng,
-                        },
-                      }
-                    : {}),
-
-                  services:
-                    data.services?.reduce<{ id: number }[]>((acc, service) => {
-                      if (service?.id) {
-                        acc.push({ id: service.id })
-                      }
-                      return acc
-                    }, []) || [],
-                },
-              },
-            })
-            if (errors?.length) {
-              errors.map((error) =>
-                notification$.next({ message: error.message }),
-              )
             }
           } catch (error) {
             console.error(error)
@@ -252,7 +226,7 @@ export const BookSlotPopup = ({
         <ManageValets garage={garage} />
 
         <div className="mt-4 mb-2 text-lg font-bold">Services</div>
-        <ManageServices
+        {/* <ManageServices
           services={garage.services || []}
           onChange={(services) => setValue('services', services)}
           parkingDuration={
@@ -265,30 +239,33 @@ export const BookSlotPopup = ({
             if (error) setError('services', { message: error })
             else clearErrors('services')
           }}
-        />
+        /> */}
 
-        {totalPrice ? (
+        {totalPriceObj ? (
           <div className="mt-4">
-            <CostTitleValue title="Parking" price={totalPrice.parkingCharge} />
+            <CostTitleValue
+              title="Parking"
+              price={totalPriceObj.parkingCharge}
+            />
             <CostTitleValue
               title="Valet Pickup"
-              price={totalPrice.valetChargePickup}
+              price={totalPriceObj.valetChargePickup}
             />
             <CostTitleValue
               title="Valet Dropoff"
-              price={totalPrice.valetChargeDropoff}
+              price={totalPriceObj.valetChargeDropoff}
             />
             <CostTitleValue
               title="Services"
-              price={totalPrice.servicesCharge}
+              price={totalPriceObj.servicesCharge}
             />
             <CostTitleValue
               title="Total"
               price={
-                totalPrice.parkingCharge +
-                totalPrice.valetChargePickup +
-                totalPrice.valetChargeDropoff +
-                totalPrice.servicesCharge
+                totalPriceObj.parkingCharge +
+                totalPriceObj.valetChargePickup +
+                totalPriceObj.valetChargeDropoff +
+                totalPriceObj.servicesCharge
               }
             />
           </div>
@@ -318,13 +295,13 @@ export const CostTitleValue = ({
 
 export const createBookingSession = async (
   uid: string,
-  redirectUrl: string,
-  totalPrice: TotalPrice,
+  totalPriceObj: TotalPrice,
+  bookingData: CreateBookingInput,
 ) => {
   const checkoutSession = await axios.post('http://localhost:3000/stripe', {
-    totalPrice,
-    redirectUrl,
+    totalPriceObj,
     uid,
+    bookingData,
   })
 
   const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

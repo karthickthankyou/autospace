@@ -5,7 +5,7 @@ import { toTitleCase } from 'src/common/util'
 
 @Injectable()
 export default class StripeService {
-  private stripe: Stripe
+  public stripe: Stripe
 
   constructor() {
     this.stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -13,10 +13,15 @@ export default class StripeService {
     })
   }
 
-  async createStripeSession({ totalPrice, uid, redirectUrl }: CreateStripeDto) {
+  async createStripeSession({
+    totalPriceObj,
+    uid,
+    bookingData,
+  }: CreateStripeDto) {
+    console.log('totalPriceObj,bookingData ', totalPriceObj, bookingData)
     const session = await this.stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: Object.entries(totalPrice)
+      line_items: Object.entries(totalPriceObj)
         .filter(([name, price]) => price > 0)
         .map(([name, price]) => ({
           quantity: 1,
@@ -29,10 +34,11 @@ export default class StripeService {
           },
         })),
       mode: 'payment',
-      success_url: `${redirectUrl}/bookings`,
-      cancel_url: `${redirectUrl}/booking-failed`,
+      success_url: process.env.STRIPE_SUCCESS_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL,
       metadata: {
         uid,
+        bookingData: JSON.stringify(bookingData),
       },
     })
 

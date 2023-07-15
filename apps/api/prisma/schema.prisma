@@ -141,8 +141,8 @@ model ValetAssignment {
     returnValet   Valet?   @relation("ReturnValet", fields: [returnValetId], references: [uid])
     pickupLat     Float
     pickupLng     Float
-    returnLat     Float
-    returnLng     Float
+    returnLat     Float?
+    returnLng     Float?
 
     bookingId Int     @id
     booking   Booking @relation(fields: [bookingId], references: [id])
