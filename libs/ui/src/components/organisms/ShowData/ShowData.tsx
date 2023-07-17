@@ -3,6 +3,8 @@ import { Pagination } from '../../molecules/Pagination'
 import { LoaderPanel } from '../../molecules/Loader'
 import { IconBox } from '@tabler/icons-react'
 import { AlertSection } from '../AlertSection'
+import { SimplePagination } from '../SimplePagination'
+import { SimplePaginationProps } from '../SimplePagination/SimplePagination'
 
 export interface IShowDataProps {
   loading: boolean
@@ -21,7 +23,7 @@ export interface IShowDataProps {
 }
 export const NoResults = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-2 h-60 bg-gray-50">
+    <div className="flex flex-col items-center justify-center gap-2 h-60 bg-gray-25">
       <IconBox className="w-10 h-10" />
       <div className="text-sm">No results</div>
     </div>
@@ -47,7 +49,6 @@ export const ShowData = ({
     <div className="min-h-[calc(100vh-4rem)]">
       {error && (
         <AlertSection>
-          {' '}
           Oops. Something went wrong.{' '}
           <span className="text-xs">Psst. {error}</span>
         </AlertSection>
@@ -69,6 +70,53 @@ export const ShowData = ({
               onRowsPerPageChange={(v) => {
                 setTake(+v.target.value)
               }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export interface IShowDataSimpleProps {
+  loading: boolean
+  error?: string
+  pagination: SimplePaginationProps
+  title: ReactNode
+  children?: ReactNode
+  className?: string
+}
+
+export const ShowDataSimple = ({
+  loading,
+  error,
+  pagination: { setSkip, setTake, skip, take, resultCount },
+  children,
+  title,
+  className = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+}: IShowDataSimpleProps) => {
+  return (
+    <div>
+      {error && (
+        <AlertSection>
+          Oops. Something went wrong.{' '}
+          <span className="text-xs">Psst. {error}</span>
+        </AlertSection>
+      )}
+      {loading && <LoaderPanel />}
+
+      {!loading && (
+        <div>
+          <div className="mb-2 text-lg font-semibold">{title}</div>
+          {!loading && !error && resultCount === 0 && <NoResults />}
+          <div className={className}>{children}</div>
+          <div className="flex justify-center">
+            <SimplePagination
+              setSkip={setSkip}
+              setTake={setTake}
+              skip={skip}
+              take={take}
+              resultCount={resultCount}
             />
           </div>
         </div>

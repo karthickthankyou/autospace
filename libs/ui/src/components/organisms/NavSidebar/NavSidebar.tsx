@@ -99,7 +99,7 @@ export const NavLink = ({ label, href }: { label: string; href: string }) => (
   <Link
     key={label}
     href={href}
-    className="text-sm hover:text-black hover:underline underline-offset-4"
+    className="text-sm transition-all hover:text-black hover:font-semibold hover:underline underline-offset-4"
   >
     {label}
   </Link>

@@ -21,23 +21,31 @@ export const StartEndDateCard = ({ startTime, endTime }: IDateCardProps) => {
         <IconArrowRightRhombus />
         <div className="text-xs">{numOfHours}</div>
       </div>
-      <DateCard dateTime={endTime} />
+      <DateCard dateTime={endTime} justify="right" />
     </div>
   )
 }
 
-export const DateCard = ({ dateTime }: { dateTime: string }) => {
-  const [date, time, year] = [
-    formatDateCustom(dateTime, 'dd MMM'),
+export const DateCard = ({
+  dateTime,
+  justify = 'left',
+}: {
+  dateTime: string
+  justify?: 'left' | 'right'
+}) => {
+  const [date, time] = [
+    formatDateCustom(dateTime, 'dd MMMM yyyy'),
     formatDateCustom(dateTime, 'HH:mm'),
-    formatDateCustom(dateTime, 'yyyy'),
   ]
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="text-3xl font-light">{time}</div>
-      <div className="mt-1">{date}</div>
-      <div className="text-xs text-gray-500">{year}</div>
+    <div
+      className={`flex flex-col  ${
+        justify === 'left' ? 'items-start' : 'items-end'
+      }`}
+    >
+      <div className="text-xl">{time}</div>
+      <div className="text-xs text-gray-500">{date}</div>
     </div>
   )
 }

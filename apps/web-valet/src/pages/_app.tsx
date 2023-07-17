@@ -10,8 +10,7 @@ import { Header } from '@autospace-org/ui/src/components/organisms/Header'
 import { Notifications } from '@autospace-org/ui/src/components/organisms/Notifications'
 
 const MENUITEMS: MenuItem[] = [
-  { label: 'Pickups', href: '/garages', loggedIn: true },
-  { label: 'Drops', href: '/valets', loggedIn: true },
+  { label: 'My Trips', href: '/my-trips', loggedIn: true },
 ]
 const SUBMENUITEMS: MenuItem[] = [
   ...MENUITEMS,

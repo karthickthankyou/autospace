@@ -19,16 +19,20 @@ import {
 } from 'src/common/decorators/auth/auth.decorator'
 import { GetUserType } from '@autospace-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import {
+  AggregateCountOutput,
+  PaginationInput,
+} from 'src/common/dtos/common.input'
 import { BookingWhereInput } from './dto/where.args'
 import { BadRequestException } from '@nestjs/common'
-import { BookingStatus } from '@prisma/client'
 import { ValetAssignment } from '../valet-assignments/entities/valet-assignment.entity'
+import { ValetsService } from '../valets/valets.service'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
   constructor(
     private readonly bookingsService: BookingsService,
+    private readonly valetsService: ValetsService,
     private readonly prisma: PrismaService,
   ) {}
 
@@ -45,36 +49,29 @@ export class BookingsResolver {
 
   @AllowAuthenticated()
   @Query(() => [Booking], { name: 'bookings' })
-  findAll(@Args() args: FindManyBookingArgs, @GetUser() user: GetUserType) {
-    if (!args.where.customerId.equals) {
-      throw new BadRequestException(
-        'Customer id missing in args.where.customerId',
-      )
-    }
-    checkRowLevelPermission(user, args.where.customerId.equals)
+  myBookings(@Args() args: FindManyBookingArgs, @GetUser() user: GetUserType) {
+    // if (!args.where.customerId?.equals) {
+    //   throw new BadRequestException(
+    //     'Customer id missing in args.where.customerId',
+    //   )
+    // }
+    // checkRowLevelPermission(user, args.where.customerId.equals)
     return this.bookingsService.findAll(args)
   }
 
   @AllowAuthenticated()
   @Query(() => [Booking], { name: 'valetPickups' })
   async valetPickups(
-    @Args() args: FindManyBookingArgs,
+    @Args() { skip, take }: PaginationInput,
     @GetUser() user: GetUserType,
   ) {
-    const valet = await this.prisma.valet.findUnique({
-      where: { uid: user.uid },
-    })
-    if (!valet) {
-      throw new BadRequestException('You are not a valet.')
-    }
+    const valet = await this.valetsService.validValet(user.uid)
     return this.prisma.booking.findMany({
+      skip,
+      take,
       where: {
         slot: { garage: { companyId: valet.companyId } },
-        // status: { equals: BookingStatus.BOOKED },
-        valetAssignment: {
-          pickupLat: { not: undefined },
-          pickupValetId: null,
-        },
+        valetAssignment: this.pickupAssignmentCondition,
       },
     })
   }
@@ -82,23 +79,17 @@ export class BookingsResolver {
   @AllowAuthenticated()
   @Query(() => [Booking], { name: 'valetDrops' })
   async valetDrops(
-    @Args() args: FindManyBookingArgs,
+    @Args() { skip, take }: PaginationInput,
     @GetUser() user: GetUserType,
   ) {
-    const valet = await this.prisma.valet.findUnique({
-      where: { uid: user.uid },
-    })
-    if (!valet) {
-      throw new BadRequestException('You are not a valet.')
-    }
+    const valet = await this.valetsService.validValet(user.uid)
+
     return this.prisma.booking.findMany({
+      skip,
+      take,
       where: {
         slot: { garage: { companyId: valet.companyId } },
-        // status: { equals: BookingStatus.CHECKED_IN },
-        valetAssignment: {
-          returnLat: { not: null },
-          returnValetId: null,
-        },
+        valetAssignment: this.dropAssignmentCondition,
       },
     })
   }
@@ -117,7 +108,7 @@ export class BookingsResolver {
         'Garage id missing in where.slot.is.garageId.equals',
       )
     }
-    console.log('garageId ', garageId)
+
     const garage = await this.prisma.garage.findUnique({
       where: { id: garageId },
       include: { company: { include: { managers: true } } },
@@ -160,10 +151,20 @@ export class BookingsResolver {
     })
   }
 
-  @ResolveField(() => ValetAssignment)
+  @ResolveField(() => ValetAssignment, { nullable: true })
   valetAssignment(@Parent() booking: Booking) {
     return this.prisma.valetAssignment.findFirst({
       where: { bookingId: booking.id },
     })
+  }
+
+  private readonly pickupAssignmentCondition = {
+    pickupLat: { not: undefined },
+    pickupValetId: null,
+  }
+
+  private readonly dropAssignmentCondition = {
+    returnLat: { not: null },
+    returnValetId: null,
   }
 }

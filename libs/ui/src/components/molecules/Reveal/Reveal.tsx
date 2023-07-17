@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 export interface IRevealProps {
   secret: string | number
+  showIntruction?: boolean
 }
 
-const Reveal = ({ secret }: IRevealProps) => {
+const Reveal = ({ secret, showIntruction = true }: IRevealProps) => {
   const [revealed, setRevealed] = useState(false)
 
   return (
@@ -18,9 +19,11 @@ const Reveal = ({ secret }: IRevealProps) => {
       >
         {secret}
       </span>
-      <span className="text-xs text-gray-600">
-        {revealed ? 'Hide' : 'Tap to reveal'}
-      </span>
+      {showIntruction ? (
+        <span className="text-xs text-gray-600">
+          {revealed ? 'Hide' : 'Tap to reveal'}
+        </span>
+      ) : null}
     </button>
   )
 }

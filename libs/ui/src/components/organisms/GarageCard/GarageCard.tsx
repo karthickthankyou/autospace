@@ -2,32 +2,28 @@ import {
   BookingStatus,
   CreateSlotInput,
   GaragesQuery,
-  MyCompanyQuery,
   SlotType,
   namedOperations,
   useBookingsForGarageQuery,
-  useBookingsLazyQuery,
-  useBookingsQuery,
   useCreateBookingTimelineMutation,
   useCreateManySlotsMutation,
 } from '@autospace-org/network/src/generated'
-import { AutoImageChanger } from '../../molecules/AutoImageChanger'
 import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 import { Dialog } from '../../atoms/Dialog'
-import { SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { useFormCreateManySlots } from '@autospace-org/forms/src/createManySlots'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlSelect } from '../../atoms/HtmlSelect'
 import { Button } from '../../atoms/Button'
-import { IconList } from '@tabler/icons-react'
 import { ShowData } from '../ShowData'
 import { Tab, Tabs } from '../../molecules/Tabs'
 import { TabPanel } from '../../molecules/Tabs/Tabs'
 import { Reveal } from '../../molecules/Reveal'
 import { PlainButton } from '../../atoms/PlainButton'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export interface IGarageCardProps {
   garage: GaragesQuery['garages'][number]
@@ -49,7 +45,12 @@ export const GarageCard = ({ garage }: IGarageCardProps) => {
 
       <div className="flex justify-between my-2">
         <h3 className="font-semibold ">{garage.displayName}</h3>
-        <ListBookings garageId={garage.id} />
+        <Link
+          className="text-sm underline underline-offset-4"
+          href={{ pathname: 'bookings', query: { garageId: garage.id } }}
+        >
+          Bookings
+        </Link>
       </div>
       <p className="text-gray-500 ">{garage.description}</p>
       <p className="text-sm text-gray-400">Address: {garage.address.address}</p>
@@ -170,145 +171,5 @@ export const CreateManySlotsDialog = ({ garageId }: { garageId: number }) => {
         </Form>
       </Dialog>
     </>
-  )
-}
-
-export const ListBookings = ({ garageId }: { garageId: number }) => {
-  const [open, setOpen] = useState(false)
-
-  const [value, setValue] = useState<0 | 1 | 2>(0)
-
-  return (
-    <>
-      <PlainButton
-        className="text-sm underline underline-offset-4"
-        onClick={() => setOpen(true)}
-      >
-        Bookings
-      </PlainButton>
-      <Dialog
-        widthClassName="max-w-2xl"
-        open={open}
-        setOpen={setOpen}
-        title={'Check In/Out'}
-      >
-        <Tabs
-          value={value}
-          onChange={(e, v) => setValue(v)}
-          aria-label="bookings"
-        >
-          <Tab label={'IN'} />
-          <Tab label={'OUT'} />
-          <Tab label={'RESOLVED'} />
-        </Tabs>
-        <TabPanel value={value} index={0}>
-          <ShowGarageBookings
-            garageId={garageId}
-            status={BookingStatus.Booked}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <ShowGarageBookings
-            garageId={garageId}
-            status={BookingStatus.CheckedIn}
-          />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <ShowGarageBookings
-            garageId={garageId}
-            status={BookingStatus.CheckedOut}
-          />
-        </TabPanel>
-      </Dialog>
-    </>
-  )
-}
-
-export const ShowGarageBookings = ({
-  garageId,
-  status,
-}: {
-  garageId: number
-  status: BookingStatus
-}) => {
-  const [skip, setSkip] = useState(0)
-  const [take, setTake] = useState(12)
-  const { data, loading, error } = useBookingsForGarageQuery({
-    variables: {
-      skip,
-      take,
-      where: {
-        status: { equals: status },
-        slot: { is: { garageId: { equals: garageId } } },
-      },
-    },
-  })
-
-  const [creaBookingTimeline, { loading: checkInLoading }] =
-    useCreateBookingTimelineMutation({
-      awaitRefetchQueries: true,
-      refetchQueries: [namedOperations.Query.bookingsForGarage],
-    })
-
-  return (
-    <ShowData
-      className="flex flex-col gap-2"
-      error={error?.message}
-      loading={loading}
-      pagination={{
-        skip,
-        take,
-        resultCount: data?.bookingsForGarage.length,
-        totalCount: data?.bookingsCount.count,
-        setSkip,
-        setTake,
-      }}
-      title={undefined}
-    >
-      {data?.bookingsForGarage.map((booking) => (
-        <div key={booking.id}>
-          <div>{booking.passcode}</div>
-          <div className="flex justify-between">
-            <div>{booking.status}</div>
-            {booking.status === BookingStatus.Booked ? (
-              <Button
-                onClick={async () => {
-                  await creaBookingTimeline({
-                    variables: {
-                      createBookingTimelineInput: {
-                        bookingId: booking.id,
-                        status: BookingStatus.CheckedIn,
-                      },
-                    },
-                  })
-                }}
-                loading={checkInLoading}
-              >
-                Check in
-              </Button>
-            ) : null}
-            {booking.status === BookingStatus.CheckedIn ? (
-              <Button
-                onClick={async () => {
-                  await creaBookingTimeline({
-                    variables: {
-                      createBookingTimelineInput: {
-                        bookingId: booking.id,
-                        status: BookingStatus.CheckedOut,
-                      },
-                    },
-                  })
-                }}
-                loading={checkInLoading}
-              >
-                Check out
-              </Button>
-            ) : null}
-          </div>
-          <Reveal secret={booking.passcode || ''} />
-          <div>{booking.vehicleNumber}</div>
-        </div>
-      ))}
-    </ShowData>
   )
 }

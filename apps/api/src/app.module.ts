@@ -23,6 +23,7 @@ import { BookingTimelinesModule } from './models/booking-timelines/booking-timel
 import { ServicesModule } from './models/services/services.module'
 import { SentryModule } from './common/sentry/sentry.module'
 import { ValetsModule } from './models/valets/valets.module'
+import { ValetAssignmentsModule } from './models/valet-assignments/valet-assignments.module'
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { ValetsModule } from './models/valets/valets.module'
     SlotsModule,
     ServicesModule,
     ValetsModule,
+    ValetAssignmentsModule,
     VerificationsModule,
   ],
   controllers: [AppController],

@@ -542,7 +542,7 @@ type Booking {
   vehicleNumber: String!
   slot: Slot!
   customer: Customer!
-  valetAssignment: ValetAssignment!
+  valetAssignment: ValetAssignment
 }
 
 type ValetAssignment {
@@ -555,6 +555,8 @@ type ValetAssignment {
   createdAt: DateTime!
   updatedAt: DateTime!
   bookingId: Int!
+  pickupValet: Valet
+  returnValet: Valet
 }
 
 type Slot {
@@ -656,8 +658,8 @@ type Query {
   admin(where: AdminWhereUniqueInput): Admin!
   adminsCount(where: AdminWhereInput): AggregateCountOutput!
   bookings(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
-  valetPickups(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
-  valetDrops(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
+  valetPickups(take: Int, skip: Int): [Booking!]!
+  valetDrops(take: Int, skip: Int): [Booking!]!
   bookingsForGarage(where: BookingWhereInput, orderBy: [BookingOrderByWithRelationInput!], cursor: BookingWhereUniqueInput, take: Int, skip: Int, distinct: [BookingScalarFieldEnum!]): [Booking!]!
   bookingsCount(where: BookingWhereInput): AggregateCountOutput!
   booking(where: BookingWhereUniqueInput): Booking!
@@ -684,6 +686,8 @@ type Query {
   valets(where: ValetWhereInput, orderBy: [ValetOrderByWithRelationInput!], cursor: ValetWhereUniqueInput, take: Int, skip: Int, distinct: [ValetScalarFieldEnum!]): [Valet!]!
   companyValets(where: ValetWhereInput, orderBy: [ValetOrderByWithRelationInput!], cursor: ValetWhereUniqueInput, take: Int, skip: Int, distinct: [ValetScalarFieldEnum!]): [Valet!]!
   valet(where: ValetWhereUniqueInput): Valet!
+  valetAssignments(where: ValetAssignmentWhereInput, orderBy: [ValetAssignmentOrderByWithRelationInput!], cursor: ValetAssignmentWhereUniqueInput, take: Int, skip: Int, distinct: [ValetAssignmentScalarFieldEnum!]): [ValetAssignment!]!
+  valetAssignment(where: ValetAssignmentWhereUniqueInput): ValetAssignment!
   verifications(where: VerificationWhereInput, orderBy: [VerificationOrderByWithRelationInput!], cursor: VerificationWhereUniqueInput, take: Int, skip: Int, distinct: [VerificationScalarFieldEnum!]): [Verification!]!
   verification(where: VerificationWhereUniqueInput): Verification!
 }
@@ -1099,6 +1103,22 @@ enum ValetScalarFieldEnum {
   licenceID
 }
 
+input ValetAssignmentWhereUniqueInput {
+  bookingId: Int
+}
+
+enum ValetAssignmentScalarFieldEnum {
+  createdAt
+  updatedAt
+  pickupValetId
+  returnValetId
+  pickupLat
+  pickupLng
+  returnLat
+  returnLng
+  bookingId
+}
+
 input VerificationWhereUniqueInput {
   garageId: Int
 }
@@ -1154,6 +1174,9 @@ type Mutation {
   updateValet(updateValetInput: UpdateValetInput!): Valet!
   removeValet(where: ValetWhereUniqueInput): Valet!
   assignValetForCheckInCheckOut(bookingId: Int!, status: String!): Booking!
+  createValetAssignment(createValetAssignmentInput: CreateValetAssignmentInput!): ValetAssignment!
+  updateValetAssignment(updateValetAssignmentInput: UpdateValetAssignmentInput!): ValetAssignment!
+  removeValetAssignment(where: ValetAssignmentWhereUniqueInput): ValetAssignment!
   createVerification(createVerificationInput: CreateVerificationInput!): Verification!
   updateVerification(updateVerificationInput: UpdateVerificationInput!): Verification!
   removeVerification(where: VerificationWhereUniqueInput): Verification!
@@ -1368,6 +1391,22 @@ input UpdateValetInput {
   email: String
   password: String
   uid: String!
+}
+
+input CreateValetAssignmentInput {
+  pickupLat: Float!
+  pickupLng: Float!
+  returnLat: Float
+  returnLng: Float
+  bookingId: Int!
+}
+
+input UpdateValetAssignmentInput {
+  pickupLat: Float
+  pickupLng: Float
+  returnLat: Float
+  returnLng: Float
+  bookingId: Int!
 }
 
 input CreateVerificationInput {

@@ -156,7 +156,13 @@ export const createBooking = gql`
     }
   }
 `
-
+export const VALET_FRAGMENT = gql`
+  fragment ValetFields on Valet {
+    image
+    uid
+    displayName
+  }
+`
 export const BOOKING_FRAGMENT = gql`
   fragment BookingFields on Booking {
     id
@@ -166,6 +172,14 @@ export const BOOKING_FRAGMENT = gql`
     vehicleNumber
     passcode
     status
+    valetAssignment {
+      pickupValet {
+        ...ValetFields
+      }
+      returnValet {
+        ...ValetFields
+      }
+    }
     slot {
       displayName
       garage {
@@ -178,6 +192,7 @@ export const BOOKING_FRAGMENT = gql`
       }
     }
   }
+  ${VALET_FRAGMENT}
 `
 
 export const bookings = gql`
@@ -305,12 +320,26 @@ export const createManySlots = gql`
   }
 `
 
-export const company = gql`
+export const myCompany = gql`
   query myCompany {
     myCompany {
       id
       createdAt
       displayName
+      garages {
+        images
+        id
+        description
+        displayName
+        address {
+          lat
+          lng
+          address
+        }
+      }
+    }
+    garagesCount {
+      count
     }
   }
 `
@@ -373,32 +402,90 @@ export const admins = gql`
   }
 `
 
-export const valetPickups = gql`
-  query valetPickups(
+export const myPickupTrips = gql`
+  query myPickupTrips(
     $distinct: [BookingScalarFieldEnum!]
     $skip: Int
     $take: Int
-    $cursor: BookingWhereUniqueInput
     $orderBy: [BookingOrderByWithRelationInput!]
     $where: BookingWhereInput
   ) {
-    valetPickups(
+    bookings(
       distinct: $distinct
       skip: $skip
       take: $take
-      cursor: $cursor
       orderBy: $orderBy
       where: $where
     ) {
       id
       vehicleNumber
-      startTime
-      endTime
       valetAssignment {
         pickupLat
         pickupLng
         pickupValetId
       }
+      startTime
+      endTime
+      slot {
+        garage {
+          address {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
+export const myDropTrips = gql`
+  query myDropTrips(
+    $distinct: [BookingScalarFieldEnum!]
+    $skip: Int
+    $take: Int
+    $orderBy: [BookingOrderByWithRelationInput!]
+    $where: BookingWhereInput
+  ) {
+    bookings(
+      distinct: $distinct
+      skip: $skip
+      take: $take
+      orderBy: $orderBy
+      where: $where
+    ) {
+      id
+      vehicleNumber
+      valetAssignment {
+        returnLat
+        returnLng
+        returnValetId
+      }
+      startTime
+      endTime
+      slot {
+        garage {
+          address {
+            lat
+            lng
+          }
+        }
+      }
+    }
+  }
+`
+
+export const valetPickups = gql`
+  query valetPickups($skip: Int, $take: Int) {
+    valetPickups(skip: $skip, take: $take) {
+      id
+      vehicleNumber
+      valetAssignment {
+        pickupLat
+        pickupLng
+        pickupValetId
+      }
+      startTime
+      endTime
       slot {
         garage {
           address {
@@ -412,22 +499,8 @@ export const valetPickups = gql`
 `
 
 export const valetDrops = gql`
-  query valetDrops(
-    $distinct: [BookingScalarFieldEnum!]
-    $skip: Int
-    $take: Int
-    $cursor: BookingWhereUniqueInput
-    $orderBy: [BookingOrderByWithRelationInput!]
-    $where: BookingWhereInput
-  ) {
-    valetDrops(
-      distinct: $distinct
-      skip: $skip
-      take: $take
-      cursor: $cursor
-      orderBy: $orderBy
-      where: $where
-    ) {
+  query valetDrops($skip: Int, $take: Int) {
+    valetDrops(skip: $skip, take: $take) {
       id
       vehicleNumber
       startTime
@@ -511,6 +584,14 @@ export const createValet = gql`
       createdAt
       updatedAt
       companyId
+    }
+  }
+`
+
+export const assignValetForCheckInCheckOut = gql`
+  mutation assignValetForCheckInCheckOut($bookingId: Int!, $status: String!) {
+    assignValetForCheckInCheckOut(bookingId: $bookingId, status: $status) {
+      id
     }
   }
 `

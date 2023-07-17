@@ -1,4 +1,5 @@
 import {
+  ArgsType,
   Field,
   Float,
   InputType,
@@ -168,4 +169,12 @@ export class LocationFilterInput {
 
   @Field(() => Float)
   sw_lng: number
+}
+
+@ArgsType()
+export class PaginationInput {
+  @Field(() => Number, { nullable: true })
+  take: number
+  @Field(() => Number, { nullable: true })
+  skip: number
 }

@@ -28,7 +28,8 @@ export const useDebouncedValue = <T>(value: T, delay: number = 1000) => {
   return debouncedValue
 }
 
-export const useTakeSkip = (initialSkip = 0, initialTake = 12) => {
+export const TAKE_COUNT = 12
+export const useTakeSkip = (initialSkip = 0, initialTake = TAKE_COUNT) => {
   const [skip, setSkip] = useState(() => initialSkip)
   const [take, setTake] = useState(() => initialTake)
 

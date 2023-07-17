@@ -2,7 +2,7 @@ import { LatLng } from '@autospace-org/types'
 import { useState, useEffect } from 'react'
 
 export const useMapboxDirections = (start: LatLng, end: LatLng) => {
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<[number, number][]>([])
   const [distance, setDistance] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -10,7 +10,7 @@ export const useMapboxDirections = (start: LatLng, end: LatLng) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!start || !end) {
-        setData(null)
+        setData([])
         setDistance(null)
         return
       }

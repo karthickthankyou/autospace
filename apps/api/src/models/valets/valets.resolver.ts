@@ -13,8 +13,9 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 import { BookingStatus } from '@prisma/client'
 import { GetUserType } from '@autospace-org/types'
 import { checkRowLevelPermission } from 'src/common/guards'
+import { FindManyBookingArgs } from '../bookings/dto/find.args'
 
-@AllowAuthenticated('admin', 'manager', 'valet')
+@AllowAuthenticated()
 @Resolver(() => Valet)
 export class ValetsResolver {
   constructor(
@@ -68,6 +69,7 @@ export class ValetsResolver {
     return this.valetsService.remove(args)
   }
 
+  @AllowAuthenticated()
   @Mutation(() => Booking)
   async assignValetForCheckInCheckOut(
     @Args('bookingId') bookingId: number,
@@ -88,11 +90,11 @@ export class ValetsResolver {
     })
 
     checkRowLevelPermission(user, [
-      //   ...booking.slot.garage.company.managers.map((manager) => manager.uid),
+      ...booking.slot.garage.company.managers.map((manager) => manager.uid),
       ...booking.slot.garage.company.valets.map((valet) => valet.uid),
     ])
 
-    return this.prisma.$transaction([
+    const [updatedBooking, bookingTimeline] = await this.prisma.$transaction([
       this.prisma.booking.update({
         where: { id: bookingId },
         data: {
@@ -117,5 +119,8 @@ export class ValetsResolver {
         },
       }),
     ])
+    console.log(updatedBooking)
+
+    return updatedBooking
   }
 }
