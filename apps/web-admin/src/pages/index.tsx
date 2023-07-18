@@ -1,6 +1,6 @@
 import { useUserStore } from '@autospace-org/store/user'
 import { Admin } from '@autospace-org/ui/src/components/templates/Admin'
-import { AuthLayout } from '@autospace-org/ui/src/components/molecules/AuthLayoutSimple'
+import { AuthLayoutSimple } from '@autospace-org/ui/src/components/molecules/AuthLayoutSimple'
 import { LoginForm } from '@autospace-org/ui/src/components/templates/LoginForm'
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
 
@@ -12,9 +12,9 @@ export default function Home() {
 
   if (!uid) {
     return (
-      <AuthLayout title="Login">
+      <AuthLayoutSimple title="Login">
         <LoginForm />
-      </AuthLayout>
+      </AuthLayoutSimple>
     )
   }
   return (

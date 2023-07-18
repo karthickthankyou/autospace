@@ -68,8 +68,6 @@ export const BookSlotPopup = ({
     register,
     handleSubmit,
     setValue,
-    setError,
-    clearErrors,
     formState: { errors },
   } = useFormContext<FormTypeBookSlot>()
 
@@ -376,98 +374,98 @@ export type GarageCarService = NonNullable<
   SearchGaragesQuery['searchGarages'][0]['services']
 >[0]
 
-export const ManageServices = React.memo(
-  ({
-    services,
-    onChange,
-    parkingDuration,
-    setError,
-  }: {
-    services: GarageCarService[]
-    onChange: (services: GarageCarService[]) => void
-    setError: (error?: string) => void
-    parkingDuration: number
-  }) => {
-    const [selectedServices, setSelectedServices] = useState<number[]>([])
-    console.log('selectedServices ', selectedServices)
+// export const ManageServices = React.memo(
+//   ({
+//     services,
+//     onChange,
+//     parkingDuration,
+//     setError,
+//   }: {
+//     services: GarageCarService[]
+//     onChange: (services: GarageCarService[]) => void
+//     setError: (error?: string) => void
+//     parkingDuration: number
+//   }) => {
+//     const [selectedServices, setSelectedServices] = useState<number[]>([])
+//     console.log('selectedServices ', selectedServices)
 
-    const handleToggle = (service: GarageCarService) => {
-      console.log('0')
-      if (selectedServices.includes(service.id)) {
-        console.log('1')
-        setSelectedServices(selectedServices.filter((i) => i !== service.id))
-      } else {
-        console.log('2')
-        setSelectedServices([...selectedServices, service.id])
-      }
-    }
+//     const handleToggle = (service: GarageCarService) => {
+//       console.log('0')
+//       if (selectedServices.includes(service.id)) {
+//         console.log('1')
+//         setSelectedServices(selectedServices.filter((i) => i !== service.id))
+//       } else {
+//         console.log('2')
+//         setSelectedServices([...selectedServices, service.id])
+//       }
+//     }
 
-    useEffect(() => {
-      const filteredServices = services.filter((service) =>
-        selectedServices.includes(service.id),
-      )
+//     useEffect(() => {
+//       const filteredServices = services.filter((service) =>
+//         selectedServices.includes(service.id),
+//       )
 
-      onChange(filteredServices)
-    }, [selectedServices, services])
+//       onChange(filteredServices)
+//     }, [selectedServices, services])
 
-    const totalServicesDuration = services
-      .filter((service) => selectedServices.includes(service.id))
-      .reduce((total, currentService) => total + currentService.duration, 0)
+//     const totalServicesDuration = services
+//       .filter((service) => selectedServices.includes(service.id))
+//       .reduce((total, currentService) => total + currentService.duration, 0)
 
-    useEffect(() => {
-      if (parkingDuration < totalServicesDuration) {
-        setError('Insufficient parking duration.')
-      } else {
-        setError()
-      }
-    }, [parkingDuration, totalServicesDuration])
+//     useEffect(() => {
+//       if (parkingDuration < totalServicesDuration) {
+//         setError('Insufficient parking duration.')
+//       } else {
+//         setError()
+//       }
+//     }, [parkingDuration, totalServicesDuration])
 
-    const isServiceDisabled = (service: GarageCarService) => {
-      return (
-        !selectedServices.includes(service.id) &&
-        totalServicesDuration + service.duration > parkingDuration
-      )
-    }
+//     const isServiceDisabled = (service: GarageCarService) => {
+//       return (
+//         !selectedServices.includes(service.id) &&
+//         totalServicesDuration + service.duration > parkingDuration
+//       )
+//     }
 
-    return (
-      <div className="flex flex-col gap-2">
-        {services?.map((service) => (
-          <div key={service.id} className="flex items-center gap-3">
-            <div className="flex-1">
-              <div className="font-bold">{service.name}</div>
-              <div className="text-sm text-gray">{service.description}</div>
-              {/* {isServiceDisabled(service) ? (
-              <div className="flex items-center gap-1 text-xs">
-                <IconAlertCircle className="w-4 h-4" />{' '}
-                <div>Increase your stay to enable this service.</div>
-              </div>
-            ) : null} */}
-            </div>
-            <div className="text-right">
-              <div className="font-bold">Rs. {service.price}</div>
-              <div className="text-sm text-gray">{service.duration} min</div>
-            </div>
-            <button
-              type="button"
-              className="p-2"
-              // disabled={isServiceDisabled(service)}
-              onClick={(e) => {
-                // e.stopPropagation()
-                handleToggle(service)
-              }}
-            >
-              {selectedServices?.includes(service.id) ? (
-                <IconCircleMinus className="w-6 h-6 " />
-              ) : (
-                <IconCirclePlus className="w-6 h-6 " />
-              )}
-            </button>
-          </div>
-        ))}
-      </div>
-    )
-  },
-)
+//     return (
+//       <div className="flex flex-col gap-2">
+//         {services?.map((service) => (
+//           <div key={service.id} className="flex items-center gap-3">
+//             <div className="flex-1">
+//               <div className="font-bold">{service.name}</div>
+//               <div className="text-sm text-gray">{service.description}</div>
+//               {/* {isServiceDisabled(service) ? (
+//               <div className="flex items-center gap-1 text-xs">
+//                 <IconAlertCircle className="w-4 h-4" />{' '}
+//                 <div>Increase your stay to enable this service.</div>
+//               </div>
+//             ) : null} */}
+//             </div>
+//             <div className="text-right">
+//               <div className="font-bold">Rs. {service.price}</div>
+//               <div className="text-sm text-gray">{service.duration} min</div>
+//             </div>
+//             <button
+//               type="button"
+//               className="p-2"
+//               // disabled={isServiceDisabled(service)}
+//               onClick={(e) => {
+//                 // e.stopPropagation()
+//                 handleToggle(service)
+//               }}
+//             >
+//               {selectedServices?.includes(service.id) ? (
+//                 <IconCircleMinus className="w-6 h-6 " />
+//               ) : (
+//                 <IconCirclePlus className="w-6 h-6 " />
+//               )}
+//             </button>
+//           </div>
+//         ))}
+//       </div>
+//     )
+//   },
+// )
 
 export const ManageValets = React.memo(
   ({ garage }: { garage: SearchGaragesQuery['searchGarages'][number] }) => {
@@ -499,7 +497,10 @@ export const ManageValets = React.memo(
                 lat: garage.address.lat,
                 lng: garage.address.lng,
               })
-              setValue('valet.dropoffInfo', undefined)
+              setValue('valet.dropoffInfo', {
+                lat: garage.address.lat,
+                lng: garage.address.lng,
+              })
             }
           }}
           label={'Need valet?'}
@@ -518,7 +519,10 @@ export const ManageValets = React.memo(
                 onChange={(e) => {
                   setValue('valet.differentLocations', e)
                   if (!e) {
-                    setValue('valet.dropoffInfo', undefined)
+                    setValue('valet.dropoffInfo', {
+                      lat: valet?.pickupInfo?.lat || garage.address.lat,
+                      lng: valet?.pickupInfo?.lng || garage.address.lat,
+                    })
                   } else {
                     setValue('valet.dropoffInfo', {
                       lat: garage.address.lat,
@@ -555,6 +559,10 @@ export const ManageValets = React.memo(
                       const { lat, lng } = lngLat
                       setValue('valet.pickupInfo.lat', lat || 0)
                       setValue('valet.pickupInfo.lng', lng || 0)
+                      if (!valet.differentLocations) {
+                        setValue('valet.dropoffInfo.lat', lat || 0)
+                        setValue('valet.dropoffInfo.lng', lng || 0)
+                      }
                     }}
                   >
                     <div className="flex flex-col items-center">

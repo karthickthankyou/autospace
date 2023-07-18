@@ -145,7 +145,7 @@ export type Booking = {
   status: BookingStatus
   totalPrice?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
-  valetAssignment: ValetAssignment
+  valetAssignment?: Maybe<ValetAssignment>
   vehicleNumber: Scalars['String']
 }
 

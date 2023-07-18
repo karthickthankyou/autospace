@@ -1,6 +1,1 @@
-export {
-  MyTripPickupCard,
-  MyTripDropCard,
-  PickupInfoCard,
-  DropInfoCard,
-} from './PickupDropInfoCard'
+export { MyTripCard, PickupDropInfoCard } from './PickupDropInfoCard'

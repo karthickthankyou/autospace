@@ -146,7 +146,7 @@ export type Booking = {
   status: BookingStatus
   totalPrice?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
-  valetAssignment: ValetAssignment
+  valetAssignment?: Maybe<ValetAssignment>
   vehicleNumber: Scalars['String']
 }
 
@@ -2056,7 +2056,7 @@ export type BookingFieldsFragment = {
   vehicleNumber: string
   passcode?: string | null
   status: BookingStatus
-  valetAssignment: {
+  valetAssignment?: {
     __typename?: 'ValetAssignment'
     pickupValet?: {
       __typename?: 'Valet'
@@ -2070,7 +2070,7 @@ export type BookingFieldsFragment = {
       uid: string
       displayName: string
     } | null
-  }
+  } | null
   slot: {
     __typename?: 'Slot'
     displayName?: string | null
@@ -2109,7 +2109,7 @@ export type BookingsQuery = {
     vehicleNumber: string
     passcode?: string | null
     status: BookingStatus
-    valetAssignment: {
+    valetAssignment?: {
       __typename?: 'ValetAssignment'
       pickupValet?: {
         __typename?: 'Valet'
@@ -2123,7 +2123,7 @@ export type BookingsQuery = {
         uid: string
         displayName: string
       } | null
-    }
+    } | null
     slot: {
       __typename?: 'Slot'
       displayName?: string | null
@@ -2164,7 +2164,7 @@ export type BookingsForGarageQuery = {
     vehicleNumber: string
     passcode?: string | null
     status: BookingStatus
-    valetAssignment: {
+    valetAssignment?: {
       __typename?: 'ValetAssignment'
       pickupValet?: {
         __typename?: 'Valet'
@@ -2178,7 +2178,7 @@ export type BookingsForGarageQuery = {
         uid: string
         displayName: string
       } | null
-    }
+    } | null
     slot: {
       __typename?: 'Slot'
       displayName?: string | null
@@ -2387,14 +2387,16 @@ export type MyPickupTripsQuery = {
     __typename?: 'Booking'
     id: number
     vehicleNumber: string
+    passcode?: string | null
+    status: BookingStatus
     startTime: any
     endTime: any
-    valetAssignment: {
+    valetAssignment?: {
       __typename?: 'ValetAssignment'
       pickupLat: number
       pickupLng: number
       pickupValetId?: string | null
-    }
+    } | null
     slot: {
       __typename?: 'Slot'
       garage: {
@@ -2421,14 +2423,16 @@ export type MyDropTripsQuery = {
     __typename?: 'Booking'
     id: number
     vehicleNumber: string
+    passcode?: string | null
+    status: BookingStatus
     startTime: any
     endTime: any
-    valetAssignment: {
+    valetAssignment?: {
       __typename?: 'ValetAssignment'
       returnLat?: number | null
       returnLng?: number | null
       returnValetId?: string | null
-    }
+    } | null
     slot: {
       __typename?: 'Slot'
       garage: {
@@ -2452,12 +2456,12 @@ export type ValetPickupsQuery = {
     vehicleNumber: string
     startTime: any
     endTime: any
-    valetAssignment: {
+    valetAssignment?: {
       __typename?: 'ValetAssignment'
       pickupLat: number
       pickupLng: number
       pickupValetId?: string | null
-    }
+    } | null
     slot: {
       __typename?: 'Slot'
       garage: {
@@ -2481,12 +2485,12 @@ export type ValetDropsQuery = {
     vehicleNumber: string
     startTime: any
     endTime: any
-    valetAssignment: {
+    valetAssignment?: {
       __typename?: 'ValetAssignment'
       returnLat?: number | null
       returnLng?: number | null
       returnValetId?: string | null
-    }
+    } | null
     slot: {
       __typename?: 'Slot'
       garage: {
@@ -4005,6 +4009,8 @@ export const MyPickupTripsDocument = /*#__PURE__*/ gql`
     ) {
       id
       vehicleNumber
+      passcode
+      status
       valetAssignment {
         pickupLat
         pickupLng
@@ -4095,6 +4101,8 @@ export const MyDropTripsDocument = /*#__PURE__*/ gql`
     ) {
       id
       vehicleNumber
+      passcode
+      status
       valetAssignment {
         returnLat
         returnLng

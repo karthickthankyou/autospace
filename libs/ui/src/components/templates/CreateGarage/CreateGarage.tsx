@@ -116,7 +116,7 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
         <HtmlLabel title="Address">
           <HtmlTextArea cols={5} {...register('location.address')} />
         </HtmlLabel>
-        <HtmlLabel title="Images" error={errors.images?.message}>
+        <HtmlLabel title="Images" error={errors.images?.message?.toString()}>
           <Controller
             control={control}
             name={`images`}

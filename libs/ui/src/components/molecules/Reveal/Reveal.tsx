@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 export interface IRevealProps {
-  secret: string | number
+  secret: ReactNode
   showIntruction?: boolean
 }
 

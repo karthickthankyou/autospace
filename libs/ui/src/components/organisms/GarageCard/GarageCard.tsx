@@ -32,13 +32,13 @@ export interface IGarageCardProps {
 export const GarageCard = ({ garage }: IGarageCardProps) => {
   return (
     <div className="overflow-hidden ">
-      <div className="p-1 border-2 shadow-lg border-primary">
+      <div className="shadow-lg ">
         <Image
           src={garage?.images?.[0] || ''}
           alt=""
           width={200}
           height={200}
-          className="w-full aspect-square"
+          className="object-cover w-full aspect-square"
         />
       </div>
       {/* <AutoImageChanger images={garage.images || []} durationPerImage={2000} /> */}

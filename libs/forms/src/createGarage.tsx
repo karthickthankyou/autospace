@@ -7,7 +7,7 @@ import { createManySlotsFormSchema } from './createManySlots'
 export const schemaCreateGarage = z.object({
   displayName: z.string().min(1),
   description: z.string().min(1),
-  images: z.string().array().min(0),
+  images: z.any(),
   location: z.object({
     lat: z.number(),
     lng: z.number(),

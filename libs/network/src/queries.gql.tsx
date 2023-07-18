@@ -419,6 +419,8 @@ export const myPickupTrips = gql`
     ) {
       id
       vehicleNumber
+      passcode
+      status
       valetAssignment {
         pickupLat
         pickupLng
@@ -455,6 +457,8 @@ export const myDropTrips = gql`
     ) {
       id
       vehicleNumber
+      passcode
+      status
       valetAssignment {
         returnLat
         returnLng

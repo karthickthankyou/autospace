@@ -1,14 +1,14 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { DropInfoCard } from './PickupDropInfoCard'
+import { PickupDropInfoCard } from './PickupDropInfoCard'
 
 export default {
   title: 'src/components/organisms/PickupDropInfoCard',
-  component: DropInfoCard,
-} as ComponentMeta<typeof DropInfoCard>
+  component: PickupDropInfoCard,
+} as ComponentMeta<typeof PickupDropInfoCard>
 
-const Template: ComponentStory<typeof DropInfoCard> = (args) => (
-  <DropInfoCard {...args} />
+const Template: ComponentStory<typeof PickupDropInfoCard> = (args) => (
+  <PickupDropInfoCard {...args} />
 )
 
 export const Primary = Template.bind({})

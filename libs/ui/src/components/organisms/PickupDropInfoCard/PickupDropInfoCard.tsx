@@ -3,73 +3,41 @@ import polyline from '@mapbox/polyline'
 
 import {
   BookingStatus,
-  MyDropTripsQuery,
-  MyPickupTripsQuery,
-  ValetDropsQuery,
-  ValetPickupsQuery,
   namedOperations,
   useAssignValetForCheckInCheckOutMutation,
 } from '@autospace-org/network/src/generated'
 import { format } from 'date-fns'
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode } from 'react'
 import { LatLng } from '@autospace-org/types'
-import { PlainButton } from '../../atoms/PlainButton'
 import { Button } from '../../atoms/Button'
+import { TitleValue } from '../../atoms/TitleValue'
+import { Reveal } from '../../molecules/Reveal'
+import { TitleStrongValue } from '../../atoms/TitleValue/TitleValue'
+import { MapLink } from '../../atoms/MapLink'
+import { Directions } from '../../molecules/Directions'
 
-export interface IPickupInfoCardProps {
-  pickup: ValetPickupsQuery['valetPickups'][0]
-  parkingAddress: LatLng
+export interface IPickupDropInfoCardProps {
+  start: LatLng
+  end: LatLng
+  booking: {
+    id: number
+    time: string
+  }
+  targetStatus: BookingStatus
 }
 
-export interface IDropInfoCardProps {
-  drop: ValetDropsQuery['valetDrops'][0]
-  parkingAddress: LatLng
+export interface IMyTripCardProps {
+  booking: {
+    id: number
+    time: string
+    vehicleNumber: string
+    passcode?: string | null
+    status?: BookingStatus
+  }
+  start: LatLng
+  end: LatLng
+  targetStatus: BookingStatus
 }
-
-export interface IMyTripPickupCardProps {
-  pickup: MyPickupTripsQuery['bookings'][0]
-  parkingAddress: LatLng
-}
-
-export interface IMyTripDropCardProps {
-  drop: MyDropTripsQuery['bookings'][0]
-  parkingAddress: LatLng
-}
-
-export const MyTripPickupCard = React.memo(
-  ({ pickup }: IMyTripPickupCardProps) => {
-    const start = useMemo(
-      () => ({
-        lat: pickup.valetAssignment.pickupLat,
-        lng: pickup.valetAssignment.pickupLng,
-      }),
-      [pickup.valetAssignment],
-    )
-    const end = useMemo(() => pickup.slot.garage.address, [pickup.slot])
-    const { data, distance, loading, error } = useMapboxDirections(start, end)
-
-    return (
-      <div key={pickup.id}>
-        <StaticMap start={start} end={end} coordinates={data} />
-
-        <InfoCard
-          date={format(new Date(pickup.startTime), 'PP')}
-          time={format(new Date(pickup.startTime), 'p')}
-          distance={distance || 0}
-        />
-        <div className="flex items-center justify-between gap-2">
-          <VehicleNumber>{pickup.vehicleNumber}</VehicleNumber>
-          <BookingStatusButton
-            bookingId={pickup.id}
-            status={BookingStatus.ValetPickedUp}
-          >
-            Pickup
-          </BookingStatusButton>
-        </div>
-      </div>
-    )
-  },
-)
 
 export const VehicleNumber = ({ children }: { children: ReactNode }) => {
   return (
@@ -79,96 +47,92 @@ export const VehicleNumber = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export const MyTripDropCard = React.memo(
-  ({ drop, parkingAddress }: IMyTripDropCardProps) => {
-    const start = useMemo(
-      () => ({
-        lat: drop.valetAssignment.returnLat || parkingAddress.lat,
-        lng: drop.valetAssignment.returnLng || parkingAddress.lng,
-      }),
-      [drop.valetAssignment],
-    )
-    const end = useMemo(() => drop.slot.garage.address, [drop.slot])
+export const SimpleDate = ({
+  time,
+  className,
+}: {
+  time: string
+  className?: string
+}) => {
+  return (
+    <div className={className}>
+      <div className="text-xl font-medium">{format(new Date(time), 'p')}</div>
+      <div className="text-xs text-gray">{format(new Date(time), 'PP')}</div>
+    </div>
+  )
+}
+
+export const MyTripCard = React.memo(
+  ({ start, end, booking, targetStatus }: IMyTripCardProps) => {
     const { data, distance, loading, error } = useMapboxDirections(start, end)
 
     return (
-      <div key={drop.id}>
-        <StaticMap start={start} end={end} coordinates={data} />
-        <InfoCard
-          date={format(new Date(drop.startTime), 'PP')}
-          time={format(new Date(drop.startTime), 'p')}
-          distance={distance || 0}
-        />
-        <div className="flex items-center justify-between gap-2">
-          <VehicleNumber>{drop.vehicleNumber}</VehicleNumber>
-          <BookingStatusButton
-            bookingId={drop.id}
-            status={BookingStatus.ValetReturned}
-          >
-            Drop
-          </BookingStatusButton>
+      <div>
+        <SimpleDate className="mb-2" time={booking.time} />
+        <div key={booking.id} className="flex gap-2">
+          <div className="space-y-2">
+            <StaticMap
+              start={start}
+              end={end}
+              coordinates={data}
+              className="w-60 h-60"
+            />
+
+            <BookingStatusButton bookingId={booking.id} status={targetStatus}>
+              {targetStatus === BookingStatus.ValetPickedUp ? 'Pickup' : 'Drop'}
+            </BookingStatusButton>
+          </div>
+          <div className="flex flex-col gap-2">
+            <TitleStrongValue title={'Distance'}>
+              <div className="text-xl font-semibold">
+                {((distance || 0) / 1000).toFixed(2)}Km
+              </div>
+            </TitleStrongValue>
+            <TitleStrongValue title={'Vehicle number'}>
+              <div className="text-xl font-semibold ">
+                {booking.vehicleNumber}
+              </div>
+            </TitleStrongValue>
+            <TitleStrongValue title={'Code'}>
+              <Reveal secret={booking.passcode} showIntruction={false} />
+            </TitleStrongValue>
+            <TitleStrongValue title={'Directions'}>
+              <Directions start={start} end={end} />
+            </TitleStrongValue>
+            <TitleStrongValue title={'Status'}>
+              {booking.status}
+            </TitleStrongValue>
+          </div>
         </div>
       </div>
     )
   },
 )
 
-export const PickupInfoCard = React.memo(
-  ({ pickup, parkingAddress }: IPickupInfoCardProps) => {
-    const start = useMemo(
-      () => ({
-        lat: pickup.valetAssignment.pickupLat,
-        lng: pickup.valetAssignment.pickupLng,
-      }),
-      [pickup.valetAssignment],
-    )
-    const end = useMemo(() => pickup.slot.garage.address, [pickup.slot])
+export const PickupDropInfoCard = React.memo(
+  ({ start, end, booking, targetStatus }: IPickupDropInfoCardProps) => {
     const { data, distance, loading, error } = useMapboxDirections(start, end)
 
     return (
-      <div key={pickup.id}>
+      <div key={booking.id} className="space-y-1">
         <StaticMap start={start} end={end} coordinates={data} />
-        <InfoCard
-          date={format(new Date(pickup.startTime), 'PP')}
-          time={format(new Date(pickup.startTime), 'p')}
-          distance={distance || 0}
-        />
-        <BookingStatusButton
-          bookingId={pickup.id}
-          status={BookingStatus.ValetAssignedForCheckIn}
-        >
-          Accept
-        </BookingStatusButton>
-      </div>
-    )
-  },
-)
+        <div className="p-2 bg-white ">
+          <div className="flex justify-between gap-2 ">
+            <div>
+              <div className="text-lg font-semibold">
+                {format(new Date(booking.time), 'p')}
+              </div>
+              <div className="text-xs text-gray">
+                {format(new Date(booking.time), 'PP')}
+              </div>
+            </div>
+            <div className="font-medium">
+              {((distance || 0) / 1000).toFixed(2)}Km
+            </div>
+          </div>
+        </div>
 
-export const DropInfoCard = React.memo(
-  ({ drop, parkingAddress }: IDropInfoCardProps) => {
-    const start = useMemo(
-      () => ({
-        lat: drop.valetAssignment.returnLat || parkingAddress.lat,
-        lng: drop.valetAssignment.returnLng || parkingAddress.lng,
-      }),
-      [drop.valetAssignment],
-    )
-    const end = useMemo(() => drop.slot.garage.address, [drop.slot])
-
-    const { data, distance, loading, error } = useMapboxDirections(start, end)
-
-    return (
-      <div key={drop.id} className="space-y-2">
-        <StaticMap start={start} end={end} coordinates={data} />
-        <InfoCard
-          date={format(new Date(drop.startTime), 'PP')}
-          time={format(new Date(drop.startTime), 'p')}
-          distance={distance || 0}
-        />
-        <BookingStatusButton
-          bookingId={drop.id}
-          status={BookingStatus.ValetAssignedForCheckOut}
-        >
+        <BookingStatusButton bookingId={booking.id} status={targetStatus}>
           Accept
         </BookingStatusButton>
       </div>
@@ -219,6 +183,7 @@ export const InfoCard = ({
 }: {
   date: string
   time: string
+  ve: string
   distance: number
 }) => {
   return (
@@ -239,12 +204,14 @@ export const StaticMap = ({
   padding = [100, 100, 100],
   pitch = 45,
   coordinates,
+  className = 'w-full shadow-xl aspect-square',
 }: {
   start: { lng: number; lat: number }
   end: { lng: number; lat: number }
   padding?: [number, number, number]
   pitch?: number
   coordinates: [number, number][]
+  className?: string
 }) => {
   if (!coordinates.length) {
     return <div className="w-full bg-gray-100 shadow-xl aspect-square" />
@@ -278,5 +245,5 @@ export const StaticMap = ({
     process.env.NEXT_PUBLIC_MAPBOX_TOKEN
   }`
 
-  return <img src={url} alt="Map" className="w-full shadow-xl aspect-square" />
+  return <img src={url} alt="Map" className={` ${className}`} />
 }
