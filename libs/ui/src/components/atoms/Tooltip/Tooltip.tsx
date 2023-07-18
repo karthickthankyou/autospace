@@ -1,6 +1,6 @@
 import MuiTooltip, { TooltipProps } from '@mui/material/Tooltip'
 
-const Tooltip = ({ children, title, ...props }: TooltipProps) => (
+export const Tooltip = ({ children, title, ...props }: TooltipProps) => (
   <MuiTooltip
     classes={{
       tooltip: ` bg-white text-sm  text-black shadow-lg shadow/black/30 `,
@@ -14,5 +14,3 @@ const Tooltip = ({ children, title, ...props }: TooltipProps) => (
     {children}
   </MuiTooltip>
 )
-
-export default Tooltip

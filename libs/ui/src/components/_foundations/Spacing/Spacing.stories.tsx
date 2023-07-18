@@ -1,14 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Spacing from './Spacing'
+import { Spacing } from './Spacing'
+import type { Meta, StoryObj } from '@storybook/react'
 
-export default {
-  title: '_foundations/Spacing',
+const meta: Meta<typeof Spacing> = {
   component: Spacing,
-} as ComponentMeta<typeof Spacing>
+}
 
-const Template: ComponentStory<typeof Spacing> = () => <Spacing />
+export default meta
+type Story = StoryObj<typeof Spacing>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <Spacing />,
+}

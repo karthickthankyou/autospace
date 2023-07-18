@@ -1,14 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import Colors from './Colors'
 
-export default {
-  title: '_foundations/Colors',
+const meta: Meta<typeof Colors> = {
   component: Colors,
-} as ComponentMeta<typeof Colors>
+}
 
-const Template: ComponentStory<typeof Colors> = () => <Colors />
+export default meta
+type Story = StoryObj<typeof Colors>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => <Colors />,
+}

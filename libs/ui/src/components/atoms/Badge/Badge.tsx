@@ -6,7 +6,11 @@ export interface IBadgeProps {
   variant?: 'primary' | 'gray' | 'red' | 'yellow' | 'green'
 }
 
-const Badge = ({ children, size = 'md', variant = 'gray' }: IBadgeProps) => {
+export const Badge = ({
+  children,
+  size = 'md',
+  variant = 'gray',
+}: IBadgeProps) => {
   const sizeCls = {
     sm: 'px-2 text-xs',
     md: 'px-2 py-1.5 text-sm',
@@ -27,5 +31,3 @@ const Badge = ({ children, size = 'md', variant = 'gray' }: IBadgeProps) => {
     </span>
   )
 }
-
-export default Badge

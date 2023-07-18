@@ -1,17 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { Typography, RenderScale } from './Typography'
+import { RenderScale } from './Typography'
+import type { Meta, StoryObj } from '@storybook/react'
 
-export default {
-  title: '_foundations/Typography',
-  component: Typography,
-} as ComponentMeta<typeof Typography>
+const meta: Meta<typeof RenderScale> = {
+  component: RenderScale,
+}
 
-const Template: ComponentStory<typeof Typography> = () => <Typography />
-const FontSizeTemplate: ComponentStory<typeof Typography> = () => (
-  <RenderScale
-    title="Font size"
-    input={[
+export default meta
+type Story = StoryObj<typeof RenderScale>
+
+export const FontSize: Story = {
+  args: {
+    title: 'Font size',
+    input: [
       { title: 'text-xs' },
       { title: 'text-sm' },
       { title: 'text-base' },
@@ -25,13 +25,13 @@ const FontSizeTemplate: ComponentStory<typeof Typography> = () => (
       { title: 'text-7xl' },
       { title: 'text-8xl' },
       { title: 'text-9xl' },
-    ]}
-  />
-)
-const FontWeightTemplate: ComponentStory<typeof Typography> = () => (
-  <RenderScale
-    title="Font Weight"
-    input={[
+    ],
+  },
+}
+export const FontWeight: Story = {
+  args: {
+    title: 'Font weight',
+    input: [
       { title: 'font-thin', size: '100' },
       { title: 'font-extralight', size: '200' },
       { title: 'font-light', size: '300' },
@@ -41,33 +41,26 @@ const FontWeightTemplate: ComponentStory<typeof Typography> = () => (
       { title: 'font-bold', size: '700' },
       { title: 'font-extrabold', size: '800' },
       { title: 'font-black', size: '900' },
-    ]}
-  />
-)
-const LetterSpacingTemplate: ComponentStory<typeof Typography> = () => (
-  <RenderScale
-    id="letterSpacing"
-    title="Letter Spacing"
-    input={[
+    ],
+  },
+}
+export const LetterSpacing: Story = {
+  args: {
+    title: 'Letter Spacing',
+    input: [
       { title: 'tracking-tighter' },
       { title: 'tracking-tight' },
       { title: 'tracking-normal' },
       { title: 'tracking-wide' },
       { title: 'tracking-wider' },
       { title: 'tracking-widest' },
-    ]}
-  />
-)
-const LetterHeightTemplate: ComponentStory<typeof Typography> = () => (
-  <RenderScale
-    title="Line height"
-    display={
-      <div className="inline-block bg-gray-50">
-        Hello World <br />
-        Lorem ipsum dolor sit amet consectetur.
-      </div>
-    }
-    input={[
+    ],
+  },
+}
+export const LetterHeight: Story = {
+  args: {
+    title: 'Letter Height',
+    input: [
       { title: 'leading-no-gap' },
       { title: 'leading-extra-tight' },
       { title: 'leading-none' },
@@ -76,40 +69,23 @@ const LetterHeightTemplate: ComponentStory<typeof Typography> = () => (
       { title: 'leading-normal' },
       { title: 'leading-relaxed' },
       { title: 'leading-loose' },
-    ]}
-  />
-)
-const FontFamilyTemplate: ComponentStory<typeof Typography> = () => (
-  <RenderScale
-    title="Font Family"
-    input={[
+    ],
+    display: (
+      <div className="inline-block bg-gray-50">
+        Hello World <br />
+        Lorem ipsum dolor sit amet consectetur.
+      </div>
+    ),
+  },
+}
+
+export const FontFamily: Story = {
+  args: {
+    title: 'Font family',
+    input: [
       { title: 'font-sans' },
       { title: 'font-serif' },
       { title: 'font-mono' },
-    ]}
-  />
-)
-
-export const FontSize = FontSizeTemplate.bind({})
-FontSize.args = {}
-FontSize.parameters = {}
-
-export const FontWeight = FontWeightTemplate.bind({})
-FontWeight.args = {}
-FontWeight.parameters = {}
-
-export const LetterSpacing = LetterSpacingTemplate.bind({})
-LetterSpacing.args = {}
-LetterSpacing.parameters = {}
-
-export const LetterHeight = LetterHeightTemplate.bind({})
-LetterHeight.args = {}
-LetterHeight.parameters = {}
-
-export const FontFamily = FontFamilyTemplate.bind({})
-FontFamily.args = {}
-FontFamily.parameters = {}
-
-export const Guidelines = Template.bind({})
-Guidelines.args = {}
-Guidelines.parameters = {}
+    ],
+  },
+}

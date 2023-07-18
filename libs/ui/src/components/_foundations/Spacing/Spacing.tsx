@@ -1,6 +1,6 @@
 export interface ISpacingProps {}
 
-const Spacing = () => (
+export const Spacing = () => (
   <div className="container mx-auto">
     <div className=" min-w-max">
       <h1 className="mb-3 text-3xl font-thin">Spacing</h1>
@@ -44,9 +44,7 @@ const Spacing = () => (
         ['w-128', '32rem'],
         ['w-144', '36rem'],
         ['w-160', '40rem'],
-        ['w-176', '44rem'],
         ['w-192', '48rem'],
-        ['w-208', '52rem'],
       ].map(([size, text]) => (
         <div key={size} className="flex items-center my-2 -ml-8 text-sm">
           <div className="w-6 mr-2 text-right text-gray-500">
@@ -60,5 +58,3 @@ const Spacing = () => (
     <div className="mb-48" />
   </div>
 )
-
-export default Spacing

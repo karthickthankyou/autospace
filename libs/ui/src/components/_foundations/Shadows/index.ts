@@ -1,3 +1,1 @@
-import Shadows from './Shadows'
-
-export default Shadows
+export { Shadows } from './Shadows'

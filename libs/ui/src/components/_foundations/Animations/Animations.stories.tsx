@@ -1,64 +1,80 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import Animations from './Animations'
 
-export default {
-  title: '_foundations/Animations',
+const meta: Meta<typeof Animations> = {
   component: Animations,
-} as ComponentMeta<typeof Animations>
-
-const Template: ComponentStory<typeof Animations> = ({
-  children = 'Hello World',
-  className,
-}) => (
-  <div className="flex items-center justify-center w-screen h-screen">
-    <div className="flex items-center justify-center h-64 max-w-md p-6 font-serif text-white border border-white rounded shadow-xl w-128 shadow-black/20 bg-primary-900">
-      <Animations className={className}>{children}</Animations>
-    </div>
-  </div>
-)
-
-export const Pulse = Template.bind({})
-Pulse.args = {
-  className: 'animate-pulse ',
+  decorators: [
+    (Story) => (
+      <div className="flex items-center justify-center w-screen h-screen">
+        <div className="flex items-center justify-center h-64 max-w-md p-6 font-serif text-white border border-white rounded shadow-xl w-128 shadow-black/20 bg-primary-900">
+          {Story()}
+        </div>
+      </div>
+    ),
+  ],
 }
 
-export const Spin = Template.bind({})
-Spin.args = {
-  className: 'animate-spin  ',
+export default meta
+type Story = StoryObj<typeof Animations>
+
+export const Pulse: Story = {
+  args: {
+    className: 'animate-pulse ',
+    children: 'Hello World',
+  },
 }
-export const SpinSlow = Template.bind({})
-SpinSlow.args = {
-  className: 'animate-spin-slow  ',
+
+export const Spin: Story = {
+  args: {
+    className: 'animate-spin',
+    children: 'Hello World',
+  },
 }
-export const SpinReverse = Template.bind({})
-SpinReverse.args = {
-  className: 'animate-spin-reverse  ',
+export const SpinSlow: Story = {
+  args: {
+    className: 'animate-spin-slow',
+    children: 'Hello World',
+  },
 }
-export const Bounce = Template.bind({})
-Bounce.args = {
-  className: 'animate-bounce  ',
+export const SpinReverse: Story = {
+  args: {
+    className: 'animate-spin-reverse',
+    children: 'Hello World',
+  },
 }
-export const Wiggle = Template.bind({})
-Wiggle.args = {
-  className: 'animate-wiggle  ',
+export const Bounce: Story = {
+  args: {
+    className: 'animate-bounce',
+    children: 'Hello World',
+  },
 }
-export const Ping = Template.bind({})
-Ping.args = {
-  className: 'animate-ping  ',
+export const Wiggle: Story = {
+  args: {
+    className: 'animate-wiggle',
+    children: 'Hello World',
+  },
 }
-export const Slide = Template.bind({})
-Slide.args = {
-  className: 'animate-slide  ',
-  children: 'Hello World >',
+export const Ping: Story = {
+  args: {
+    className: 'animate-ping',
+    children: 'Hello World',
+  },
 }
-export const SlideLeft = Template.bind({})
-SlideLeft.args = {
-  className: 'animate-slide-left  ',
-  children: '< Hello World',
+export const Slide: Story = {
+  args: {
+    className: 'animate-slide',
+    children: 'Hello World >',
+  },
 }
-export const Breathe = Template.bind({})
-Breathe.args = {
-  className: 'animate-breathe  ',
-  children: 'Hello World',
+export const SlideLeft: Story = {
+  args: {
+    className: 'animate-slide-left',
+    children: '< Hello World',
+  },
+}
+export const Breathe: Story = {
+  args: {
+    className: 'animate-breathe',
+    children: 'Hello World',
+  },
 }
