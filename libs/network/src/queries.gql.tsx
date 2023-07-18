@@ -326,6 +326,7 @@ export const myCompany = gql`
       id
       createdAt
       displayName
+      description
       garages {
         images
         id

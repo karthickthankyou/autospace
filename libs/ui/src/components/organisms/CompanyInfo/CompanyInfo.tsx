@@ -1,6 +1,5 @@
 import {
   MyCompanyQuery,
-  useGaragesLazyQuery,
   useGaragesQuery,
 } from '@autospace-org/network/src/generated'
 import { LoaderPanel } from '../../molecules/Loader'
@@ -31,8 +30,15 @@ export const CompanyInfo = ({ company }: ICompanyInfoProps) => {
     )
 
   return (
-    <div>
-      {data?.myCompany.displayName}
+    <div className="space-y-12">
+      <div>
+        <div className="text-lg font-semibold">
+          {data?.myCompany.displayName}
+        </div>
+        <div className="max-w-lg mt-2 text-sm text-gray">
+          {data?.myCompany.description}
+        </div>
+      </div>
       <ListGarages companyId={data.myCompany.id} />
     </div>
   )

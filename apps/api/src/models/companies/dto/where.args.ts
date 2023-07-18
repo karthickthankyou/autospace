@@ -23,6 +23,8 @@ export class CompanyWhereUniqueInput
 export class CompanyWhereInput
   implements RestrictProperties<CompanyWhereInput, Prisma.CompanyWhereInput>
 {
+  @Field(() => StringFilter, { nullable: true })
+  description: StringFilter
   @Field(() => ManagerListRelationFilter, { nullable: true })
   managers: ManagerListRelationFilter
   @Field(() => ValetListRelationFilter, { nullable: true })

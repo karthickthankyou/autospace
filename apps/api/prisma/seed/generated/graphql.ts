@@ -307,6 +307,7 @@ export type BoolFilter = {
 export type Company = {
   __typename?: 'Company'
   createdAt: Scalars['DateTime']
+  description?: Maybe<Scalars['String']>
   displayName: Scalars['String']
   garages: Array<Garage>
   id: Scalars['Int']
@@ -316,6 +317,7 @@ export type Company = {
 
 export type CompanyOrderByWithRelationInput = {
   createdAt?: InputMaybe<SortOrder>
+  description?: InputMaybe<SortOrder>
   displayName?: InputMaybe<SortOrder>
   garages?: InputMaybe<GarageOrderByRelationAggregateInput>
   id?: InputMaybe<SortOrder>
@@ -331,6 +333,7 @@ export type CompanyRelationFilter = {
 
 export enum CompanyScalarFieldEnum {
   CreatedAt = 'createdAt',
+  Description = 'description',
   DisplayName = 'displayName',
   Id = 'id',
   UpdatedAt = 'updatedAt',
@@ -341,6 +344,7 @@ export type CompanyWhereInput = {
   NOT?: InputMaybe<Array<CompanyWhereInput>>
   OR?: InputMaybe<Array<CompanyWhereInput>>
   createdAt?: InputMaybe<DateTimeFilter>
+  description?: InputMaybe<StringFilter>
   displayName?: InputMaybe<StringFilter>
   garages?: InputMaybe<GarageListRelationFilter>
   id?: InputMaybe<IntFilter>
@@ -383,6 +387,7 @@ export type CreateBookingTimelineInput = {
 }
 
 export type CreateCompanyInput = {
+  description?: InputMaybe<Scalars['String']>
   displayName: Scalars['String']
   managerDisplayName: Scalars['String']
 }
@@ -1597,6 +1602,7 @@ export type UpdateBookingTimelineInput = {
 }
 
 export type UpdateCompanyInput = {
+  description?: InputMaybe<Scalars['String']>
   displayName?: InputMaybe<Scalars['String']>
   id: Scalars['Int']
   managerDisplayName?: InputMaybe<Scalars['String']>

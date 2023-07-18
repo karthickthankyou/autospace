@@ -8,8 +8,8 @@ import { Dialog } from '../../atoms/Dialog'
 import {
   namedOperations,
   useCreateCompanyMutation,
-  useCreateCustomerMutation,
 } from '@autospace-org/network/src/generated'
+import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 
 export interface ICreateCompanyProps {}
 
@@ -29,23 +29,32 @@ export const CreateCompany = ({}: ICreateCompanyProps) => {
       <Button onClick={() => setOpen(true)}>Create Company</Button>
       <Dialog open={open} setOpen={setOpen} title="Create company">
         <Form
-          onSubmit={handleSubmit(async ({ companyName, managerName }) => {
-            await createCompany({
-              variables: {
-                createCompanyInput: {
-                  displayName: companyName,
-                  managerDisplayName: managerName,
+          onSubmit={handleSubmit(
+            async ({ companyName, managerName, description }) => {
+              await createCompany({
+                variables: {
+                  createCompanyInput: {
+                    displayName: companyName,
+                    // description: description,
+                    managerDisplayName: managerName,
+                  },
                 },
-              },
-              awaitRefetchQueries: true,
-              refetchQueries: [namedOperations.Query.myCompany],
-            })
-          })}
+                awaitRefetchQueries: true,
+                refetchQueries: [namedOperations.Query.myCompany],
+              })
+            },
+          )}
         >
           <HtmlLabel title="Company name" error={errors.companyName?.message}>
             <HtmlInput
               placeholder="Company name"
               {...register('companyName')}
+            />
+          </HtmlLabel>
+          <HtmlLabel title="Description" error={errors.companyName?.message}>
+            <HtmlTextArea
+              placeholder="Describe your parking company"
+              {...register('description')}
             />
           </HtmlLabel>
           <HtmlLabel title="Manager name" error={errors.managerName?.message}>

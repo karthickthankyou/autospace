@@ -4,7 +4,7 @@ import { Company } from '../entities/company.entity'
 @InputType()
 export class CreateCompanyInput extends PickType(
   Company,
-  ['displayName'],
+  ['displayName', 'description'],
   InputType,
 ) {
   @Field(() => String)

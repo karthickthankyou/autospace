@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 export const createCompanySchema = z.object({
   companyName: z.string().min(1, { message: 'Company name is required' }),
+  description: z.string(),
   managerName: z.string().min(1, { message: 'Manager name is required' }),
 })
 

@@ -256,6 +256,7 @@ input CompanyRelationFilter {
 }
 
 input CompanyWhereInput {
+  description: StringFilter
   managers: ManagerListRelationFilter
   valets: ValetListRelationFilter
   id: IntFilter
@@ -587,6 +588,7 @@ type Customer {
 }
 
 type Company {
+  description: String
   id: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -755,6 +757,7 @@ input ReviewOrderByRelationAggregateInput {
 }
 
 input CompanyOrderByWithRelationInput {
+  description: SortOrder
   managers: ManagerOrderByRelationAggregateInput
   valets: ValetOrderByRelationAggregateInput
   id: SortOrder
@@ -956,6 +959,7 @@ enum CompanyScalarFieldEnum {
   createdAt
   updatedAt
   displayName
+  description
 }
 
 input CustomerWhereUniqueInput {
@@ -1258,11 +1262,13 @@ input UpdateBookingTimelineInput {
 }
 
 input CreateCompanyInput {
+  description: String
   displayName: String!
   managerDisplayName: String!
 }
 
 input UpdateCompanyInput {
+  description: String
   displayName: String
   managerDisplayName: String
   id: Int!

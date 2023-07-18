@@ -13,6 +13,8 @@ export class CompanyOrderByWithRelationInput
       Prisma.CompanyOrderByWithRelationInput
     >
 {
+  @Field(() => Prisma.SortOrder, { nullable: true })
+  description: Prisma.SortOrder
   @Field(() => ManagerOrderByRelationAggregateInput, { nullable: true })
   managers: ManagerOrderByRelationAggregateInput
   @Field(() => ValetOrderByRelationAggregateInput, { nullable: true })
