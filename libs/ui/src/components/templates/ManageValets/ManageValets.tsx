@@ -101,7 +101,6 @@ export const AddValet = () => {
         <Form
           onSubmit={handleSubmit(
             async ({ displayName, email, password, licenceID, image }) => {
-              console.log('data ', data)
               const images = await uploadImages(image)
 
               await createValet({

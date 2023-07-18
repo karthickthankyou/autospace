@@ -110,7 +110,6 @@ export const MyTripCard = React.memo(
 export const PickupDropInfoCard = React.memo(
   ({ start, end, booking, targetStatus }: IPickupDropInfoCardProps) => {
     const { data, distance, loading, error } = useMapboxDirections(start, end)
-    console.log('data ', data)
 
     return (
       <div key={booking.id} className="space-y-1">

@@ -14,7 +14,7 @@ export const FirstPage: Story = {
   render: (args) => {
     const { setSkip, setTake, skip, take } = useTakeSkip()
     const result = arr.slice(skip, skip + take)
-    console.log('skip ', skip)
+
     return (
       <div>
         <div className="grid grid-cols-6">
@@ -64,7 +64,7 @@ export const FinalPage: Story = {
   render: (args) => {
     const { setSkip, setTake, skip, take } = useTakeSkip(96)
     const result = arr.slice(skip, skip + take)
-    console.log('skip ', skip)
+
     return (
       <div>
         <div className="grid grid-cols-6">

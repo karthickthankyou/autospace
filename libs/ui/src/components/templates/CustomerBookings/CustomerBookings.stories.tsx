@@ -6,9 +6,11 @@ import {
   namedOperations,
 } from '@autospace-org/network/src/generated'
 import { bookings } from '@autospace-org/network/src/data'
+import { ReduxAddUid } from '@autospace-org/store/Provider'
 
 const meta: Meta<typeof CustomerBookings> = {
   component: CustomerBookings,
+  decorators: [(Story) => <ReduxAddUid>{Story()}</ReduxAddUid>],
 }
 export default meta
 

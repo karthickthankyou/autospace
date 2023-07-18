@@ -58,8 +58,6 @@ export const ShowPickups = () => {
     variables: { skip, take },
   })
 
-  console.log('data', data)
-
   return (
     <ShowData
       loading={loading}
@@ -101,7 +99,6 @@ export const ShowDrops = () => {
   const { loading, data } = useValetDropsQuery({
     variables: { skip, take },
   })
-  console.log('data ', data)
 
   return (
     <ShowData

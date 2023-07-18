@@ -29,7 +29,6 @@ export class StripeController {
     )
     const { uid, bookingData } = session.metadata
     const bookingInput: CreateBookingInput = JSON.parse(bookingData)
-    console.log('bookingInput ', bookingInput)
 
     const newBooking = await this.bookingService.create(bookingInput)
 

@@ -15,7 +15,7 @@ export const Primary: Story = {
   render: (args) => {
     const { setSkip, setTake, skip, take } = useTakeSkip()
     const result = arr.slice(skip, take + skip)
-    console.log('result ', result)
+
     return (
       <ShowData
         loading={false}
@@ -41,7 +41,7 @@ export const Loading: Story = {
   render: (args) => {
     const { setSkip, setTake, skip, take } = useTakeSkip()
     const result = arr.slice(skip, take + skip)
-    console.log('result ', result)
+
     return (
       <ShowData
         loading={true}
@@ -67,7 +67,7 @@ export const Error: Story = {
   render: (args) => {
     const { setSkip, setTake, skip, take } = useTakeSkip()
     const result = arr.slice(skip, take + skip)
-    console.log('result ', result)
+
     return (
       <ShowData
         loading={false}
@@ -94,7 +94,7 @@ export const CustomArrangement: Story = {
   render: (args) => {
     const { setSkip, setTake, skip, take } = useTakeSkip()
     const result = arr.slice(skip, take + skip)
-    console.log('result ', result)
+
     return (
       <ShowData
         className="grid grid-cols-6 gap-5"

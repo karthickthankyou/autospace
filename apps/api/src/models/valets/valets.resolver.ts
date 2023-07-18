@@ -119,7 +119,6 @@ export class ValetsResolver {
         },
       }),
     ])
-    console.log(updatedBooking)
 
     return updatedBooking
   }

@@ -211,7 +211,6 @@ export const ShowMarkers = () => {
       return
     }
     if (variables) {
-      console.log('zoom level ', map?.getZoom())
       searchGarages({ variables })
     }
   }, [variables])

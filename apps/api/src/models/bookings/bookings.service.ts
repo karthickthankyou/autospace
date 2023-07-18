@@ -46,8 +46,6 @@ export class BookingsService {
       type,
     })
 
-    console.log('slot ', slot, slot?.id)
-
     if (!slot) {
       throw new NotFoundException('No slots found.')
     }

@@ -18,7 +18,6 @@ export class ManagersService {
   }
 
   findOne(args: FindUniqueManagerArgs) {
-    console.log('args ', args)
     return this.prisma.manager.findUnique(args)
   }
 

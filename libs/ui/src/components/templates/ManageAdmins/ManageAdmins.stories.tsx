@@ -6,9 +6,11 @@ import {
   namedOperations,
 } from '@autospace-org/network/src/generated'
 import { admins } from '@autospace-org/network/src/data'
+import { ReduxAddUid } from '@autospace-org/store/Provider'
 
 const meta: Meta<typeof ManageAdmins> = {
   component: ManageAdmins,
+  decorators: [(Story) => <ReduxAddUid>{Story()}</ReduxAddUid>],
 }
 export default meta
 

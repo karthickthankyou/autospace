@@ -11,21 +11,18 @@ export const ${componentName} = ({}: I${componentName}Props) => {
 // component.stories.tsx
 export const story = (
   componentName,
-  componentType,
-) => `import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+) => `import type { Meta, StoryObj } from '@storybook/react'
 import { ${componentName} } from './${componentName}'
 
-export default {
-  title: '${componentType}',
+const meta: Meta<typeof ${componentName}> = {
   component: ${componentName},
-} as ComponentMeta<typeof ${componentName}>
+}
+export default meta
 
-const Template: ComponentStory<typeof ${componentName}> = (args) => <${componentName} {...args} />
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+type Story = StoryObj<typeof ${componentName}>
+
+export const Primary: Story = {}
 `
 
 export const barrel = (componentName) =>

@@ -10,9 +10,11 @@ import {
   valetDropsData,
   valetPickupsData,
 } from '@autospace-org/network/src/data'
+import { ReduxAddUid } from '@autospace-org/store/Provider'
 
 const meta: Meta<typeof ValetHome> = {
   component: ValetHome,
+  decorators: [(Story) => <ReduxAddUid>{Story()}</ReduxAddUid>],
 }
 export default meta
 

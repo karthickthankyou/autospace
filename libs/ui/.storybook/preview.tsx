@@ -5,6 +5,7 @@ import { initialize, mswLoader } from 'msw-storybook-addon'
 
 import type { Preview } from '@storybook/react'
 import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
+import { ReduxProvider } from '@autospace-org/store/Provider'
 import * as NextImage from 'next/image'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
 import React from 'react'
@@ -29,9 +30,11 @@ const preview: Preview = {
   },
   decorators: [
     (Story) => (
-      <ApolloProvider>
-        <Story />
-      </ApolloProvider>
+      <ReduxProvider>
+        <ApolloProvider>
+          <Story />
+        </ApolloProvider>
+      </ReduxProvider>
     ),
   ],
   loaders: [mswLoader],
