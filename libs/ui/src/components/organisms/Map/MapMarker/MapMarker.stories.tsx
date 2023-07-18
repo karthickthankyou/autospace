@@ -1,26 +1,36 @@
-import React, { useState } from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-
+import type { Meta, StoryObj } from '@storybook/react'
 import { Marker } from './MapMarker'
 import { Map } from '../Map'
+import { useState } from 'react'
 
-export default {
-  title: 'molecules/MapMarker',
+const meta: Meta<typeof Marker> = {
   component: Marker,
-} as ComponentMeta<typeof Marker>
+  decorators: [
+    (Story) => {
+      const [viewState, setViewState] = useState({
+        latitude: 12.9,
+        longitude: 80.2,
+        zoom: 2,
+      })
+      return <Map initialViewState={viewState}>{Story()}</Map>
+    },
+  ],
+}
+export default meta
 
-const Template: ComponentStory<typeof Marker> = (args) => {
-  const [viewState, setViewState] = useState({
-    latitude: 80.2,
-    longitude: 12.9,
-    zoom: 10,
-  })
-  return (
-    <Map initialViewState={viewState}>
-      <Marker {...args} />
-    </Map>
-  )
+type Story = StoryObj<typeof Marker>
+
+export const Primary: Story = {
+  args: {
+    latitude: 13,
+    longitude: 80,
+  },
 }
 
-export const Primary = Template.bind({})
-Primary.args = {}
+export const Draggable: Story = {
+  args: {
+    latitude: 13,
+    longitude: 80,
+    draggable: true,
+  },
+}

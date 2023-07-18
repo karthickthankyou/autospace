@@ -1,15 +1,12 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import Masonry2 from './Masonry2'
+import type { Meta, StoryObj } from '@storybook/react'
+import Masonry from './Masonry2'
 
-export default {
-  title: 'templates/Masonry2',
-  component: Masonry2,
-} as ComponentMeta<typeof Masonry2>
+const meta: Meta<typeof Masonry> = {
+  component: Masonry,
+}
+export default meta
 
-const Template: ComponentStory<typeof Masonry2> = (args) => (
-  <Masonry2 {...args} />
-)
+type Story = StoryObj<typeof Masonry>
 
 const children = [
   <div className="h-full p-3 rounded shadow-lg bg-red/30" key="1">
@@ -44,28 +41,24 @@ const children = [
   </div>,
 ]
 
-export const TwoColumns = Template.bind({})
-TwoColumns.args = {
-  gap: '4',
-  columns: '2',
-  shortOnes: [3],
-  childrenLimit: 6,
-  children,
+export const TwoColumns: Story = {
+  args: { gap: '4', columns: '2', shortOnes: [3], childrenLimit: 6, children },
 }
-export const ThreeColumns = Template.bind({})
-ThreeColumns.args = {
-  gap: '4',
-  columns: '3',
-  shortOnes: [1, 2, 5, 6, 9],
-  childrenLimit: 6,
-  children,
+export const ThreeColumns: Story = {
+  args: {
+    gap: '4',
+    columns: '3',
+    shortOnes: [1, 2, 5, 6, 9],
+    childrenLimit: 6,
+    children,
+  },
 }
-
-export const FourColumns = Template.bind({})
-FourColumns.args = {
-  gap: '4',
-  columns: '4',
-  shortOnes: [1, 2, 5, 6, 9],
-  childrenLimit: 8,
-  children,
+export const FourColumns: Story = {
+  args: {
+    gap: '4',
+    columns: '4',
+    shortOnes: [1, 2, 5, 6, 9],
+    childrenLimit: 8,
+    children,
+  },
 }

@@ -45,14 +45,16 @@ export const ShowData = ({
   title,
   className = 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
 }: IShowDataProps) => {
+  if (error) {
+    return (
+      <AlertSection>
+        Oops. Something went wrong.{' '}
+        <span className="text-xs">Psst. {error}</span>
+      </AlertSection>
+    )
+  }
   return (
     <div className="min-h-[calc(100vh-4rem)]">
-      {error && (
-        <AlertSection>
-          Oops. Something went wrong.{' '}
-          <span className="text-xs">Psst. {error}</span>
-        </AlertSection>
-      )}
       {loading && <LoaderPanel />}
       {!loading && !error && resultCount === 0 && <NoResults />}
 

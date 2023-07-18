@@ -1,16 +1,118 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ShowData } from './ShowData'
+import { useTakeSkip } from '@autospace-org/hooks/src/async'
 
-export default {
-  title: 'src/components/templates/ShowData',
+const meta: Meta<typeof ShowData> = {
   component: ShowData,
-} as ComponentMeta<typeof ShowData>
+}
+export default meta
 
-const Template: ComponentStory<typeof ShowData> = (args) => (
-  <ShowData {...args} />
-)
+type Story = StoryObj<typeof ShowData>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+const arr = Array.from(Array(100 + 1).keys()).slice(1)
+
+export const Primary: Story = {
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    const result = arr.slice(skip, take + skip)
+    console.log('result ', result)
+    return (
+      <ShowData
+        loading={false}
+        pagination={{
+          setSkip,
+          setTake,
+          skip,
+          take,
+          resultCount: result.length,
+          totalCount: arr.length,
+        }}
+        title={'Numbers'}
+      >
+        {result.map((num) => (
+          <div>{num}</div>
+        ))}
+      </ShowData>
+    )
+  },
+}
+
+export const Loading: Story = {
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    const result = arr.slice(skip, take + skip)
+    console.log('result ', result)
+    return (
+      <ShowData
+        loading={true}
+        pagination={{
+          setSkip,
+          setTake,
+          skip,
+          take,
+          resultCount: result.length,
+          totalCount: arr.length,
+        }}
+        title={'Numbers'}
+      >
+        {result.map((num) => (
+          <div>{num}</div>
+        ))}
+      </ShowData>
+    )
+  },
+}
+
+export const Error: Story = {
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    const result = arr.slice(skip, take + skip)
+    console.log('result ', result)
+    return (
+      <ShowData
+        loading={false}
+        error="this and that went wrong."
+        pagination={{
+          setSkip,
+          setTake,
+          skip,
+          take,
+          resultCount: result.length,
+          totalCount: arr.length,
+        }}
+        title={'Numbers'}
+      >
+        {result.map((num) => (
+          <div>{num}</div>
+        ))}
+      </ShowData>
+    )
+  },
+}
+
+export const CustomArrangement: Story = {
+  render: (args) => {
+    const { setSkip, setTake, skip, take } = useTakeSkip()
+    const result = arr.slice(skip, take + skip)
+    console.log('result ', result)
+    return (
+      <ShowData
+        className="grid grid-cols-6 gap-5"
+        loading={false}
+        pagination={{
+          setSkip,
+          setTake,
+          skip,
+          take,
+          resultCount: result.length,
+          totalCount: arr.length,
+        }}
+        title={'Numbers'}
+      >
+        {result.map((num) => (
+          <div>{num}</div>
+        ))}
+      </ShowData>
+    )
+  },
+}

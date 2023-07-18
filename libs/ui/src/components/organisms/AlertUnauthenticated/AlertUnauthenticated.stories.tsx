@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AlertUnauthenticated } from './AlertUnauthenticated'
 
-export default {
-  title: 'src/components/organisms/AlertUnauthenticated',
+const meta: Meta<typeof AlertUnauthenticated> = {
   component: AlertUnauthenticated,
-} as ComponentMeta<typeof AlertUnauthenticated>
+}
+export default meta
 
-const Template: ComponentStory<typeof AlertUnauthenticated> = (args) => (
-  <AlertUnauthenticated {...args} />
-)
+type Story = StoryObj<typeof AlertUnauthenticated>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {},
+}

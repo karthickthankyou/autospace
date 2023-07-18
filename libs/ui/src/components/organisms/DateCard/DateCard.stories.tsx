@@ -1,16 +1,22 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { DateCard } from './DateCard'
 
-export default {
-  title: 'components/organisms/DateCard',
+const meta: Meta<typeof DateCard> = {
   component: DateCard,
-} as ComponentMeta<typeof DateCard>
+}
+export default meta
 
-const Template: ComponentStory<typeof DateCard> = (args) => (
-  <DateCard {...args} />
-)
+type Story = StoryObj<typeof DateCard>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    dateTime: new Date().toISOString(),
+  },
+}
+
+export const JustifyRight: Story = {
+  args: {
+    dateTime: new Date().toISOString(),
+    justify: 'right',
+  },
+}

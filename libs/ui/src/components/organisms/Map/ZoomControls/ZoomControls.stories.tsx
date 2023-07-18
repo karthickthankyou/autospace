@@ -1,18 +1,35 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-
+import type { Meta, StoryObj } from '@storybook/react'
 import ZoomControls from './ZoomControls'
+import { Map } from '../Map'
+import { useState } from 'react'
+import { Panel } from '../Panel'
 
-export default {
-  title: 'organisms/ZoomControls',
+const meta: Meta<typeof ZoomControls> = {
   component: ZoomControls,
-} as ComponentMeta<typeof ZoomControls>
+  decorators: [
+    (Story) => {
+      const [viewState, setViewState] = useState({
+        latitude: 12.9,
+        longitude: 80.2,
+        zoom: 8,
+      })
+      return <Map initialViewState={viewState}>{Story()}</Map>
+    },
+  ],
+}
+export default meta
 
-const Template: ComponentStory<typeof ZoomControls> = () => (
-  <ZoomControls>
-    <ZoomControls.ZoomIn />
-    <ZoomControls.ZoomOut />
-  </ZoomControls>
-)
+type Story = StoryObj<typeof ZoomControls>
 
-export const Primary = Template.bind({})
+export const Primary: Story = {
+  render: () => {
+    return (
+      <Panel>
+        <ZoomControls>
+          <ZoomControls.ZoomIn />
+          <ZoomControls.ZoomOut />
+        </ZoomControls>
+      </Panel>
+    )
+  },
+}

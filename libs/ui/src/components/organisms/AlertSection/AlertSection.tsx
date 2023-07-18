@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 export interface IAlertSectionProps {
-  title?: string
+  title?: ReactNode
   children: ReactNode
 }
 

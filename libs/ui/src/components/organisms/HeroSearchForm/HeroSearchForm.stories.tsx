@@ -1,16 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HeroSearchForm } from './HeroSearchForm'
+import { useRouter } from 'next/router'
 
-export default {
-  title: 'components/organisms/HeroSearchForm',
+const meta: Meta<typeof HeroSearchForm> = {
   component: HeroSearchForm,
-} as ComponentMeta<typeof HeroSearchForm>
+}
+export default meta
 
-const Template: ComponentStory<typeof HeroSearchForm> = (args) => (
-  <HeroSearchForm {...args} />
-)
+type Story = StoryObj<typeof HeroSearchForm>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: (args) => {
+    const router = useRouter()
+    return <HeroSearchForm router={router} />
+  },
+}

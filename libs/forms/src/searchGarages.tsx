@@ -98,14 +98,6 @@ export const FormProviderSearchGarage = ({
 }: {
   children: ReactNode
 }) => {
-  const searchParams = useSearchParams()
-  const startTimeParam = searchParams.get('startTime')
-  const endTimeParam = searchParams.get('endTime')
-  const placeName = searchParams.get('placeName')
-  const lat = parseFloat(searchParams.get('lat') || '')
-  const lng = parseFloat(searchParams.get('lng') || '')
-  const type = searchParams.getAll('type') as SlotType[]
-
   const { startTime: currentTime, endTime: currentTimePlusOneHour } =
     getCurrentTimeAndOneHourLater()
   const methods = useForm<FormTypeSearchGarage>({
@@ -114,10 +106,10 @@ export const FormProviderSearchGarage = ({
   })
 
   useEffect(() => {
-    methods.setValue('startTime', startTimeParam || currentTime)
-    methods.setValue('endTime', endTimeParam || currentTimePlusOneHour)
+    methods.setValue('startTime', currentTime)
+    methods.setValue('endTime', currentTimePlusOneHour)
 
-    methods.setValue('type', type || AllSlotTypes.sort())
+    methods.setValue('type', AllSlotTypes.sort())
   }, [])
 
   return <FormProvider {...methods}>{children}</FormProvider>

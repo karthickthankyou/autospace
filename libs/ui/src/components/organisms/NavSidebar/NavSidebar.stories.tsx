@@ -1,16 +1,20 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { NavSidebar } from './NavSidebar'
 
-export default {
-  title: 'src/components/organisms/NavSidebar',
+const meta: Meta<typeof NavSidebar> = {
   component: NavSidebar,
-} as ComponentMeta<typeof NavSidebar>
+}
+export default meta
 
-const Template: ComponentStory<typeof NavSidebar> = (args) => (
-  <NavSidebar {...args} />
-)
+type Story = StoryObj<typeof NavSidebar>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    menuItems: [
+      { href: '/', label: 'Menu 1', loggedIn: false },
+      { href: '/', label: 'Menu 2', loggedIn: false },
+      { href: '/', label: 'Menu 3', loggedIn: false },
+      { href: '/', label: 'Menu 4', loggedIn: false },
+    ],
+  },
+}

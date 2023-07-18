@@ -9,7 +9,7 @@ export const HomeHero = ({}: IHomeHeroProps) => {
     <div className="grid grid-cols-1 grid-rows-1 h-[80vh]">
       <div className="min-w-full col-span-1 col-start-1 row-span-1 row-start-1">
         <img
-          src={'/carport.jpeg'}
+          src={'https://placehold.co/400'}
           alt=""
           className="object-cover h-full min-w-full"
         />

@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { SearchPlaceBox } from './SearchPlaceBox'
 
-export default {
-  title: 'components/organisms/SearchPlaceBox',
+const meta: Meta<typeof SearchPlaceBox> = {
   component: SearchPlaceBox,
-} as ComponentMeta<typeof SearchPlaceBox>
+}
+export default meta
 
-const Template: ComponentStory<typeof SearchPlaceBox> = (args) => (
-  <SearchPlaceBox {...args} />
-)
+type Story = StoryObj<typeof SearchPlaceBox>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {},
+}

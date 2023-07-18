@@ -1,16 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { FilterSidebar } from './FilterSidebar'
+import { FormProviderSearchGarage } from '@autospace-org/forms/src/searchGarages'
 
-export default {
-  title: 'components/organisms/FilterSidebar',
+const meta: Meta<typeof FilterSidebar> = {
   component: FilterSidebar,
-} as ComponentMeta<typeof FilterSidebar>
+  decorators: [
+    (Story) => <FormProviderSearchGarage>{Story()}</FormProviderSearchGarage>,
+  ],
+}
+export default meta
 
-const Template: ComponentStory<typeof FilterSidebar> = (args) => (
-  <FilterSidebar />
-)
+type Story = StoryObj<typeof FilterSidebar>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {},
+}

@@ -1,16 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HomeHero } from './HomeHero'
 
-export default {
-  title: 'components/organisms/HomeHero',
+const meta: Meta<typeof HomeHero> = {
   component: HomeHero,
-} as ComponentMeta<typeof HomeHero>
+}
+export default meta
 
-const Template: ComponentStory<typeof HomeHero> = (args) => (
-  <HomeHero {...args} />
-)
+type Story = StoryObj<typeof HomeHero>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {},
+}

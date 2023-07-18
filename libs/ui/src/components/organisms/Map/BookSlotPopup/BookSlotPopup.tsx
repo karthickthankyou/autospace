@@ -7,8 +7,6 @@ import { RadioGroup } from '@headlessui/react'
 import {
   IconBike,
   IconCar,
-  IconCircleMinus,
-  IconCirclePlus,
   IconMotorbike,
   IconTir,
   IconUser,
@@ -45,7 +43,6 @@ import { LatLng, TotalPrice } from '@autospace-org/types'
 import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 import { LngLatTuple } from '@autospace-org/store/map'
 import React from 'react'
-import { differenceInTime } from '@autospace-org/util/date'
 import { AutoImageChanger } from '../../../molecules/AutoImageChanger'
 
 const IconTypes = {

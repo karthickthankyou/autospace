@@ -1,16 +1,14 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ValetCard } from './ValetCard'
+import { valets } from '@autospace-org/network/src/data'
 
-export default {
-  title: 'src/components/organisms/ValetCard',
+const meta: Meta<typeof ValetCard> = {
   component: ValetCard,
-} as ComponentMeta<typeof ValetCard>
+}
+export default meta
 
-const Template: ComponentStory<typeof ValetCard> = (args) => (
-  <ValetCard {...args} />
-)
+type Story = StoryObj<typeof ValetCard>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: { valet: valets.valets[0] },
+}

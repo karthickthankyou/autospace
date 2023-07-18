@@ -1,14 +1,17 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Map } from './Map'
 
-export default {
-  title: 'src/components/organisms/Map',
+const meta: Meta<typeof Map> = {
   component: Map,
-} as ComponentMeta<typeof Map>
+}
+export default meta
 
-const Template: ComponentStory<typeof Map> = (args) => <Map {...args} />
+type Story = StoryObj<typeof Map>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    latitude: 12,
+    longitude: 80,
+    zoom: 10,
+  },
+}

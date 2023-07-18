@@ -1,16 +1,28 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ImagePreview } from './ImagePreview'
+import { Controller } from 'react-hook-form'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { useState } from 'react'
 
-export default {
-  title: 'src/components/organisms/ImagePreview',
+const meta: Meta<typeof ImagePreview> = {
   component: ImagePreview,
-} as ComponentMeta<typeof ImagePreview>
+}
+export default meta
 
-const Template: ComponentStory<typeof ImagePreview> = (args) => (
-  <ImagePreview {...args} />
-)
+type Story = StoryObj<typeof ImagePreview>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: (args) => {
+    const [image, setImage] = useState<Blob | MediaSource | undefined>()
+    return (
+      <ImagePreview src={image} clearImage={() => setImage(undefined)}>
+        <HtmlInput
+          type="file"
+          accept="image/*"
+          multiple={false}
+          onChange={(e) => setImage(e?.target?.files?.[0])}
+        />
+      </ImagePreview>
+    )
+  },
+}

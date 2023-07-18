@@ -2,7 +2,7 @@ import { Controller } from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { stringify } from 'querystring'
+
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import { ToggleButton } from '@mui/material'
 import { useFormSearchGaragesHome } from '@autospace-org/forms/src/searchGaragesHome'
@@ -27,8 +27,8 @@ export const HeroSearchForm = ({ router }: IHeroSearchFormProps) => {
       onSubmit={handleSubmit((data) => {
         const { type, endTime, startTime } = data
 
-        let queryString = stringify({
-          type,
+        let queryString = new URLSearchParams({
+          type: type.toString(),
           endTime,
           startTime,
         })

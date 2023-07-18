@@ -52,7 +52,7 @@ export const SimplePagination: React.FC<SimplePaginationProps> = ({
         disabled={disableRight}
       >
         <IconArrowRight
-          className={disableLeft ? 'text-gray-300' : 'text-black'}
+          className={disableRight ? 'text-gray-300' : 'text-black'}
         />
       </PlainButton>
     </div>

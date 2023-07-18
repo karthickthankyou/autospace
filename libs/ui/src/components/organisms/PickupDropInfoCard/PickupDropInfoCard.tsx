@@ -10,10 +10,8 @@ import { format } from 'date-fns'
 import React, { ReactNode } from 'react'
 import { LatLng } from '@autospace-org/types'
 import { Button } from '../../atoms/Button'
-import { TitleValue } from '../../atoms/TitleValue'
 import { Reveal } from '../../molecules/Reveal'
 import { TitleStrongValue } from '../../atoms/TitleValue/TitleValue'
-import { MapLink } from '../../atoms/MapLink'
 import { Directions } from '../../molecules/Directions'
 
 export interface IPickupDropInfoCardProps {
@@ -112,6 +110,7 @@ export const MyTripCard = React.memo(
 export const PickupDropInfoCard = React.memo(
   ({ start, end, booking, targetStatus }: IPickupDropInfoCardProps) => {
     const { data, distance, loading, error } = useMapboxDirections(start, end)
+    console.log('data ', data)
 
     return (
       <div key={booking.id} className="space-y-1">

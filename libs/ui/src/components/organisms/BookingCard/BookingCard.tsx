@@ -1,12 +1,9 @@
-import { IconArrowDownTail, IconArrowRightCircle } from '@tabler/icons-react'
 import { MapLink } from '../../atoms/MapLink'
 import { Reveal } from '../../molecules/Reveal'
 
 import { StartEndDateCard } from '../DateCard/DateCard'
 import { BookingsQuery } from '@autospace-org/network/src/generated'
 import { AutoImageChanger } from '../../molecules/AutoImageChanger'
-import { BookingStatusTimeline } from '../BookingStatusTimeline'
-import { TitleValue } from '../../atoms/TitleValue'
 import { TitleStrongValue } from '../../atoms/TitleValue/TitleValue'
 
 export interface IBookingCardProps {
