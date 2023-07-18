@@ -1,5 +1,7 @@
 import { AdminsQuery } from '@autospace-org/network/src/generated'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { format } from 'date-fns'
 
 type AdminCardProps = {
@@ -7,7 +9,7 @@ type AdminCardProps = {
 }
 
 export const AdminCard: React.FC<AdminCardProps> = ({ admin }) => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
   return (
     <>
       <div className="flex items-start gap-2">

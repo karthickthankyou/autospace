@@ -8,7 +8,9 @@ import { FormError } from '../../atoms/FormError'
 import { Form } from '../../atoms/Form'
 
 // import { useRouter } from 'next/navigation'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
 import { login } from '@autospace-org/network/src/auth'
 import { notification$ } from '@autospace-org/util/subjects'
@@ -38,7 +40,8 @@ const LoginForm = ({ className }: ILoginFormProps) => {
 
   //   const router = useRouter()
 
-  const uid = useUserStore((store) => store.uid)
+  const uid = useAppSelector(selectUid)
+
   if (uid) {
     notification$.next({ message: 'Logged in.' })
     // router.push('/')

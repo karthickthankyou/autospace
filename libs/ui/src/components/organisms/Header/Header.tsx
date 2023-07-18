@@ -6,7 +6,9 @@ import { Container } from '../../atoms/Container'
 import { NavSidebar, ShowMenuItems } from '../NavSidebar/NavSidebar'
 import { Suspense } from 'react'
 
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { MenuItem, Role } from '@autospace-org/types'
 
 export type IHeaderProps = {
@@ -20,7 +22,7 @@ export const Header = ({
   sideMenuItems = [],
   type,
 }: IHeaderProps) => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   return (
     <header className="z-40">

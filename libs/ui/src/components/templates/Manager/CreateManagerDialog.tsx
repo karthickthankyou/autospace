@@ -9,7 +9,8 @@ import { Form } from '../../atoms/Form'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { Button } from '../../atoms/Button'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
 
 export const CreateManagerDialog = () => {
   const {
@@ -18,7 +19,7 @@ export const CreateManagerDialog = () => {
     formState: { errors },
   } = useCreateCompanyForm()
 
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   const [open, setOpen] = useState(false)
   const [createCompany, { data, loading }] = useCreateCompanyMutation()

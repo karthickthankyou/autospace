@@ -6,6 +6,8 @@ import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
 import { AppLevelListeners } from '@autospace-org/ui/src/components/atoms/AppLevelListeners'
 import { Notifications } from '@autospace-org/ui/src/components/organisms/Notifications'
 import { Header } from '@autospace-org/ui/src/components/organisms/Header'
+import { ReduxProvider } from '@autospace-org/store/Provider'
+
 import { MenuItem } from '@autospace-org/types'
 
 const MENUITEMS: MenuItem[] = [
@@ -19,11 +21,17 @@ const SUBMENUITEMS: MenuItem[] = [
 ]
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider>
-      <AppLevelListeners />
-      <Header type="admin" menuItems={MENUITEMS} sideMenuItems={SUBMENUITEMS} />
-      <Component {...pageProps} />
-      <Notifications />
-    </ApolloProvider>
+    <ReduxProvider>
+      <ApolloProvider>
+        <AppLevelListeners />
+        <Header
+          type="admin"
+          menuItems={MENUITEMS}
+          sideMenuItems={SUBMENUITEMS}
+        />
+        <Component {...pageProps} />
+        <Notifications />
+      </ApolloProvider>
+    </ReduxProvider>
   )
 }

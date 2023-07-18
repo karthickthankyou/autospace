@@ -21,7 +21,9 @@ import { Marker } from '../../organisms/Map/MapMarker'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { Form } from '../../atoms/Form'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { IconPlus } from '@tabler/icons-react'
 import {
   CenterOfMap,
@@ -54,7 +56,7 @@ export const CreateGarage = () => {
 
 export const CreateGarageContent = ({}: ICreateGarageProps) => {
   const [open, setOpen] = useState(false)
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   const {
     register,

@@ -9,7 +9,9 @@ import {
   FormTypeRegister,
   useFormRegister,
 } from '@autospace-org/forms/src/register'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { notification$ } from '@autospace-org/util/subjects'
 // import { useRouter } from 'next/navigation'
 
@@ -38,7 +40,7 @@ export const RegisterForm = ({ className }: { className?: string }) => {
 
   //   const router = useRouter()
 
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   if (uid) {
     notification$.next({ message: 'Authenticated. ' })

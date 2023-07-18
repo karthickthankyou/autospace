@@ -9,6 +9,7 @@ import { useIsPathInArray } from '@autospace-org/hooks/src'
 import { Footer } from '@autospace-org/ui/src/components/organisms/Footer'
 import { Header } from '@autospace-org/ui/src/components/organisms/Header'
 import { MenuItem } from '@autospace-org/types'
+import { ReduxProvider } from '@autospace-org/store/Provider'
 
 const MENUITEMS: MenuItem[] = [
   { label: 'About', href: '/about', loggedIn: false },
@@ -25,14 +26,16 @@ const SUBMENUITEMS: MenuItem[] = [
 export default function App({ Component, pageProps }: AppProps) {
   const hideNav = useIsPathInArray(['/login', '/register'])
   return (
-    <ApolloProvider>
-      <AppLevelListeners />
-      {!hideNav ? (
-        <Header menuItems={MENUITEMS} sideMenuItems={SUBMENUITEMS} />
-      ) : null}
-      <Component {...pageProps} />
-      {!hideNav ? <Footer /> : null}
-      <Notifications />
-    </ApolloProvider>
+    <ReduxProvider>
+      <ApolloProvider>
+        <AppLevelListeners />
+        {!hideNav ? (
+          <Header menuItems={MENUITEMS} sideMenuItems={SUBMENUITEMS} />
+        ) : null}
+        <Component {...pageProps} />
+        {!hideNav ? <Footer /> : null}
+        <Notifications />
+      </ApolloProvider>
+    </ReduxProvider>
   )
 }

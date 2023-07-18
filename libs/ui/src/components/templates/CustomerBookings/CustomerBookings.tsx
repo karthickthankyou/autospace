@@ -1,5 +1,7 @@
 import { CustomerBookingCard } from '../../organisms/BookingCard/BookingCard'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import {
   SortOrder,
   useBookingsLazyQuery,
@@ -56,7 +58,7 @@ const BookingType = {
 
 export const ShowBookings = ({ type }: { type: BookingTypes }) => {
   const condition = BookingType[type]
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   const [skip, setSkip] = useState(0)
   const [take, setTake] = useState(12)

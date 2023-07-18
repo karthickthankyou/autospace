@@ -1,9 +1,10 @@
-import { useNotificationStore } from '@autospace-org/store/utils'
+import { useAppSelector } from '@autospace-org/store'
+import { selectNotifications } from '@autospace-org/store/utils'
 import { NotificationType } from '@autospace-org/types'
 import { AnimatePresence, motion } from 'framer-motion'
 
 export const Notifications = () => {
-  const notifications = useNotificationStore((state) => state.notifications)
+  const notifications = useAppSelector(selectNotifications)
 
   const getTextColor = (type: NotificationType['type']) => {
     switch (type) {

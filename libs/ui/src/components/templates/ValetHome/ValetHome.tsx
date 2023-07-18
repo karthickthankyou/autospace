@@ -1,4 +1,5 @@
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid, selectUser } from '@autospace-org/store/user'
 
 import { LoaderPanel } from '../../molecules/Loader'
 import { AlertSection } from '../../organisms/AlertSection'
@@ -19,10 +20,8 @@ import { PickupDropInfoCard } from '../../organisms/PickupDropInfoCard/PickupDro
 export interface IValetHomeProps {}
 
 export const ValetHome = ({}: IValetHomeProps) => {
-  const { uid, loaded } = useUserStore((s) => ({
-    uid: s.uid,
-    loaded: s.loaded,
-  }))
+  const { uid, loaded } = useAppSelector(selectUser)
+
   const [value, setValue] = useState<0 | 1>(0)
 
   if (!loaded) {

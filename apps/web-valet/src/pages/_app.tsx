@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import type { AppProps } from 'next/app'
 import { MenuItem } from '@autospace-org/types'
 import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
+import { ReduxProvider } from '@autospace-org/store/Provider'
 import { AppLevelListeners } from '@autospace-org/ui'
 import { Footer } from '@autospace-org/ui/src/components/organisms/Footer'
 import { Header } from '@autospace-org/ui/src/components/organisms/Header'
@@ -19,14 +20,20 @@ const SUBMENUITEMS: MenuItem[] = [
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider>
-      <AppLevelListeners />
+    <ReduxProvider>
+      <ApolloProvider>
+        <AppLevelListeners />
 
-      <Header type="valet" menuItems={MENUITEMS} sideMenuItems={SUBMENUITEMS} />
+        <Header
+          type="valet"
+          menuItems={MENUITEMS}
+          sideMenuItems={SUBMENUITEMS}
+        />
 
-      <Component {...pageProps} />
-      <Footer />
-      <Notifications />
-    </ApolloProvider>
+        <Component {...pageProps} />
+        <Footer />
+        <Notifications />
+      </ApolloProvider>
+    </ReduxProvider>
   )
 }

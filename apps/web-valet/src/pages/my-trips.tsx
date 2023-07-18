@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import { MyTrips } from '@autospace-org/ui/src/components/templates/MyTrips'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid, selectUser } from '@autospace-org/store/user'
+
 import { AlertSection } from '@autospace-org/ui/src/components/organisms/AlertSection'
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
 
 export default function Login() {
-  const { uid } = useUserStore()
+  const { uid, loaded } = useAppSelector(selectUser)
   return (
     <>
       <Head>

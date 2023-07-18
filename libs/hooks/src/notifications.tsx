@@ -1,4 +1,4 @@
-import { useNotificationStore } from '@autospace-org/store/utils'
+import { addNotification, removeNotification } from '@autospace-org/store/utils'
 
 import { notification$ } from '@autospace-org/util/subjects'
 import { makeId } from '@autospace-org/util'
@@ -12,15 +12,11 @@ import {
   catchError,
   EMPTY,
 } from 'rxjs'
+import { useAppDispatch } from '@autospace-org/store'
+import {} from '@autospace-org/store/utils'
 
 export const useNotification = () => {
-  const { addNotification, removeNotification } = useNotificationStore(
-    (state) => ({
-      addNotification: state.addNotification,
-      removeNotification: state.removeNotification,
-    }),
-  )
-
+  const dispatch = useAppDispatch()
   useEffect(() => {
     const subscription = notification$
       .pipe(
@@ -28,11 +24,11 @@ export const useNotification = () => {
         distinctUntilChanged(),
         map((v) => ({ ...v, id: makeId(12) })),
         tap((v) => {
-          addNotification(v)
+          dispatch(addNotification(v))
         }),
         delay(4000),
         tap((v) => {
-          removeNotification(v.id)
+          dispatch(removeNotification(v.id))
         }),
         catchError((e) => {
           return EMPTY

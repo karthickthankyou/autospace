@@ -3,16 +3,15 @@ import { AlertSection } from '../../organisms/AlertSection'
 import { LinkButton } from '../../atoms/LinkButton'
 import { useMyCompanyLazyQuery } from '@autospace-org/network/src/generated'
 import { useEffect } from 'react'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid, selectUser } from '@autospace-org/store/user'
+
 import { LoaderPanel } from '../../molecules/Loader'
 
 export interface IManagerProps {}
 
 export const Manager = ({}: IManagerProps) => {
-  const { uid, loaded } = useUserStore((state) => ({
-    uid: state.uid,
-    loaded: state.loaded,
-  }))
+  const { uid, loaded } = useAppSelector(selectUser)
 
   const [getCompany, data] = useMyCompanyLazyQuery()
 

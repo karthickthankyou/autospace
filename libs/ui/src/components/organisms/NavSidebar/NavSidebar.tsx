@@ -4,7 +4,9 @@ import { IconDoorExit, IconMenu2 } from '@tabler/icons-react'
 import { Sidebar } from '../Sidebar'
 import { Brand } from '../../atoms/Brand'
 import { Button } from '../../atoms/Button'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { MenuItem } from '@autospace-org/types'
 import { signOut } from '@autospace-org/network/src/auth'
 
@@ -15,9 +17,7 @@ export interface INavSidebarProps {
 export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
   const [open, setOpen] = useState(false)
 
-  const { uid } = useUserStore((state) => ({
-    uid: state.uid,
-  }))
+  const uid = useAppSelector(selectUid)
 
   return (
     <>
@@ -81,7 +81,7 @@ export const NavSidebar = ({ menuItems }: INavSidebarProps) => {
 }
 
 export const ShowMenuItems = ({ menuItems }: INavSidebarProps) => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   if (!uid) return null
   return (

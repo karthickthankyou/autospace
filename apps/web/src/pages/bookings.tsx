@@ -1,12 +1,14 @@
 import Head from 'next/head'
 import { CustomerBookings } from '@autospace-org/ui/src/components/templates/CustomerBookings'
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { AlertSection } from '@autospace-org/ui/src/components/organisms/AlertSection'
 import Link from 'next/link'
 
 export default function Bookings() {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   return (
     <>

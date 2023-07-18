@@ -31,7 +31,9 @@ import { HtmlInput } from '../../../atoms/HtmlInput'
 import { Form } from '../../../atoms/Form'
 import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
 import { notification$ } from '@autospace-org/util/subjects'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import { Switch } from '../../../atoms/Switch'
@@ -57,7 +59,7 @@ export const BookSlotPopup = ({
 }: {
   garage: SearchGaragesQuery['searchGarages'][0]
 }) => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
 
   const [createBooking, { loading }] = useCreateBookingMutation()
 

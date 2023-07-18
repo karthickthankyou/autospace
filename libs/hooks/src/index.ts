@@ -1,11 +1,12 @@
 import { notification$ } from '@autospace-org/util/subjects'
 import { useRouter } from 'next/router'
 import { RefObject, useEffect, useRef, useState } from 'react'
-import { useUserStore } from '@autospace-org/store/user'
+import { selectUid } from '@autospace-org/store/user'
 import { usePathname } from 'next/navigation'
+import { useAppSelector } from '@autospace-org/store'
 
 export const useRedirectLoggedInUsers = () => {
-  const uid = useUserStore((state) => state.uid)
+  const uid = useAppSelector(selectUid)
   const router = useRouter()
   if (uid) {
     notification$.next({

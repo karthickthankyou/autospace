@@ -13,7 +13,9 @@ import { HtmlInput } from '../../atoms/HtmlInput'
 import { Form } from '../../atoms/Form'
 import { useFormRegister } from '@autospace-org/forms'
 import { IconTrash } from '@tabler/icons-react'
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
+
 import { AdminCard } from '../../organisms/AdminCard'
 
 export interface IManageAdminsProps {}

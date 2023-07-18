@@ -1,4 +1,6 @@
-import { useUserStore } from '@autospace-org/store/user'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid, selectUser } from '@autospace-org/store/user'
+
 import { LoaderPanel } from '../../molecules/Loader'
 import { AlertUnauthenticated } from '../../organisms/AlertUnauthenticated'
 import {
@@ -23,7 +25,7 @@ import { Controller } from 'react-hook-form'
 export interface IManageValetsProps {}
 
 export const ManageValets = ({}: IManageValetsProps) => {
-  const { uid, loaded } = useUserStore()
+  const { uid, loaded } = useAppSelector(selectUser)
   if (!loaded) {
     return <LoaderPanel />
   }
