@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { AuthLayout } from '@autospace-org/ui/src/components/molecules/AuthLayoutSimple'
+import { AuthLayoutSimple } from '@autospace-org/ui/src/components/molecules/AuthLayoutSimple'
 import { LoginForm } from '@autospace-org/ui/src/components/templates/LoginForm'
 
 export default function Login() {
@@ -12,9 +12,9 @@ export default function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <AuthLayout title="Login">
+        <AuthLayoutSimple title="Login">
           <LoginForm />
-        </AuthLayout>
+        </AuthLayoutSimple>
       </main>
     </>
   )
