@@ -1,17 +1,15 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { SearchPageTemplate } from './SearchPageTemplate'
-import { SlotType } from '@autospace-org/network/src/generated'
+import { FormProviderSearchGarage } from '@autospace-org/forms/src/searchGarages'
 
-export default {
-  title: 'components/templates/SearchPageTemplate',
+const meta: Meta<typeof SearchPageTemplate> = {
   component: SearchPageTemplate,
-} as ComponentMeta<typeof SearchPageTemplate>
+  decorators: [
+    (Story) => <FormProviderSearchGarage>{Story()}</FormProviderSearchGarage>,
+  ],
+}
+export default meta
 
-const Template: ComponentStory<typeof SearchPageTemplate> = (args) => (
-  <SearchPageTemplate />
-)
+type Story = StoryObj<typeof SearchPageTemplate>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {}

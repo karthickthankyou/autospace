@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import {
   useFormContext,
@@ -67,7 +68,6 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
   const [{ percent, uploading }, uploadImages] = useImageUpload()
 
   const [createGarage, { loading }] = useCreateGarageMutation()
-  const router = useRouter()
 
   return (
     <div className="grid grid-cols-2 gap-2">
@@ -77,7 +77,7 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
           <Button variant="outlined" onClick={() => setOpen(false)}>
             Create more
           </Button>
-          <Button onClick={() => router.push('/')}>Go to garages</Button>
+          <Link href="/">Go to garages</Link>
         </div>
       </Dialog>
       <Form
@@ -107,13 +107,13 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
           },
         )}
       >
-        <HtmlLabel title="Display Name">
+        <HtmlLabel error={errors.displayName?.message} title="Display Name">
           <HtmlInput {...register('displayName')} />
         </HtmlLabel>
-        <HtmlLabel title="Description">
+        <HtmlLabel title="Description" error={errors.description?.message}>
           <HtmlTextArea cols={5} {...register('description')} />
         </HtmlLabel>
-        <HtmlLabel title="Address">
+        <HtmlLabel title="Address" error={errors.location?.address?.message}>
           <HtmlTextArea cols={5} {...register('location.address')} />
         </HtmlLabel>
         <HtmlLabel title="Images" error={errors.images?.message?.toString()}>

@@ -1,4 +1,14 @@
-import { BookingStatus, BookingsQuery, SlotType } from '../generated'
+import {
+  AdminsQuery,
+  BookingStatus,
+  BookingsQuery,
+  CompanyValetsQuery,
+  MyDropTripsQuery,
+  MyPickupTripsQuery,
+  SlotType,
+  ValetDropsQuery,
+  ValetPickupsQuery,
+} from '../generated'
 
 export const garages = {
   garages: [
@@ -116,19 +126,19 @@ export const bookings: BookingsQuery = {
 
 export const myCompany = {
   myCompany: {
-    id: '1',
+    id: 1,
     createdAt: '2023-07-18T12:00:00.000Z',
     displayName: 'Company 1',
     description: 'Description for Company 1',
     garages: [
       {
         images: ['https://placehold.co/400', 'https://placehold.co/300'],
-        id: '1',
+        id: 1,
         description: 'Description for Garage 1',
         displayName: 'Garage 1',
         address: {
-          lat: '12.34',
-          lng: '56.78',
+          lat: 12.34,
+          lng: 56.78,
           address: '123 Street',
         },
       },
@@ -148,6 +158,109 @@ export const valets = {
       createdAt: '2023-07-18T12:00:00.000Z',
       companyId: 1,
       image: 'https://placehold.co/300',
+    },
+  ],
+}
+export const admins: AdminsQuery = {
+  admins: [
+    {
+      createdAt: new Date(),
+      uid: 'uid',
+      updatedAt: new Date(),
+      verificationsCount: 3,
+      displayName: 'Karthick Ragavendran',
+    },
+  ],
+  adminsCount: {
+    count: 1,
+  },
+}
+
+export const companyValets: CompanyValetsQuery = {
+  companyValets: [
+    {
+      companyId: 1,
+      createdAt: new Date(),
+      displayName: 'Valet name',
+      uid: 'uid',
+      updatedAt: new Date(),
+      image: 'https://placehold.co/400',
+    },
+  ],
+}
+
+export const myPickupTripsQueryData: MyPickupTripsQuery = {
+  bookings: [
+    {
+      id: 1,
+      vehicleNumber: 'ABC123',
+      passcode: '1234',
+      status: BookingStatus.ValetAssignedForCheckIn,
+      valetAssignment: {
+        pickupLat: 12.9715987,
+        pickupLng: 77.5945627,
+        pickupValetId: '10',
+      },
+      startTime: new Date('2023-08-01T10:30:00Z').toISOString(),
+      endTime: new Date('2023-08-01T12:30:00Z').toISOString(),
+      slot: {
+        garage: {
+          address: {
+            lat: 12.9715987,
+            lng: 77.5945627,
+          },
+        },
+      },
+    },
+  ],
+}
+
+export const myDropTripsQueryData: MyDropTripsQuery = {
+  bookings: [
+    {
+      id: 2,
+      vehicleNumber: 'XYZ456',
+      passcode: '5678',
+      status: BookingStatus.ValetAssignedForCheckOut,
+      valetAssignment: {
+        returnLat: 12.9715987,
+        returnLng: 77.5945627,
+        returnValetId: '11',
+      },
+      startTime: new Date('2023-08-02T10:30:00Z').toISOString(),
+      endTime: new Date('2023-08-02T12:30:00Z').toISOString(),
+      slot: {
+        garage: {
+          address: {
+            lat: 12.9715987,
+            lng: 77.5945627,
+          },
+        },
+      },
+    },
+  ],
+}
+
+export const valetPickupsData: ValetPickupsQuery = {
+  valetPickups: [
+    {
+      endTime: new Date(),
+      id: 1,
+      slot: { garage: { address: { lat: 12, lng: 80 } } },
+      startTime: new Date(),
+      vehicleNumber: '1234',
+    },
+  ],
+}
+
+export const valetDropsData: ValetDropsQuery = {
+  valetDrops: [
+    {
+      endTime: new Date(),
+      id: 1,
+      slot: { garage: { address: { lat: 12, lng: 80 } } },
+      startTime: new Date(),
+      vehicleNumber: '1234',
     },
   ],
 }

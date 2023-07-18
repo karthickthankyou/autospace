@@ -11,10 +11,8 @@ import {
 } from '@autospace-org/forms/src/register'
 import { useUserStore } from '@autospace-org/store/user'
 import { notification$ } from '@autospace-org/util/subjects'
-import { useRouter } from 'next/navigation'
-import { register as registerFirebase } from '@autospace-org/network/src/auth'
+// import { useRouter } from 'next/navigation'
 
-import { useRegisterMutation } from '@autospace-org/network/src/generated'
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
 
 export interface ISignupFormProps {}
@@ -38,13 +36,13 @@ export const RegisterForm = ({ className }: { className?: string }) => {
     },
   )
 
-  const router = useRouter()
+  //   const router = useRouter()
 
   const uid = useUserStore((state) => state.uid)
 
   if (uid) {
-    notification$.next({ message: 'Registered. Redirecting...' })
-    router.push('/')
+    notification$.next({ message: 'Authenticated. ' })
+    // router.push('/')
   }
 
   return (

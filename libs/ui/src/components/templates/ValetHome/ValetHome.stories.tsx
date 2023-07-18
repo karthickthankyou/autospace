@@ -1,16 +1,36 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ValetHome } from './ValetHome'
+import { graphql } from 'msw'
+import {
+  ValetDropsQuery,
+  ValetPickupsQuery,
+  namedOperations,
+} from '@autospace-org/network/src/generated'
+import {
+  valetDropsData,
+  valetPickupsData,
+} from '@autospace-org/network/src/data'
 
-export default {
-  title: 'src/components/templates/ValetHome',
+const meta: Meta<typeof ValetHome> = {
   component: ValetHome,
-} as ComponentMeta<typeof ValetHome>
+}
+export default meta
 
-const Template: ComponentStory<typeof ValetHome> = (args) => (
-  <ValetHome {...args} />
-)
+type Story = StoryObj<typeof ValetHome>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query<ValetPickupsQuery>(
+          namedOperations.Query.valetPickups,
+          (req, res, ctx) => res(ctx.data(valetPickupsData)),
+        ),
+        graphql.query<ValetDropsQuery>(
+          namedOperations.Query.valetDrops,
+          (req, res, ctx) => res(ctx.data(valetDropsData)),
+        ),
+      ],
+    },
+  },
+}

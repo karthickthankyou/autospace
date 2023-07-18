@@ -1,16 +1,34 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { CustomerBookings } from './CustomerBookings'
+import { graphql } from 'msw'
+import {
+  BookingsQuery,
+  namedOperations,
+} from '@autospace-org/network/src/generated'
+import { bookings } from '@autospace-org/network/src/data'
 
-export default {
-  title: 'components/templates/CustomerBookings',
+const meta: Meta<typeof CustomerBookings> = {
   component: CustomerBookings,
-} as ComponentMeta<typeof CustomerBookings>
+}
+export default meta
 
-const Template: ComponentStory<typeof CustomerBookings> = (args) => (
-  <CustomerBookings {...args} />
-)
+type Story = StoryObj<typeof CustomerBookings>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query<BookingsQuery>(
+          namedOperations.Query.bookings,
+          (req, res, ctx) =>
+            res(
+              ctx.data({
+                bookings: bookings.bookings,
+                bookingsCount: { count: bookings.bookings.length },
+              }),
+            ),
+        ),
+      ],
+    },
+  },
+}

@@ -6,7 +6,7 @@ export interface IHowItWorksCustomerProps {}
 
 export const HowItWorksCustomer = ({}: IHowItWorksCustomerProps) => {
   return (
-    <div className="relative h-screen">
+    <div className="relative min-h-screen">
       <div className="absolute inset-0 -z-10">
         <ParkingSlotScene>
           <RotatingCamera maxFov={10} minFov={6} radius={45} />

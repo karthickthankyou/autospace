@@ -15,20 +15,6 @@ export interface IMyTripsProps {
 }
 
 export const MyTrips = ({ uid }: IMyTripsProps) => {
-  const { data, loading } = useMyPickupTripsQuery({
-    variables: {
-      where: {
-        valetAssignment: {
-          is: {
-            OR: [
-              { pickupValetId: { equals: uid } },
-              { returnValetId: { equals: uid } },
-            ],
-          },
-        },
-      },
-    },
-  })
   return (
     <div className="space-y-12">
       <ShowMyPickupTrips uid={uid} />

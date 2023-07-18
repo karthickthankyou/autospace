@@ -10,7 +10,10 @@ import { RouterContext } from 'next/dist/shared/lib/router-context'
 import React from 'react'
 
 // Initialize MSW
-initialize()
+initialize({
+  onUnhandledRequest: 'bypass',
+})
+
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },

@@ -59,6 +59,8 @@ export const ShowPickups = () => {
     variables: { skip, take },
   })
 
+  console.log('data', data)
+
   return (
     <ShowData
       loading={loading}

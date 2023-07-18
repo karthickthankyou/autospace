@@ -1,1 +1,0 @@
-export { ManageBookings } from './ManageBookings'

@@ -1,16 +1,28 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { ManageValets } from './ManageValets'
+import { graphql } from 'msw'
+import {
+  CompanyValetsQuery,
+  namedOperations,
+} from '@autospace-org/network/src/generated'
+import { companyValets } from '@autospace-org/network/src/data'
 
-export default {
-  title: 'src/components/templates/ManageValets',
+const meta: Meta<typeof ManageValets> = {
   component: ManageValets,
-} as ComponentMeta<typeof ManageValets>
+}
+export default meta
 
-const Template: ComponentStory<typeof ManageValets> = (args) => (
-  <ManageValets {...args} />
-)
+type Story = StoryObj<typeof ManageValets>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query<CompanyValetsQuery>(
+          namedOperations.Query.companyValets,
+          (req, res, ctx) => res(ctx.data(companyValets)),
+        ),
+      ],
+    },
+  },
+}

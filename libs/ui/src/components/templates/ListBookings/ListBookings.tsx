@@ -7,7 +7,7 @@ import {
 } from '@autospace-org/network/src/generated'
 import { Tab, Tabs } from '../../molecules/Tabs'
 import { TabPanel } from '../../molecules/Tabs/Tabs'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import { ShowData } from '../../organisms/ShowData'
 import { ManageBookingCard } from '../../organisms/ManageBookingCard'
 import { useTakeSkip } from '@autospace-org/hooks/src/async'
@@ -65,12 +65,10 @@ export const ListBookings = ({ garageId }: IListBookingsProps) => {
 export const ShowGarageBookings = ({
   garageId,
   statuses,
-
   type,
 }: {
   garageId: number
   statuses: BookingStatus[]
-
   type?: 'Pickup' | 'Return'
 }) => {
   const { take, setTake, skip, setSkip } = useTakeSkip()
@@ -91,6 +89,7 @@ export const ShowGarageBookings = ({
         }),
       },
     },
+    fetchPolicy: 'no-cache',
   })
 
   return (

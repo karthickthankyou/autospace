@@ -44,7 +44,7 @@ export const ShowGarages = () => {
       }}
     >
       {data?.garages.map((garage) => (
-        <div>
+        <div key={garage.id}>
           <GarageAdminCard garage={garage} />
 
           {!garage?.verification?.verified ? (

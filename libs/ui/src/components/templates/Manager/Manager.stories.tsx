@@ -1,14 +1,28 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Manager } from './Manager'
+import { graphql } from 'msw'
+import {
+  MyCompanyQuery,
+  namedOperations,
+} from '@autospace-org/network/src/generated'
+import { myCompany } from '@autospace-org/network/src/data'
 
-export default {
-  title: 'components/templates/Manager',
+const meta: Meta<typeof Manager> = {
   component: Manager,
-} as ComponentMeta<typeof Manager>
+}
+export default meta
 
-const Template: ComponentStory<typeof Manager> = (args) => <Manager {...args} />
+type Story = StoryObj<typeof Manager>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        graphql.query<MyCompanyQuery>(
+          namedOperations.Query.myCompany,
+          (req, res, ctx) => res(ctx.data(myCompany)),
+        ),
+      ],
+    },
+  },
+}
