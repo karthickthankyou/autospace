@@ -1,4 +1,3 @@
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
@@ -10,11 +9,13 @@ import {
   FormTypeSearchGarage,
   formDefaultValuesSearchGarages,
 } from '@autospace-org/forms/src/searchGarages'
-import { Dialog } from '../../atoms/Dialog'
+
 import { IconFilter } from '@tabler/icons-react'
 import { PulsingDot } from '../../atoms/Dot'
 import { Sidebar } from '../Sidebar'
 import { Brand } from '../../atoms/Brand'
+import { ToggleButtonGroup } from '../../molecules/ToggleButtonGroup'
+import { ToggleButton } from '../../molecules/ToggleButtonGroup/ToggleButtonGroup'
 
 export interface IFilterSidebarProps {}
 

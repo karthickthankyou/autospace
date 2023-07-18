@@ -1,16 +1,21 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { RadioOptionsSelectParkingSlotType } from './SelectParkingSlotType'
+import { SlotType } from '@autospace-org/network/src/generated'
 
-export default {
-  title: 'components/molecules/SelectParkingSlotType',
+const meta: Meta<typeof RadioOptionsSelectParkingSlotType> = {
   component: RadioOptionsSelectParkingSlotType,
-} as ComponentMeta<typeof RadioOptionsSelectParkingSlotType>
+}
+export default meta
 
-const Template: ComponentStory<typeof RadioOptionsSelectParkingSlotType> = (
-  args,
-) => <RadioOptionsSelectParkingSlotType {...args} />
+type Story = StoryObj<typeof RadioOptionsSelectParkingSlotType>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    availableSlots: [
+      { count: 120, pricePerHour: 10, type: SlotType.Bicycle },
+      { count: 30, pricePerHour: 20, type: SlotType.Bike },
+      { count: 20, pricePerHour: 40, type: SlotType.Car },
+      { count: 6, pricePerHour: 100, type: SlotType.Heavy },
+    ],
+  },
+}

@@ -1,10 +1,10 @@
-import React, { ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react'
 export interface IRevealProps {
   secret: ReactNode
   showIntruction?: boolean
 }
 
-const Reveal = ({ secret, showIntruction = true }: IRevealProps) => {
+export const Reveal = ({ secret, showIntruction = true }: IRevealProps) => {
   const [revealed, setRevealed] = useState(false)
 
   return (
@@ -27,5 +27,3 @@ const Reveal = ({ secret, showIntruction = true }: IRevealProps) => {
     </button>
   )
 }
-
-export { Reveal }

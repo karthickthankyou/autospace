@@ -1,14 +1,13 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Price } from './Price'
 
-export default {
-  title: 'src/components/molecules/Price',
+const meta: Meta<typeof Price> = {
   component: Price,
-} as ComponentMeta<typeof Price>
+}
+export default meta
 
-const Template: ComponentStory<typeof Price> = (args) => <Price {...args} />
+type Story = StoryObj<typeof Price>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: { children: 12.99 },
+}

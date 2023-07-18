@@ -1,16 +1,16 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { DateRangeBookingInfo } from './DateRangeBookingInfo'
 
-export default {
-  title: 'components/molecules/DateRangeBookingInfo',
+const meta: Meta<typeof DateRangeBookingInfo> = {
   component: DateRangeBookingInfo,
-} as ComponentMeta<typeof DateRangeBookingInfo>
+}
+export default meta
 
-const Template: ComponentStory<typeof DateRangeBookingInfo> = (args) => (
-  <DateRangeBookingInfo {...args} />
-)
+type Story = StoryObj<typeof DateRangeBookingInfo>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    endTime: new Date('2023-09-12').toISOString(),
+    startTime: new Date('2023-08-01').toISOString(),
+  },
+}

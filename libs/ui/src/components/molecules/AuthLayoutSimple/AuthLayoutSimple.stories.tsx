@@ -1,16 +1,16 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AuthLayoutSimple } from './AuthLayoutSimple'
 
-export default {
-  title: 'molecules/AuthLayoutSimple',
+const meta: Meta<typeof AuthLayoutSimple> = {
   component: AuthLayoutSimple,
-} as ComponentMeta<typeof AuthLayoutSimple>
+}
+export default meta
 
-const Template: ComponentStory<typeof AuthLayoutSimple> = (args) => (
-  <AuthLayoutSimple {...args} />
-)
+type Story = StoryObj<typeof AuthLayoutSimple>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: <div className="h-64 bg-gray-50" />,
+    title: 'Layout title',
+  },
+}

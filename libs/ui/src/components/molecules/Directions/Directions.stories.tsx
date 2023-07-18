@@ -1,16 +1,22 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { Directions } from './Directions'
 
-export default {
-  title: 'src/components/molecules/Directions',
+const meta: Meta<typeof Directions> = {
   component: Directions,
-} as ComponentMeta<typeof Directions>
+}
+export default meta
 
-const Template: ComponentStory<typeof Directions> = (args) => (
-  <Directions {...args} />
-)
+type Story = StoryObj<typeof Directions>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    end: {
+      lat: 13,
+      lng: 80,
+    },
+    start: {
+      lat: 13,
+      lng: 79,
+    },
+  },
+}

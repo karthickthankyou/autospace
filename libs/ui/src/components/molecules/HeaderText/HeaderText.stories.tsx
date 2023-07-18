@@ -1,16 +1,15 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { HeaderText } from './HeaderText'
 
-export default {
-  title: 'src/components/molecules/HeaderText',
+const meta: Meta<typeof HeaderText> = {
   component: HeaderText,
-} as ComponentMeta<typeof HeaderText>
+}
+export default meta
 
-const Template: ComponentStory<typeof HeaderText> = (args) => (
-  <HeaderText {...args} />
-)
+type Story = StoryObj<typeof HeaderText>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    children: 'Hello. This is the opinionated header text.',
+  },
+}

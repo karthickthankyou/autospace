@@ -1,5 +1,5 @@
 import { IconChevronLeft } from '@tabler/icons-react'
-import React, {
+import {
   createContext,
   ReactElement,
   ReactNode,
@@ -100,7 +100,7 @@ const Child = ({
 
 Child.displayName = 'ScrollChild'
 
-const HScroll = ({ children, className }: IHScrollProps) => {
+export const HScroll = ({ children, className }: IHScrollProps) => {
   const [scrollPos, scrollEl, scrollListener, scroll] = useScroll()
 
   const value = useMemo(
@@ -123,5 +123,3 @@ const HScroll = ({ children, className }: IHScrollProps) => {
 HScroll.Arrow = Arrow
 HScroll.Body = HScrollBody
 HScroll.Child = Child
-
-export default HScroll

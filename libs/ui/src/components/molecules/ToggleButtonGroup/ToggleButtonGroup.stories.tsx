@@ -1,16 +1,41 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { ToggleButtonGroup } from './ToggleButtonGroup'
+import type { Meta, StoryObj } from '@storybook/react'
+import { ToggleButton, ToggleButtonGroup } from './ToggleButtonGroup'
+import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react'
+import { useState } from 'react'
 
-export default {
-  title: 'src/components/molecules/ToggleButtonGroup',
+const meta: Meta<typeof ToggleButtonGroup> = {
   component: ToggleButtonGroup,
-} as ComponentMeta<typeof ToggleButtonGroup>
+}
+export default meta
 
-const Template: ComponentStory<typeof ToggleButtonGroup> = (args) => (
-  <ToggleButtonGroup {...args} />
-)
+type Story = StoryObj<typeof ToggleButtonGroup>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  render: () => {
+    const [formats, setFormats] = useState(() => ['bold', 'italic'])
+    const handleFormat = (
+      event: React.MouseEvent<HTMLElement>,
+      newFormats: string[],
+    ) => {
+      setFormats(newFormats)
+    }
+
+    return (
+      <ToggleButtonGroup
+        value={formats}
+        onChange={handleFormat}
+        aria-label="text formatting"
+      >
+        <ToggleButton value="bold" aria-label="bold">
+          <IconBold />
+        </ToggleButton>
+        <ToggleButton value="italic" aria-label="italic">
+          <IconItalic />
+        </ToggleButton>
+        <ToggleButton value="underlined" aria-label="underlined">
+          <IconUnderline />
+        </ToggleButton>
+      </ToggleButtonGroup>
+    )
+  },
+}

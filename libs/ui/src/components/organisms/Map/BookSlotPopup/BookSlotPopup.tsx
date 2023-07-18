@@ -35,7 +35,7 @@ import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
 import { notification$ } from '@autospace-org/util/subjects'
 import { useUserStore } from '@autospace-org/store/user'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
-import { ShowImages } from '../../../molecules/ShowImages'
+
 import { Switch } from '../../../atoms/Switch'
 import { Panel } from '../Panel'
 import { CenterOfMap, DefaultZoomControls } from '../ZoomControls/ZoomControls'
@@ -46,6 +46,7 @@ import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 import { LngLatTuple } from '@autospace-org/store/map'
 import React from 'react'
 import { differenceInTime } from '@autospace-org/util/date'
+import { AutoImageChanger } from '../../../molecules/AutoImageChanger'
 
 const IconTypes = {
   [SlotType.Bicycle]: <IconBike />,
@@ -135,7 +136,7 @@ export const BookSlotPopup = ({
         <div className="mb-2 text-2xl font-extralight">
           {garage.address.address}
         </div>
-        <ShowImages images={garage.images || []} />
+        <AutoImageChanger images={garage.images || []} />
         <DateRangeBookingInfo startTime={startTime} endTime={endTime} />
 
         <div className="flex flex-wrap gap-2 mt-2">

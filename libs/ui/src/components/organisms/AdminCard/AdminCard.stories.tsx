@@ -1,16 +1,11 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AdminCard } from './AdminCard'
 
-export default {
-  title: 'src/components/organisms/AdminCard',
+const meta: Meta<typeof AdminCard> = {
   component: AdminCard,
-} as ComponentMeta<typeof AdminCard>
+}
+export default meta
 
-const Template: ComponentStory<typeof AdminCard> = (args) => (
-  <AdminCard {...args} />
-)
+type Story = StoryObj<typeof AdminCard>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {}

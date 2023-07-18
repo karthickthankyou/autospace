@@ -1,9 +1,10 @@
+import { ReactNode } from 'react'
+
 export interface IPriceProps {
-  price: number
-  previousPrice?: number
+  children: ReactNode
   className?: string
 }
 
-export const Price = ({ price, className }: IPriceProps) => {
-  return <div className={`text-sm ${className}`}>Rs.{price}</div>
+export const Price = ({ children, className }: IPriceProps) => {
+  return <div className={`${className}`}>Rs.{children}</div>
 }

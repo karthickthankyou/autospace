@@ -40,7 +40,7 @@ import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 import { notification$ } from '@autospace-org/util/subjects'
 import { useImageUpload } from '@autospace-org/util'
 import { ProgressBar } from '../../atoms/ProgressBar'
-import { ShowImages } from '../../molecules/ShowImages'
+import { AutoImageChanger } from '../../molecules/AutoImageChanger'
 export interface ICreateGarageProps {}
 
 export const CreateGarage = () => {
@@ -356,7 +356,7 @@ export const ShowFormImages = () => {
     return null
   }
 
-  return <ShowImages images={images} />
+  return <AutoImageChanger images={images} />
 }
 
 export const MapMarker = () => {

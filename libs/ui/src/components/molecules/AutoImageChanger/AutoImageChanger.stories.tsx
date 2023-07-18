@@ -1,16 +1,21 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { AutoImageChanger } from './AutoImageChanger'
 
-export default {
-  title: 'src/components/molecules/AutoImageChanger',
+const meta: Meta<typeof AutoImageChanger> = {
   component: AutoImageChanger,
-} as ComponentMeta<typeof AutoImageChanger>
+}
+export default meta
 
-const Template: ComponentStory<typeof AutoImageChanger> = (args) => (
-  <AutoImageChanger {...args} />
-)
+type Story = StoryObj<typeof AutoImageChanger>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    durationPerImage: 100,
+    images: [
+      'https://placehold.co/400',
+      'https://placehold.co/300',
+      'https://placehold.co/200',
+      'https://placehold.co/100',
+    ],
+  },
+}

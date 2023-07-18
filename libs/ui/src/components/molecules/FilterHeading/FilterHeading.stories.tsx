@@ -1,16 +1,23 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { FilterHeading } from './FilterHeading'
 
-export default {
-  title: 'molecules/FilterHeading',
+const meta: Meta<typeof FilterHeading> = {
   component: FilterHeading,
-} as ComponentMeta<typeof FilterHeading>
+}
+export default meta
 
-const Template: ComponentStory<typeof FilterHeading> = (args) => (
-  <FilterHeading {...args} />
-)
+type Story = StoryObj<typeof FilterHeading>
 
-export const Primary = Template.bind({})
-Primary.args = {}
-Primary.parameters = {}
+export const Primary: Story = {
+  args: {
+    dirty: false,
+    title: 'Filter products',
+  },
+}
+
+export const Dirty: Story = {
+  args: {
+    dirty: true,
+    title: 'Filter products',
+  },
+}

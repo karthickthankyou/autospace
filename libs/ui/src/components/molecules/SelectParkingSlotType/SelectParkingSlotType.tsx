@@ -18,7 +18,7 @@ export const RadioOptionsSelectParkingSlotType = ({
   availableSlots,
 }: ISelectParkingSlotTypeProps) => {
   return (
-    <>
+    <RadioGroup>
       {availableSlots.map((slot) => (
         <div
           key={slot.type}
@@ -35,7 +35,7 @@ export const RadioOptionsSelectParkingSlotType = ({
                   {slot.type ? IconTypes[slot.type] : null}
                   <div>
                     <span className="text-lg font-bold">
-                      {slot.pricePerHour}
+                      Rs.{slot.pricePerHour}
                     </span>
                     /hr
                   </div>
@@ -47,6 +47,6 @@ export const RadioOptionsSelectParkingSlotType = ({
           </RadioGroup.Option>
         </div>
       ))}
-    </>
+    </RadioGroup>
   )
 }
