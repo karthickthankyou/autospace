@@ -3,6 +3,7 @@ import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
 
 import {
+  BookingStatus,
   SortOrder,
   useBookingsLazyQuery,
 } from '@autospace-org/network/src/generated'
@@ -10,6 +11,8 @@ import { useEffect, useState } from 'react'
 import { ShowData } from '../../organisms/ShowData'
 import { Tab, Tabs } from '../../molecules/Tabs'
 import { TabPanel } from '../../molecules/Tabs/Tabs'
+import { Timeline } from '../../molecules/Timeline'
+import { TimelineItem } from '../../molecules/Timeline/Timeline'
 
 export interface ICustomerBookingsProps {}
 
@@ -23,11 +26,11 @@ export const CustomerBookings = ({}: ICustomerBookingsProps) => {
         onChange={(e, v) => setValue(v)}
         aria-label="bookings"
       >
-        <Tab label={BookingType[BookingTypes.UPCOMING].title} />
+        <Tab label={BookingType[BookingTypes.ONGOING].title} />
         <Tab label={BookingType[BookingTypes.PAST].title} />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <ShowBookings type={BookingTypes.UPCOMING} />
+        <ShowBookings type={BookingTypes.ONGOING} />
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ShowBookings type={BookingTypes.PAST} />
@@ -37,13 +40,13 @@ export const CustomerBookings = ({}: ICustomerBookingsProps) => {
 }
 
 export enum BookingTypes {
-  UPCOMING = 'UPCOMING',
+  ONGOING = 'ONGOING',
   PAST = 'PAST',
 }
 
 const BookingType = {
-  [BookingTypes.UPCOMING]: {
-    title: 'Upcoming bookings',
+  [BookingTypes.ONGOING]: {
+    title: 'Ongoing bookings',
     where: {
       endTime: { gt: new Date().toISOString() },
     },
@@ -73,6 +76,7 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
           take,
           where: {
             customerId: { equals: uid },
+
             ...condition.where,
           },
           orderBy: {
@@ -83,22 +87,27 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
   }, [uid, getBookings])
 
   return (
-    <ShowData
-      error={error?.message}
-      loading={loading}
-      pagination={{
-        skip,
-        take,
-        resultCount: data?.bookings.length,
-        totalCount: data?.bookingsCount.count,
-        setSkip,
-        setTake,
-      }}
-      title={undefined}
-    >
-      {data?.bookings.map((booking) => (
-        <CustomerBookingCard key={booking.id} booking={booking} />
-      ))}
-    </ShowData>
+    <Timeline>
+      <ShowData
+        error={error?.message}
+        loading={loading}
+        pagination={{
+          skip,
+          take,
+          resultCount: data?.bookings.length,
+          totalCount: data?.bookingsCount.count,
+          setSkip,
+          setTake,
+        }}
+        title={undefined}
+        className="flex flex-col gap-2"
+      >
+        {data?.bookings.map((booking) => (
+          <TimelineItem key={booking.id} time={booking.startTime}>
+            <CustomerBookingCard booking={booking} />
+          </TimelineItem>
+        ))}
+      </ShowData>
+    </Timeline>
   )
 }

@@ -19,7 +19,6 @@ import {
   CreateBookingInput,
   SearchGaragesQuery,
   SlotType,
-  useCreateBookingMutation,
 } from '@autospace-org/network/src/generated'
 import { Button } from '../../../atoms/Button'
 import { Controller } from 'react-hook-form'
@@ -60,8 +59,6 @@ export const BookSlotPopup = ({
   garage: SearchGaragesQuery['searchGarages'][0]
 }) => {
   const uid = useAppSelector(selectUid)
-
-  const [createBooking, { loading }] = useCreateBookingMutation()
 
   const {
     control,
@@ -254,7 +251,7 @@ export const BookSlotPopup = ({
             />
           </div>
         ) : null}
-        <Button type="submit" loading={loading} className="w-full mt-2">
+        <Button type="submit" className="w-full mt-2">
           Book now
         </Button>
       </Form>
@@ -282,11 +279,14 @@ export const createBookingSession = async (
   totalPriceObj: TotalPrice,
   bookingData: CreateBookingInput,
 ) => {
-  const checkoutSession = await axios.post('http://localhost:3000/stripe', {
-    totalPriceObj,
-    uid,
-    bookingData,
-  })
+  const checkoutSession = await axios.post(
+    process.env.NEXT_PUBLIC_API_URL + '/stripe',
+    {
+      totalPriceObj,
+      uid,
+      bookingData,
+    },
+  )
 
   const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
@@ -299,76 +299,91 @@ export const createBookingSession = async (
   return result
 }
 
-export const Directions = React.memo(
-  ({
-    origin: originRaw,
-    destination: destinationRaw,
-    sourceId,
-    setDistance,
-  }: {
-    origin: LatLng
-    destination: Partial<LatLng>
-    sourceId: string
-    setDistance: (distance?: number) => void
-  }) => {
-    const [coordinates, setCoordinates] = useState<LngLatTuple[]>([])
+export const Directions = ({
+  origin: originRaw,
+  destination: destinationRaw,
+  sourceId,
+  setDistance,
+}: {
+  origin: LatLng
+  destination: Partial<LatLng>
+  sourceId: string
+  setDistance: (distance?: number) => void
+}) => {
+  const [coordinates, setCoordinates] = useState<LngLatTuple[]>([])
+  const [loading, setLoading] = useState(false)
 
-    const { origin, destination } = useDebouncedValue(
-      {
-        origin: originRaw,
-        destination: destinationRaw,
+  const { originDebounced, destinationDebounced } = useDebouncedValue(
+    {
+      originDebounced: originRaw,
+      destinationDebounced: destinationRaw,
+    },
+    1000,
+  )
+
+  const origin = useMemo(
+    () => originDebounced,
+    [originDebounced.lat, originDebounced.lng],
+  )
+  const destination = useMemo(
+    () => destinationDebounced,
+    [destinationDebounced.lat, destinationDebounced.lng],
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      setLoading(true)
+      if (!origin || !destination) {
+        setCoordinates([])
+        setLoading(false)
+        return
+      }
+
+      const response = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/walking/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&steps=true&overview=simplified`,
+      )
+      const data = await response.json()
+      const coordinates =
+        data?.routes[0]?.legs[0]?.steps.map(
+          (step: { maneuver: { location: any } }) => step.maneuver.location,
+        ) || []
+      setDistance(data.routes[0].distance || 0)
+      setCoordinates(coordinates)
+      setLoading(false)
+    })()
+  }, [origin, destination])
+
+  const dataOne = useMemo(
+    () => ({
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'LineString',
+        coordinates,
       },
-      1000,
-    )
+    }),
+    [coordinates],
+  )
 
-    useEffect(() => {
-      ;(async () => {
-        if (!origin || !destination) {
-          setCoordinates([])
-          return
-        }
+  //   if (loading) {
+  //     return <div>Loading...</div>
+  //   }
 
-        const response = await fetch(
-          `https://api.mapbox.com/directions/v5/mapbox/walking/${origin.lng},${origin.lat};${destination.lng},${destination.lat}?access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}&steps=true&overview=simplified`,
-        )
-        const data = await response.json()
-        const coordinates =
-          data?.routes[0]?.legs[0]?.steps.map(
-            (step: { maneuver: { location: any } }) => step.maneuver.location,
-          ) || []
-        setDistance(data.routes[0].distance || 0)
-        setCoordinates(coordinates)
-      })()
-    }, [origin, destination])
-
-    const dataOne = useMemo(
-      () => ({
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates,
-        },
-      }),
-      [coordinates],
-    )
-
-    return (
-      //   @ts-ignore
-      <Source id={sourceId} type="geojson" data={dataOne}>
-        <Layer
-          id={sourceId}
-          type="line"
-          source="my-data"
-          paint={{
-            'line-color': 'rgb(0,0,0)',
-            'line-width': 2,
-          }}
-        />
-      </Source>
-    )
-  },
-)
+  return (
+    //   @ts-ignore
+    <Source id={sourceId} type="geojson" data={dataOne}>
+      <Layer
+        id={sourceId}
+        type="line"
+        source="my-data"
+        paint={{
+          'line-color': 'rgb(0,0,0)',
+          'line-width': 2,
+        }}
+      />
+    </Source>
+  )
+}
 
 export type GarageCarService = NonNullable<
   SearchGaragesQuery['searchGarages'][0]['services']

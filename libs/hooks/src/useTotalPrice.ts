@@ -25,7 +25,7 @@ export const useTotalPrice = ({ pricePerHour }: TotalPriceType) => {
       startTime: startTime,
       endTime: endTime,
     })
-    const differenceInHours = differenceInMilliseconds / (1000 * 60 * 60)
+    const differenceInHours = differenceInMilliseconds / (60 * 60 * 1000)
 
     const parkingCharge = Math.floor((pricePerHour || 0) * differenceInHours)
 

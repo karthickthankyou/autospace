@@ -137,7 +137,7 @@ export const getDistance = async (origin: LatLng, destination: LatLng) => {
   try {
     const response = await axios.get(url)
     const data = response.data
-    console.log('Data ', data)
+
     const distance = data.routes[0].distance // distance in meters
 
     return distance / 1000 // convert to kilometers

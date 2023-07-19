@@ -68,7 +68,7 @@ export class BookingsService {
           : {}),
       },
     })
-    console.log('booking ', booking)
+
     return booking
   }
 

@@ -4,7 +4,7 @@ export interface IRevealProps {
   showIntruction?: boolean
 }
 
-export const Reveal = ({ secret, showIntruction = true }: IRevealProps) => {
+export const Reveal = ({ secret, showIntruction = false }: IRevealProps) => {
   const [revealed, setRevealed] = useState(false)
 
   return (

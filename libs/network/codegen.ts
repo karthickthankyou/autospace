@@ -17,7 +17,7 @@ const config: CodegenConfig = {
         avoidOptionals: false,
         exposeQueryKeys: true,
         fetcher: {
-          endpoint: 'http://localhost:3000/graphql',
+          endpoint: process.env.NEXT_PUBLIC_API_URL + '/graphql',
         },
         pureMagicComment: true,
       },

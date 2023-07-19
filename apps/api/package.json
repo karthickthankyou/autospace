@@ -23,8 +23,6 @@
   },
   "dependencies": {
     "@apollo/server": "^4.7.1",
-    "@autospace-org/types": "*",
-    "@autospace-org/util": "*",
     "@nestjs/apollo": "^11.0.5",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.2",

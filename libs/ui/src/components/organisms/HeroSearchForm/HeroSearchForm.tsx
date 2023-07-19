@@ -80,8 +80,8 @@ export const HeroSearchForm = ({ router }: IHeroSearchFormProps) => {
                           disableTouchRipple
                           disableFocusRipple
                           classes={{
-                            root: 'rounded-none  hover:fill-black',
-                            selected: 'border border-black bg-white',
+                            root: 'rounded-none  hover:fill-black bg-white',
+                            selected: 'border border-black bg-white shadow-lg',
                           }}
                           key={value}
                           value={value}
