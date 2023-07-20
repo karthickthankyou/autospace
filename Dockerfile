@@ -26,7 +26,8 @@ FROM --platform=linux/arm64 node:16-alpine
 WORKDIR /app
 
 # Install python and make
-RUN apk add --update --no-cache python3 make g++
+RUN apk add --update --no-cache python3 make g++ \
+    && npm install -g pm2
 
 # Copy the built files from the previous stage
 COPY --from=build /app/apps/api/dist ./dist
@@ -42,4 +43,4 @@ RUN npm install --omit=dev
 EXPOSE 3000
 
 # Start the application
-CMD ["node", "dist/src/main"]
+CMD ["pm2-runtime", "dist/src/main.js"]

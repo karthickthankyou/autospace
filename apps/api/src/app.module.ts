@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { ConfigModule } from '@nestjs/config'
@@ -24,6 +24,7 @@ import { ServicesModule } from './models/services/services.module'
 import { SentryModule } from './common/sentry/sentry.module'
 import { ValetsModule } from './models/valets/valets.module'
 import { ValetAssignmentsModule } from './models/valet-assignments/valet-assignments.module'
+import { ErrorLoggingMiddleware } from './common/middleware/ErrorLogging'
 
 @Module({
   imports: [
@@ -64,4 +65,8 @@ import { ValetAssignmentsModule } from './models/valet-assignments/valet-assignm
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ErrorLoggingMiddleware).forRoutes('*')
+  }
+}

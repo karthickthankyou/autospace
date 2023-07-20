@@ -89,7 +89,6 @@ export const ShowGarageBookings = ({
         }),
       },
     },
-    fetchPolicy: 'no-cache',
   })
 
   return (

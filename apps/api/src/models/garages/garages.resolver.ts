@@ -74,50 +74,61 @@ export class GaragesResolver {
     @Args('slotsFilter', { nullable: true }) slotsFilter: SlotWhereInput,
     @Args('garageFilter', { nullable: true }) args: GarageFilter,
   ) {
-    const { start, end } = dateFilter
-    const { nw_lat, nw_lng, se_lat, se_lng } = locationFilter
+    try {
+      const { start, end } = dateFilter
+      const { nw_lat, nw_lng, se_lat, se_lng } = locationFilter
 
-    let startDate = new Date(start)
-    let endDate = new Date(end)
-    const currentDate = new Date()
+      let startDate = new Date(start)
+      let endDate = new Date(end)
+      const currentDate = new Date()
 
-    if (startDate.getTime() < currentDate.getTime()) {
-      // Set startDate as current time
-      startDate = new Date()
-    }
-    if (startDate.getTime() > endDate.getTime()) {
-      const updatedEndDate = new Date(startDate)
-      updatedEndDate.setSeconds(updatedEndDate.getSeconds() + 3600)
-      endDate = updatedEndDate
-      //   throw new Error('Start date must be before end date')
-    }
+      if (startDate.getTime() < currentDate.getTime()) {
+        // Set startDate as current time
+        startDate = new Date()
+      }
+      if (startDate.getTime() > endDate.getTime()) {
+        const updatedEndDate = new Date(startDate)
+        updatedEndDate.setSeconds(updatedEndDate.getSeconds() + 3600)
+        endDate = updatedEndDate
+        //   throw new Error('Start date must be before end date')
+      }
 
-    const { where = {}, ...garageFilters } = args || {}
+      const { where = {}, ...garageFilters } = args || {}
 
-    return this.prisma.garage.findMany({
-      ...garageFilters,
-      where: {
-        ...where,
-        verification: { verified: true },
-        address: {
-          lat: { lte: nw_lat, gte: se_lat },
-          lng: { gte: nw_lng, lte: se_lng },
-        },
-        slots: {
-          some: {
-            ...slotsFilter,
-            bookings: {
-              none: {
-                OR: [
-                  { startTime: { lt: endDate }, endTime: { gt: startDate } },
-                  { startTime: { gt: startDate }, endTime: { lt: endDate } },
-                ],
+      return this.prisma.garage.findMany({
+        ...garageFilters,
+        where: {
+          ...where,
+          verification: { verified: true },
+          address: {
+            lat: { lte: nw_lat, gte: se_lat },
+            lng: { gte: nw_lng, lte: se_lng },
+          },
+          slots: {
+            some: {
+              ...slotsFilter,
+              bookings: {
+                none: {
+                  OR: [
+                    {
+                      startTime: { lt: endDate },
+                      endTime: { gt: startDate },
+                    },
+                    {
+                      startTime: { gt: startDate },
+                      endTime: { lt: endDate },
+                    },
+                  ],
+                },
               },
             },
           },
         },
-      },
-    })
+      })
+    } catch (error) {
+      console.error('Error in searchGarages:', error)
+      //   throw new Error('Error in searchGarages: ' + error.message)
+    }
   }
 
   @Query(() => AggregateCountOutput, {
