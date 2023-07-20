@@ -28,7 +28,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@autospace-org/types'
+import { GetUserType } from '../../common/types'
 import { BadRequestException } from '@nestjs/common'
 import { Verification } from '../verifications/entities/verification.entity'
 import { Service } from '../services/entities/service.entity'

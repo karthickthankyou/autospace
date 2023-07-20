@@ -18,7 +18,7 @@ import {
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { AuthService } from 'src/common/auth/auth.service'
-import { GetUserType } from '@autospace-org/types'
+import { GetUserType } from '../../common/types'
 
 @Resolver(() => Manager)
 export class ManagersResolver {

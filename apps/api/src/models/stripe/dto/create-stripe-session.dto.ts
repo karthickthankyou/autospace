@@ -1,4 +1,4 @@
-import { TotalPrice } from '@autospace-org/types'
+import { TotalPrice } from 'src/common/types'
 import { CreateBookingInput } from 'prisma/seed/generated/graphql'
 
 export class CreateStripeDto {

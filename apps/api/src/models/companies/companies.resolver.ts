@@ -19,7 +19,7 @@ import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '@autospace-org/types'
+import { GetUserType } from '../../common/types'
 import { AuthService } from 'src/common/auth/auth.service'
 import { Valet } from '../valets/entities/valet.entity'
 

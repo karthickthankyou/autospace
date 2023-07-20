@@ -11,7 +11,7 @@ import {
 import { Booking } from '../bookings/entities/booking.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { BookingStatus } from '@prisma/client'
-import { GetUserType } from '@autospace-org/types'
+import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
 import { FindManyBookingArgs } from '../bookings/dto/find.args'
 

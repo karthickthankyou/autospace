@@ -12,7 +12,7 @@ import {
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { GetUserType } from '@autospace-org/types'
+import { GetUserType } from '../../common/types'
 import { AdminsService } from '../admins/admins.service'
 import { checkRowLevelPermission } from 'src/common/guards'
 
