@@ -36,6 +36,7 @@ import { ErrorLoggingMiddleware } from './common/middleware/ErrorLogging'
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
+      introspection: true,
       context: ({ req, res }) => ({ req, res }),
     }),
 
