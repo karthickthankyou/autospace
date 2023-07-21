@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { MyTrips } from '@autospace-org/ui/src/components/templates/MyTrips'
+import { WhileLoggedIn } from '@autospace-org/ui/src/components/templates/WhileLoggedIn'
 
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
-import { WhileLoggedIn } from '@autospace-org/ui/src/components/templates/WhileLoggedIn'
 
 export default function Login() {
   return (

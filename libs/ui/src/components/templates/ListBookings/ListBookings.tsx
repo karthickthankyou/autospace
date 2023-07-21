@@ -91,6 +91,8 @@ export const ShowGarageBookings = ({
     },
   })
 
+  console.log('error', error)
+
   return (
     <div className="mt-4 space-y-6">
       <div className="flex justify-center">
@@ -102,7 +104,7 @@ export const ShowGarageBookings = ({
         />
       </div>
       <ShowData
-        error={error?.message}
+        // error={error?.message}
         loading={loading}
         pagination={{
           skip,

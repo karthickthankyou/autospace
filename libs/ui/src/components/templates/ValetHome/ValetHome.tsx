@@ -1,8 +1,3 @@
-import { useAppSelector } from '@autospace-org/store'
-import { selectUid, selectUser } from '@autospace-org/store/user'
-
-import { LoaderPanel } from '../../molecules/Loader'
-import { AlertSection } from '../../organisms/AlertSection'
 import {
   BookingStatus,
   useValetDropsQuery,
@@ -16,38 +11,31 @@ import { ShowData } from '../../organisms/ShowData'
 import { useTakeSkip } from '@autospace-org/hooks/src/async'
 
 import { PickupDropInfoCard } from '../../organisms/PickupDropInfoCard/PickupDropInfoCard'
+import { WhileLoggedIn } from '../WhileLoggedIn'
 
 export interface IValetHomeProps {}
 
 export const ValetHome = ({}: IValetHomeProps) => {
-  const { uid, loaded } = useAppSelector(selectUser)
-
   const [value, setValue] = useState<0 | 1>(0)
-
-  if (!loaded) {
-    return <LoaderPanel />
-  }
-
-  if (!uid) {
-    return <AlertSection>You are not logged in.</AlertSection>
-  }
 
   return (
     <Container>
-      <Tabs
-        value={value}
-        onChange={(e, v) => setValue(v)}
-        aria-label="bookings"
-      >
-        <Tab label={'Pickup'} />
-        <Tab label={'Drop'} />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <ShowPickups />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ShowDrops />
-      </TabPanel>
+      <WhileLoggedIn>
+        <Tabs
+          value={value}
+          onChange={(e, v) => setValue(v)}
+          aria-label="bookings"
+        >
+          <Tab label={'Pickup'} />
+          <Tab label={'Drop'} />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <ShowPickups />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <ShowDrops />
+        </TabPanel>
+      </WhileLoggedIn>
     </Container>
   )
 }

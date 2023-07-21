@@ -9,6 +9,7 @@ import {
   ValetDropsQuery,
   ValetPickupsQuery,
 } from '../generated'
+import { toLocalISOString } from '@autospace-org/util'
 
 export const garages = {
   garages: [
@@ -201,8 +202,8 @@ export const myPickupTripsQueryData: MyPickupTripsQuery = {
         pickupLng: 77.5945627,
         pickupValetId: '10',
       },
-      startTime: new Date('2023-08-01T10:30:00Z').toISOString(),
-      endTime: new Date('2023-08-01T12:30:00Z').toISOString(),
+      startTime: toLocalISOString(new Date('2023-08-01T10:30:00Z')),
+      endTime: toLocalISOString(new Date('2023-08-01T12:30:00Z')),
       slot: {
         garage: {
           address: {
@@ -227,8 +228,8 @@ export const myDropTripsQueryData: MyDropTripsQuery = {
         returnLng: 77.5945627,
         returnValetId: '11',
       },
-      startTime: new Date('2023-08-02T10:30:00Z').toISOString(),
-      endTime: new Date('2023-08-02T12:30:00Z').toISOString(),
+      startTime: toLocalISOString(new Date('2023-08-02T10:30:00Z')),
+      endTime: toLocalISOString(new Date('2023-08-02T12:30:00Z')),
       slot: {
         garage: {
           address: {

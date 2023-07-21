@@ -1,15 +1,13 @@
 import Head from 'next/head'
 import { CustomerBookings } from '@autospace-org/ui/src/components/templates/CustomerBookings'
+import { WhileLoggedIn } from '@autospace-org/ui/src/components/templates/WhileLoggedIn'
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
-import { useAppSelector } from '@autospace-org/store'
-import { selectUid } from '@autospace-org/store/user'
 
 import { AlertSection } from '@autospace-org/ui/src/components/organisms/AlertSection'
 import Link from 'next/link'
+import { LoaderPanel } from '@autospace-org/ui/src/components/molecules/Loader'
 
 export default function Bookings() {
-  const uid = useAppSelector(selectUid)
-
   return (
     <>
       <Head>
@@ -20,13 +18,9 @@ export default function Bookings() {
       </Head>
       <main className="bg-gray-25">
         <Container className="min-h-[90vh]">
-          {uid ? (
+          <WhileLoggedIn>
             <CustomerBookings />
-          ) : (
-            <AlertSection title="You are not logged in.">
-              <Link href="/login">Login</Link>
-            </AlertSection>
-          )}
+          </WhileLoggedIn>
         </Container>
       </main>
     </>

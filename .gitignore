@@ -2,4 +2,5 @@ node_modules
 build
 dist
 .next
-.env
+**/.env
+**/.env.*

@@ -8,6 +8,7 @@ import { ToggleButton } from '@mui/material'
 import { useFormSearchGaragesHome } from '@autospace-org/forms/src/searchGaragesHome'
 import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 import { NextRouter } from 'next/router'
+import { toLocalISOString } from '@autospace-org/util'
 
 export interface IHeroSearchFormProps {
   router: NextRouter
@@ -40,13 +41,13 @@ export const HeroSearchForm = ({ router }: IHeroSearchFormProps) => {
           <HtmlInput
             type="datetime-local"
             className="w-full p-2 text-lg font-light"
-            min={new Date().toISOString().slice(0, 16)}
+            min={toLocalISOString(new Date()).slice(0, 16)}
             {...register('startTime')}
           />
         </HtmlLabel>
         <HtmlLabel title="End time" error={errors.endTime?.message}>
           <HtmlInput
-            min={new Date().toISOString().slice(0, 16)}
+            min={toLocalISOString(new Date()).slice(0, 16)}
             type="datetime-local"
             className="w-full p-2 text-lg font-light"
             {...register('endTime')}

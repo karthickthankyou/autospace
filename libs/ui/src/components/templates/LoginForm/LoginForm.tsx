@@ -7,13 +7,13 @@ import { FormTypeLogin, useFormLogin } from '@autospace-org/forms/src/login'
 import { FormError } from '../../atoms/FormError'
 import { Form } from '../../atoms/Form'
 
-// import { useRouter } from 'next/navigation'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
 
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
 import { login } from '@autospace-org/network/src/auth'
 import { notification$ } from '@autospace-org/util/subjects'
+import { useRouter } from 'next/router'
 
 export interface ILoginFormProps {
   className?: string
@@ -38,13 +38,13 @@ const LoginForm = ({ className }: ILoginFormProps) => {
     },
   )
 
-  //   const router = useRouter()
+  const router = useRouter()
 
   const uid = useAppSelector(selectUid)
 
   if (uid) {
     notification$.next({ message: 'Logged in.' })
-    // router.push('/')
+    router.push('/')
   }
 
   return (

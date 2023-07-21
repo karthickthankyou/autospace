@@ -30,7 +30,7 @@ import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { ViewStateChangeEvent, useMap } from 'react-map-gl'
-import { useKeypress } from '@autospace-org/util'
+import { toLocalISOString, useKeypress } from '@autospace-org/util'
 import { ParkingIcon } from '../../atoms/ParkingIcon'
 import { Autocomplete } from '../../atoms/Autocomplete'
 import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
@@ -106,13 +106,14 @@ export const SearchPageTemplate = () => {
             <HtmlInput
               type="datetime-local"
               className="w-full p-2 text-lg font-light"
-              min={new Date().toISOString().slice(0, 16)}
+              min={toLocalISOString(new Date()).slice(0, 16)}
               {...register('startTime')}
             />
           </HtmlLabel>
+
           <HtmlLabel title="End time" error={errors.endTime?.message}>
             <HtmlInput
-              min={new Date().toISOString().slice(0, 16)}
+              min={toLocalISOString(new Date()).slice(0, 16)}
               type="datetime-local"
               className="w-full p-2 text-lg font-light"
               {...register('endTime')}

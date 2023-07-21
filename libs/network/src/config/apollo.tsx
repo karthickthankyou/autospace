@@ -8,7 +8,7 @@ import { setContext } from '@apollo/client/link/context'
 
 import { ReactNode } from 'react'
 import { useAppDispatch, useAppSelector } from '@autospace-org/store'
-import { selectUid, selectUser, setUser } from '@autospace-org/store/user'
+import { selectUser, setUser } from '@autospace-org/store/user'
 
 import jwtDecode from 'jwt-decode'
 import { auth } from './firebase'

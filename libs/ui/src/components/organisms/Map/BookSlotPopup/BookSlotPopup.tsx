@@ -45,6 +45,7 @@ import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 import { LngLatTuple } from '@autospace-org/store/map'
 import React from 'react'
 import { AutoImageChanger } from '../../../molecules/AutoImageChanger'
+import { toLocalISOString } from '@autospace-org/util'
 
 const IconTypes = {
   [SlotType.Bicycle]: <IconBike />,
@@ -80,6 +81,8 @@ export const BookSlotPopup = ({
       ?.pricePerHour,
   })
 
+  const [booking, setBooking] = useState(false)
+
   return (
     <div className="flex gap-2 text-left border-t-2 border-white bg-white/50 backdrop-blur-sm">
       <Form
@@ -114,11 +117,13 @@ export const BookSlotPopup = ({
                   }
                 : {}),
             }
+            setBooking(true)
             const res = await createBookingSession(
               uid!,
               totalPriceObj,
               bookingData,
             )
+            setBooking(false)
             if (res?.error) {
               notification$.next({ message: 'Booking failed.' })
               return
@@ -190,13 +195,13 @@ export const BookSlotPopup = ({
           <HtmlInput
             type="datetime-local"
             className="w-full p-2 text-lg font-light"
-            min={new Date().toISOString().slice(0, 16)}
+            min={toLocalISOString(new Date()).slice(0, 16)}
             {...register('startTime')}
           />
         </HtmlLabel>
         <HtmlLabel title="End time" error={errors.endTime?.message}>
           <HtmlInput
-            min={new Date().toISOString().slice(0, 16)}
+            min={toLocalISOString(new Date()).slice(0, 16)}
             type="datetime-local"
             className="w-full p-2 text-lg font-light"
             {...register('endTime')}
@@ -251,7 +256,7 @@ export const BookSlotPopup = ({
             />
           </div>
         ) : null}
-        <Button type="submit" className="w-full mt-2">
+        <Button loading={booking} type="submit" className="w-full mt-2">
           Book now
         </Button>
       </Form>

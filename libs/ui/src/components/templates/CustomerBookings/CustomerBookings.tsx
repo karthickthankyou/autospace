@@ -13,6 +13,7 @@ import { Tab, Tabs } from '../../molecules/Tabs'
 import { TabPanel } from '../../molecules/Tabs/Tabs'
 import { Timeline } from '../../molecules/Timeline'
 import { TimelineItem } from '../../molecules/Timeline/Timeline'
+import { toLocalISOString } from '@autospace-org/util'
 
 export interface ICustomerBookingsProps {}
 
@@ -76,7 +77,6 @@ export const ShowBookings = ({ type }: { type: BookingTypes }) => {
           take,
           where: {
             customerId: { equals: uid },
-
             ...condition.where,
           },
           orderBy: {

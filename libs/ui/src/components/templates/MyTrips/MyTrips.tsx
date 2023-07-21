@@ -9,22 +9,21 @@ import { MyTripCard } from '../../organisms/PickupDropInfoCard/PickupDropInfoCar
 import { ShowDataSimple } from '../../organisms/ShowData/ShowData'
 import { Timeline } from '../../molecules/Timeline'
 import { TimelineItem } from '../../molecules/Timeline/Timeline'
+import { useAppSelector } from '@autospace-org/store'
+import { selectUser } from '@autospace-org/store/user'
 
-export interface IMyTripsProps {
-  uid: string
-}
-
-export const MyTrips = ({ uid }: IMyTripsProps) => {
+export const MyTrips = () => {
   return (
     <div className="space-y-12">
-      <ShowMyPickupTrips uid={uid} />
-      <ShowMyDropTrips uid={uid} />
+      <ShowMyPickupTrips />
+      <ShowMyDropTrips />
     </div>
   )
 }
 
-export const ShowMyPickupTrips = ({ uid }: { uid: string }) => {
+export const ShowMyPickupTrips = () => {
   const { setSkip, setTake, skip, take } = useTakeSkip()
+  const { uid } = useAppSelector(selectUser)
   const { data, loading } = useMyPickupTripsQuery({
     variables: {
       orderBy: {
@@ -32,10 +31,7 @@ export const ShowMyPickupTrips = ({ uid }: { uid: string }) => {
       },
       where: {
         status: {
-          in: [
-            BookingStatus.ValetAssignedForCheckIn,
-            BookingStatus.ValetAssignedForCheckOut,
-          ],
+          in: [BookingStatus.ValetAssignedForCheckIn],
         },
         valetAssignment: {
           is: {
@@ -88,8 +84,10 @@ export const ShowMyPickupTrips = ({ uid }: { uid: string }) => {
   )
 }
 
-export const ShowMyDropTrips = ({ uid }: { uid: string }) => {
+export const ShowMyDropTrips = () => {
   const { setSkip, setTake, skip, take } = useTakeSkip()
+  const { uid } = useAppSelector(selectUser)
+
   const { data, loading } = useMyDropTripsQuery({
     variables: {
       orderBy: {
@@ -99,7 +97,7 @@ export const ShowMyDropTrips = ({ uid }: { uid: string }) => {
         status: {
           notIn: [
             BookingStatus.Booked,
-            BookingStatus.CheckedOut,
+            BookingStatus.CheckedIn,
             BookingStatus.ValetReturned,
           ],
         },

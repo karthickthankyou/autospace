@@ -1,9 +1,9 @@
 import {
   MyCompanyQuery,
   useGaragesQuery,
+  useMyCompanyQuery,
 } from '@autospace-org/network/src/generated'
 import { LoaderPanel } from '../../molecules/Loader'
-import { QueryResult } from '@autospace-org/network'
 import { AlertSection } from '../AlertSection'
 import Link from 'next/link'
 import { CreateCompany } from '../../templates/CreateCompany'
@@ -11,12 +11,9 @@ import { GarageCard } from '../GarageCard'
 import { ShowData } from '../ShowData'
 import { useState } from 'react'
 
-export interface ICompanyInfoProps {
-  company: Pick<QueryResult<MyCompanyQuery>, 'data' | 'loading'>
-}
+export const CompanyInfo = () => {
+  const { data, loading } = useMyCompanyQuery()
 
-export const CompanyInfo = ({ company }: ICompanyInfoProps) => {
-  const { data, loading } = company
   if (loading) {
     return <LoaderPanel />
   }

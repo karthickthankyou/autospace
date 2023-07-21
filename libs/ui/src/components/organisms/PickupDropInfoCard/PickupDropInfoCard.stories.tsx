@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { PickupDropInfoCard } from './PickupDropInfoCard'
 import { BookingStatus } from '@autospace-org/network/src/generated'
 import { rest } from 'msw'
+import { toLocalISOString } from '@autospace-org/util'
 
 const meta: Meta<typeof PickupDropInfoCard> = {
   component: PickupDropInfoCard,
@@ -12,7 +13,7 @@ type Story = StoryObj<typeof PickupDropInfoCard>
 
 export const Primary: Story = {
   args: {
-    booking: { id: 1, time: new Date().toISOString() },
+    booking: { id: 1, time: toLocalISOString(new Date()) },
     end: { lat: 12, lng: 80 },
     start: { lat: 11, lng: 79 },
     targetStatus: BookingStatus.ValetPickedUp,

@@ -13,7 +13,7 @@ import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
 
 import { notification$ } from '@autospace-org/util/subjects'
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
 
@@ -38,13 +38,13 @@ export const RegisterForm = ({ className }: { className?: string }) => {
     },
   )
 
-  //   const router = useRouter()
+  const router = useRouter()
 
   const uid = useAppSelector(selectUid)
 
   if (uid) {
     notification$.next({ message: 'Authenticated. ' })
-    // router.push('/')
+    router.push('/')
   }
 
   return (

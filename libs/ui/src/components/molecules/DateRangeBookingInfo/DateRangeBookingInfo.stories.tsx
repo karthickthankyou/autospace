@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { DateRangeBookingInfo } from './DateRangeBookingInfo'
+import { toLocalISOString } from '@autospace-org/util'
 
 const meta: Meta<typeof DateRangeBookingInfo> = {
   component: DateRangeBookingInfo,
@@ -10,7 +11,7 @@ type Story = StoryObj<typeof DateRangeBookingInfo>
 
 export const Primary: Story = {
   args: {
-    endTime: new Date('2023-09-12').toISOString(),
-    startTime: new Date('2023-08-01').toISOString(),
+    endTime: toLocalISOString(new Date('2023-09-12')),
+    startTime: toLocalISOString(new Date('2023-08-01')),
   },
 }

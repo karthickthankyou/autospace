@@ -1,8 +1,3 @@
-import { useAppSelector } from '@autospace-org/store'
-import { selectUid, selectUser } from '@autospace-org/store/user'
-
-import { LoaderPanel } from '../../molecules/Loader'
-import { AlertUnauthenticated } from '../../organisms/AlertUnauthenticated'
 import {
   namedOperations,
   useCompanyValetsQuery,
@@ -21,25 +16,23 @@ import { ValetCard } from '../../organisms/ValetCard'
 import { useImageUpload } from '@autospace-org/util'
 import { ImagePreview } from '../../organisms/ImagePreview'
 import { Controller } from 'react-hook-form'
+import { WhileLoggedIn } from '../WhileLoggedIn'
 
 export interface IManageValetsProps {}
 
 export const ManageValets = ({}: IManageValetsProps) => {
-  const { uid, loaded } = useAppSelector(selectUser)
-  if (!loaded) {
-    return <LoaderPanel />
-  }
-
-  if (!uid) {
-    return <AlertUnauthenticated />
-  }
-
   return (
     <div>
-      <div className="flex justify-end">
-        <AddValet />
-      </div>
-      <ListValets uid={uid} />
+      <WhileLoggedIn>
+        {(uid) => (
+          <>
+            <div className="flex justify-end">
+              <AddValet />
+            </div>
+            <ListValets uid={uid} />
+          </>
+        )}
+      </WhileLoggedIn>
     </div>
   )
 }

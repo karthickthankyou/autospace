@@ -145,3 +145,11 @@ export const getDistance = async (origin: LatLng, destination: LatLng) => {
     console.error(error)
   }
 }
+
+export const toLocalISOString = (date: Date): string => {
+  const tzoffset = date.getTimezoneOffset() * 60000 // offset in milliseconds
+  const localISOTime = new Date(date.getTime() - tzoffset).toISOString()
+  // .slice(0, -1)
+
+  return localISOTime
+}

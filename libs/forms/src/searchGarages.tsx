@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SlotType } from '@autospace-org/network/src/generated'
 import { ReactNode, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { toLocalISOString } from '@autospace-org/util'
 
 const minMaxTuple = z.tuple([z.number(), z.number()])
 
@@ -63,18 +64,14 @@ formSchemaSearchGarage
 
 export const getCurrentTimeAndOneHourLater = () => {
   const startTime = new Date()
-  startTime.setMinutes(startTime.getMinutes() + 5)
-
-  startTime.setTime(
-    startTime.getTime() - startTime.getTimezoneOffset() * 60 * 1000,
-  )
+  startTime.setMinutes(startTime.getMinutes() + 2)
 
   const endTime = new Date(startTime)
   endTime.setHours(endTime.getHours() + 1)
 
   return {
-    startTime: startTime.toISOString().slice(0, 16),
-    endTime: endTime.toISOString().slice(0, 16),
+    startTime: toLocalISOString(startTime).slice(0, 16),
+    endTime: toLocalISOString(endTime).slice(0, 16),
   }
 }
 
@@ -100,6 +97,7 @@ export const FormProviderSearchGarage = ({
 }) => {
   const { startTime: currentTime, endTime: currentTimePlusOneHour } =
     getCurrentTimeAndOneHourLater()
+
   const methods = useForm<FormTypeSearchGarage>({
     resolver: zodResolver(formSchemaSearchGarage),
     defaultValues: formDefaultValuesSearchGarages,
