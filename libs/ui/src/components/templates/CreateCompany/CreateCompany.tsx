@@ -35,7 +35,7 @@ export const CreateCompany = ({}: ICreateCompanyProps) => {
                 variables: {
                   createCompanyInput: {
                     displayName: companyName,
-                    // description: description,
+                    description: description,
                     managerDisplayName: managerName,
                   },
                 },
