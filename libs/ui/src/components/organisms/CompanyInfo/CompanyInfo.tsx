@@ -55,7 +55,7 @@ export const ListGarages = ({
   if (data?.garages.length === 0) {
     return (
       <AlertSection>
-        No garages found.
+        Hey, You dont have any garages in your company.
         <Link
           className="px-3 py-2 font-semibold bg-primary"
           href="/createGarage"
