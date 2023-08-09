@@ -1,6 +1,6 @@
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
 import { CustomerBookings } from '@autospace-org/ui/src/components/templates/CustomerBookings'
-import { WhileLoggedIn } from '@autospace-org/ui/src/components/templates/WhileLoggedIn'
+import { IsLoggedIn } from '@autospace-org/ui/src/components/templates/IsLoggedIn'
 import Head from 'next/head'
 
 export default function Bookings() {
@@ -14,9 +14,9 @@ export default function Bookings() {
       </Head>
       <main className="bg-gray-25">
         <Container className="min-h-[90vh]">
-          <WhileLoggedIn>
+          <IsLoggedIn>
             <CustomerBookings />
-          </WhileLoggedIn>
+          </IsLoggedIn>
         </Container>
       </main>
     </>

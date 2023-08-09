@@ -2,7 +2,7 @@ import { MyTrips } from '@autospace-org/ui/src/components/templates/MyTrips'
 import Head from 'next/head'
 
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
-import { WhileLoggedIn } from '@autospace-org/ui/src/components/templates/WhileLoggedIn'
+import { IsLoggedIn } from '@autospace-org/ui/src/components/templates/IsLoggedIn'
 
 export default function Login() {
   return (
@@ -15,9 +15,9 @@ export default function Login() {
       </Head>
       <main className="bg-gray-25">
         <Container>
-          <WhileLoggedIn>
+          <IsLoggedIn>
             <MyTrips />
-          </WhileLoggedIn>
+          </IsLoggedIn>
         </Container>
       </main>
     </>

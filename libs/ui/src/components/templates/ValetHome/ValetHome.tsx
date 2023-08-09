@@ -11,7 +11,7 @@ import { TabPanel } from '../../molecules/Tabs/Tabs'
 import { ShowData } from '../../organisms/ShowData'
 
 import { PickupDropInfoCard } from '../../organisms/PickupDropInfoCard/PickupDropInfoCard'
-import { WhileLoggedIn } from '../WhileLoggedIn'
+import { IsLoggedIn } from '../IsLoggedIn'
 
 export interface IValetHomeProps {}
 
@@ -20,7 +20,7 @@ export const ValetHome = ({}: IValetHomeProps) => {
 
   return (
     <Container>
-      <WhileLoggedIn>
+      <IsLoggedIn>
         <Tabs
           value={value}
           onChange={(e, v) => setValue(v)}
@@ -35,7 +35,7 @@ export const ValetHome = ({}: IValetHomeProps) => {
         <TabPanel value={value} index={1}>
           <ShowDrops />
         </TabPanel>
-      </WhileLoggedIn>
+      </IsLoggedIn>
     </Container>
   )
 }

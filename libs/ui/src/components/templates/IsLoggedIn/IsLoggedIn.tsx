@@ -7,7 +7,7 @@ import { AlertSection } from '../../organisms/AlertSection'
 
 type RenderPropChild = (uid: string) => ReactNode
 
-export const WhileLoggedIn = ({
+export const IsLoggedIn = ({
   children,
   notLoggedIn,
 }: {

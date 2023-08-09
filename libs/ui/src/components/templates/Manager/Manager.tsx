@@ -1,12 +1,12 @@
 import { CompanyInfo } from '../../organisms/CompanyInfo'
-import { WhileLoggedIn } from '../WhileLoggedIn'
+import { IsLoggedIn } from '../IsLoggedIn'
 
 export interface IManagerProps {}
 
 export const Manager = ({}: IManagerProps) => {
   return (
-    <WhileLoggedIn>
+    <IsLoggedIn>
       <CompanyInfo />
-    </WhileLoggedIn>
+    </IsLoggedIn>
   )
 }

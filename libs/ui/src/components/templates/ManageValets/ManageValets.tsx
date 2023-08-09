@@ -16,14 +16,14 @@ import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { ImagePreview } from '../../organisms/ImagePreview'
 import { ShowData } from '../../organisms/ShowData'
 import { ValetCard } from '../../organisms/ValetCard'
-import { WhileLoggedIn } from '../WhileLoggedIn'
+import { IsLoggedIn } from '../IsLoggedIn'
 
 export interface IManageValetsProps {}
 
 export const ManageValets = ({}: IManageValetsProps) => {
   return (
     <div>
-      <WhileLoggedIn>
+      <IsLoggedIn>
         {(uid) => (
           <>
             <div className="flex justify-end">
@@ -32,7 +32,7 @@ export const ManageValets = ({}: IManageValetsProps) => {
             <ListValets uid={uid} />
           </>
         )}
-      </WhileLoggedIn>
+      </IsLoggedIn>
     </div>
   )
 }
