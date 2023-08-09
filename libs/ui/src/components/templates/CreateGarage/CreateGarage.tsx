@@ -16,8 +16,6 @@ import {
 } from '@autospace-org/forms/src/createGarage'
 import { Marker } from '../../organisms/Map/MapMarker'
 
-import { useAppSelector } from '@autospace-org/store'
-import { selectUid } from '@autospace-org/store/user'
 import { Form } from '../../atoms/Form'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
@@ -29,7 +27,6 @@ import {
 import { useImageUpload } from '@autospace-org/util'
 import { notification$ } from '@autospace-org/util/subjects'
 import { IconPlus } from '@tabler/icons-react'
-import { useMap } from 'react-map-gl'
 import { HtmlSelect } from '../../atoms/HtmlSelect'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 import { ParkingIcon } from '../../atoms/ParkingIcon'
@@ -54,7 +51,6 @@ export const CreateGarage = () => {
 
 export const CreateGarageContent = ({}: ICreateGarageProps) => {
   const [open, setOpen] = useState(false)
-  const uid = useAppSelector(selectUid)
 
   const {
     register,
@@ -149,12 +145,7 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
         <MapMarker />
 
         <Panel position="left-top">
-          <SearchBox
-            onChange={({ lat, lng }) => {
-              setValue('location.lat', lat, { shouldValidate: true })
-              setValue('location.lng', lng, { shouldValidate: true })
-            }}
-          />
+          <SearchPlaceBox />
           <DefaultZoomControls>
             <CenterOfMap
               onClick={(latLng) => {
@@ -169,28 +160,6 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
         </Panel>
       </Map>
     </div>
-  )
-}
-
-export const SearchBox = ({
-  onChange,
-}: {
-  onChange: ({ lat, lng }: { lat: number; lng: number }) => void
-}) => {
-  const { current: map } = useMap()
-  return (
-    <SearchPlaceBox
-      setLocationInfo={(locationInfo) => {
-        const lat = locationInfo.latLng[0]
-        const lng = locationInfo.latLng[1]
-        onChange({ lat, lng })
-
-        map?.flyTo({
-          center: { lat, lng },
-          essential: true,
-        })
-      }}
-    />
   )
 }
 

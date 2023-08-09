@@ -17,9 +17,11 @@ import { useRouter } from 'next/router'
 
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
 
-export interface ISignupFormProps {}
+export interface ISignupFormProps {
+  className?: string
+}
 
-export const RegisterForm = ({ className }: { className?: string }) => {
+export const RegisterForm = ({ className }: ISignupFormProps) => {
   const {
     register,
     handleSubmit,

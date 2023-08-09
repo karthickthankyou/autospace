@@ -3,9 +3,8 @@ import {
   useSearchLocation,
 } from '@autospace-org/hooks/src/location'
 
-import { useEffect } from 'react'
+import { useMap } from 'react-map-gl'
 import { Autocomplete } from '../../atoms/Autocomplete'
-
 export interface ISearchPlaceBoxProps {
   setLocationInfo: (locationInfo: LocationInfo) => void
   value?: string
@@ -53,21 +52,17 @@ export const majorCitiesLocationInfo: LocationInfo[] = [
     latLng: [39.9042, 116.4074],
   },
 ]
-
-export const SearchPlaceBox = ({
-  setLocationInfo,
-  value,
-}: ISearchPlaceBoxProps) => {
-  const { loading, setLoading, searchText, locationInfo, setSearchText } =
+export const SearchPlaceBox = () => {
+  const { current: map } = useMap()
+  const { loading, setLoading, searchText, setSearchText, locationInfo } =
     useSearchLocation()
-
-  useEffect(() => {
-    if (value) setSearchText(value)
-  }, [value])
 
   return (
     <Autocomplete<LocationInfo, false, false, false>
       options={locationInfo.length ? locationInfo : majorCitiesLocationInfo}
+      isOptionEqualToValue={(option, value) =>
+        option.placeName === value.placeName
+      }
       noOptionsText={searchText ? 'No options.' : 'Type something...'}
       getOptionLabel={(x) => x.placeName}
       onInputChange={(_, v) => {
@@ -78,7 +73,7 @@ export const SearchPlaceBox = ({
       onChange={(_, v) => {
         if (v) {
           const { latLng, placeName } = v
-          setLocationInfo({ latLng: latLng, placeName: placeName })
+          map?.flyTo({ center: { lat: latLng[0], lng: latLng[1] }, zoom: 10 })
         }
       }}
     />

@@ -3,17 +3,11 @@ import { Map } from '../../organisms/Map'
 import { useEffect, useState } from 'react'
 
 import {
-  LocationInfo,
-  useSearchLocation,
-} from '@autospace-org/hooks/src/location'
-import {
-  IconCurrentLocation,
   IconExclamationCircle,
   IconInfoCircle,
   IconRefresh,
 } from '@tabler/icons-react'
 import { useFormContext } from 'react-hook-form'
-import { Button } from '../../atoms/Button'
 
 import { useConvertSearchFormToVariables } from '@autospace-org/forms/src/adapters/searchFormAdapter'
 import { FormProviderBookSlot } from '@autospace-org/forms/src/bookSlot'
@@ -25,17 +19,17 @@ import {
 } from '@autospace-org/network/src/generated'
 import { toLocalISOString, useKeypress } from '@autospace-org/util'
 import { useMap, ViewStateChangeEvent } from 'react-map-gl'
-import { Autocomplete } from '../../atoms/Autocomplete'
 import { Dialog } from '../../atoms/Dialog'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 import { ParkingIcon } from '../../atoms/ParkingIcon'
+import { CurrentLocationButton } from '../../organisms/CurrentLocationButton'
 import { FilterSidebar } from '../../organisms/FilterSidebar'
 import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
 import { Marker } from '../../organisms/Map/MapMarker'
 import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
-import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
+import { SearchPlaceBox } from '../../organisms/SearchPlaceBox'
 
 export interface ISearchPageTemplateProps {
   initialProps: {
@@ -46,31 +40,6 @@ export interface ISearchPageTemplateProps {
     lat: number
     lng: number
   }
-}
-
-export const CurrentLocationButton = () => {
-  const { current: map } = useMap()
-
-  return (
-    <Button
-      variant="text"
-      className="hover:bg-gray-200"
-      onClick={() => {
-        navigator.geolocation.getCurrentPosition(
-          ({ coords: { latitude, longitude } }) => {
-            map?.flyTo({ center: { lat: latitude, lng: longitude }, zoom: 10 })
-          },
-          (error) => {
-            console.error(error)
-          },
-          { enableHighAccuracy: true, timeout: 20000 },
-          //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-        )
-      }}
-    >
-      <IconCurrentLocation className="stroke-1.5" />
-    </Button>
-  )
 }
 
 export const SearchPageTemplate = () => {
@@ -100,7 +69,7 @@ export const SearchPageTemplate = () => {
       <Panel position="left-top" className="bg-white/50">
         <div className="flex flex-col items-stretch gap-2 py-2">
           {/* Self managing search box. Moves map to the selected location. */}
-          <SearchBox />
+          <SearchPlaceBox />
 
           <HtmlLabel title="Start time" error={errors.startTime?.message}>
             <HtmlInput
@@ -149,41 +118,6 @@ export const SearchPageTemplate = () => {
   )
 }
 
-export const MarkerWithPopup = ({
-  marker,
-}: {
-  marker: SearchGaragesQuery['searchGarages'][number]
-}) => {
-  const [showPopup, setShowPopup] = useState(false)
-  useKeypress(['Escape'], () => setShowPopup(false))
-
-  return (
-    <>
-      <Dialog
-        title="Booking"
-        widthClassName="max-w-3xl"
-        open={showPopup}
-        setOpen={setShowPopup}
-      >
-        <FormProviderBookSlot>
-          <BookSlotPopup garage={marker} />
-        </FormProviderBookSlot>
-      </Dialog>
-
-      <Marker
-        latitude={marker.address.lat}
-        longitude={marker.address.lng}
-        onClick={(e) => {
-          e.originalEvent.stopPropagation()
-          setShowPopup((state) => !state)
-        }}
-      >
-        <ParkingIcon />
-      </Marker>
-    </>
-  )
-}
-
 export const ZOOM_LIMIT = 10
 
 export const ShowMarkers = () => {
@@ -215,6 +149,7 @@ export const ShowMarkers = () => {
       searchGarages({ variables })
     }
   }, [variables])
+
   useEffect(() => {
     if (data?.searchGarages) {
       setGarages(data.searchGarages || [])
@@ -253,30 +188,37 @@ export const ShowMarkers = () => {
   )
 }
 
-export const SearchBox = () => {
-  const { current: map } = useMap()
-  const { loading, setLoading, searchText, setSearchText, locationInfo } =
-    useSearchLocation()
+export const MarkerWithPopup = ({
+  marker,
+}: {
+  marker: SearchGaragesQuery['searchGarages'][number]
+}) => {
+  const [showPopup, setShowPopup] = useState(false)
+  useKeypress(['Escape'], () => setShowPopup(false))
 
   return (
-    <Autocomplete<LocationInfo, false, false, false>
-      options={locationInfo.length ? locationInfo : majorCitiesLocationInfo}
-      isOptionEqualToValue={(option, value) =>
-        option.placeName === value.placeName
-      }
-      noOptionsText={searchText ? 'No options.' : 'Type something...'}
-      getOptionLabel={(x) => x.placeName}
-      onInputChange={(_, v) => {
-        setLoading(true)
-        setSearchText(v)
-      }}
-      loading={loading}
-      onChange={(_, v) => {
-        if (v) {
-          const { latLng, placeName } = v
-          map?.flyTo({ center: { lat: latLng[0], lng: latLng[1] }, zoom: 10 })
-        }
-      }}
-    />
+    <>
+      <Dialog
+        title="Booking"
+        widthClassName="max-w-3xl"
+        open={showPopup}
+        setOpen={setShowPopup}
+      >
+        <FormProviderBookSlot>
+          <BookSlotPopup garage={marker} />
+        </FormProviderBookSlot>
+      </Dialog>
+
+      <Marker
+        latitude={marker.address.lat}
+        longitude={marker.address.lng}
+        onClick={(e) => {
+          e.originalEvent.stopPropagation()
+          setShowPopup((state) => !state)
+        }}
+      >
+        <ParkingIcon />
+      </Marker>
+    </>
   )
 }

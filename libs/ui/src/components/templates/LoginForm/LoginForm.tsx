@@ -19,7 +19,7 @@ export interface ILoginFormProps {
   className?: string
 }
 
-const LoginForm = ({ className }: ILoginFormProps) => {
+export const LoginForm = ({ className }: ILoginFormProps) => {
   const {
     register,
     handleSubmit,
@@ -87,5 +87,3 @@ const LoginForm = ({ className }: ILoginFormProps) => {
     </Form>
   )
 }
-
-export { LoginForm }
