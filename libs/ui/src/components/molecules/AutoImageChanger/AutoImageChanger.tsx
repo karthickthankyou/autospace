@@ -64,34 +64,32 @@ export const AutoImageChanger = ({
           />
         ))}
       </div>
-      <button
-        type="button"
-        className="absolute transform -translate-y-1/2 top-1/2 left-2"
-        onClick={() =>
-          setCurrentImageIndex((prevIndex) =>
-            prevIndex === 0 ? images.length - 1 : prevIndex - 1,
-          )
-        }
-      >
-        <IconChevronLeft className="w-6 h-6 text-black rounded-full bg-white/40 hover:bg-white" />
-      </button>
-
-      <button
-        type="button"
-        className="absolute transform -translate-y-1/2 top-1/2 right-2"
-        onClick={() =>
-          setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length)
-        }
-      >
-        <IconChevronRight className="w-6 h-6 text-black rounded-full bg-white/40 hover:bg-white" />
-      </button>
+      {images.length > 1 && (
+        <>
+          <button
+            type="button"
+            className="absolute transform -translate-y-1/2 top-1/2 left-2"
+            onClick={() =>
+              setCurrentImageIndex((prevIndex) =>
+                prevIndex === 0 ? images.length - 1 : prevIndex - 1,
+              )
+            }
+          >
+            <IconChevronLeft className="w-6 h-6 text-black rounded-full bg-white/40 hover:bg-white" />
+          </button>
+          <button
+            type="button"
+            className="absolute transform -translate-y-1/2 top-1/2 right-2"
+            onClick={() =>
+              setCurrentImageIndex(
+                (prevIndex) => (prevIndex + 1) % images.length,
+              )
+            }
+          >
+            <IconChevronRight className="w-6 h-6 text-black rounded-full bg-white/40 hover:bg-white" />
+          </button>
+        </>
+      )}
     </div>
-    // <Image
-    //   width={200}
-    //   height={200}
-    //   src={currentImage}
-    //   alt="Garage"
-    //   className="object-cover w-full h-48"
-    // />
   )
 }
