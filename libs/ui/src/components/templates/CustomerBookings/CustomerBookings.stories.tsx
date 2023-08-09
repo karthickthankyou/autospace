@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { CustomerBookings } from './CustomerBookings'
-import { graphql } from 'msw'
+import { bookings } from '@autospace-org/network/src/data'
 import {
   BookingsQuery,
   namedOperations,
 } from '@autospace-org/network/src/generated'
-import { bookings } from '@autospace-org/network/src/data'
 import { ReduxAddUid } from '@autospace-org/store/Provider'
+import type { Meta, StoryObj } from '@storybook/react'
+import { graphql } from 'msw'
+import { CustomerBookings } from './CustomerBookings'
 
 const meta: Meta<typeof CustomerBookings> = {
   component: CustomerBookings,

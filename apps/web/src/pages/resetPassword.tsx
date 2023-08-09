@@ -1,6 +1,6 @@
-import Head from 'next/head'
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
 import { ResetPassword } from '@autospace-org/ui/src/components/templates/ResetPassword'
+import Head from 'next/head'
 
 export default function ResetPasswordPage() {
   return (

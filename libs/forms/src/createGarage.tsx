@@ -1,7 +1,7 @@
-import { FormProvider, useForm } from 'react-hook-form'
-import { ReactNode } from 'react'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ReactNode } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { createManySlotsFormSchema } from './createManySlots'
 
 export const schemaCreateGarage = z.object({

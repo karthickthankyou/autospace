@@ -1,6 +1,6 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 export const createCompanySchema = z.object({
   companyName: z.string().min(1, { message: 'Company name is required' }),

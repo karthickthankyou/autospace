@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { CreateValetAssignmentInput } from './dto/create-valet-assignment.input'
 import {
   FindManyValetAssignmentArgs,
   FindUniqueValetAssignmentArgs,
 } from './dto/find.args'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateValetAssignmentInput } from './dto/create-valet-assignment.input'
 import { UpdateValetAssignmentInput } from './dto/update-valet-assignment.input'
 
 @Injectable()

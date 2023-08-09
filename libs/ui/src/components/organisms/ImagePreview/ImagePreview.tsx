@@ -1,6 +1,6 @@
 import { IconTrash } from '@tabler/icons-react'
-import { PlainButton } from '../../atoms/PlainButton'
 import { ReactNode } from 'react'
+import { PlainButton } from '../../atoms/PlainButton'
 
 export interface IImageUploadProps {
   src?: Blob | MediaSource

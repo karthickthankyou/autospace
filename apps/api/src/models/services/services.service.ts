@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyServiceArgs, FindUniqueServiceArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateServiceInput } from './dto/create-service.input'
+import { FindManyServiceArgs, FindUniqueServiceArgs } from './dto/find.args'
 import { UpdateServiceInput } from './dto/update-service.input'
 
 @Injectable()

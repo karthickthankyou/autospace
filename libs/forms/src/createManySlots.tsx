@@ -1,5 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { SlotType } from '@autospace-org/network/src/generated'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 

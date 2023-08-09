@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { ValetAssignmentsService } from './valet-assignments.service'
 import { ValetAssignmentsResolver } from './valet-assignments.resolver'
+import { ValetAssignmentsService } from './valet-assignments.service'
 
 @Module({
   providers: [ValetAssignmentsResolver, ValetAssignmentsService],

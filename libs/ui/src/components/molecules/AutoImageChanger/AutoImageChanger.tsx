@@ -4,14 +4,13 @@ import {
   IconPhotoCancel,
 } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Image from 'next/image'
 
 export interface IAutoImageChangerProps {
   images: string[]
   durationPerImage?: number
 }
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const variants = {
   enter: { opacity: 0 },

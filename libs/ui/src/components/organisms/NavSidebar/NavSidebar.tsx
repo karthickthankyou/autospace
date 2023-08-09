@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import Link from 'next/link'
-import { IconDoorExit, IconMenu2 } from '@tabler/icons-react'
-import { Sidebar } from '../Sidebar'
-import { Brand } from '../../atoms/Brand'
-import { Button } from '../../atoms/Button'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
+import { IconDoorExit, IconMenu2 } from '@tabler/icons-react'
+import Link from 'next/link'
+import { useState } from 'react'
+import { Brand } from '../../atoms/Brand'
+import { Button } from '../../atoms/Button'
+import { Sidebar } from '../Sidebar'
 
-import { MenuItem } from '@autospace-org/types'
 import { signOut } from '@autospace-org/network/src/auth'
+import { MenuItem } from '@autospace-org/types'
 
 export interface INavSidebarProps {
   menuItems: MenuItem[]

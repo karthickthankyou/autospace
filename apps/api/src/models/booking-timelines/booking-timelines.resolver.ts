@@ -1,19 +1,19 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
-import { BookingTimelinesService } from './booking-timelines.service'
-import { BookingTimeline } from './entities/booking-timeline.entity'
-import {
-  FindManyBookingTimelineArgs,
-  FindUniqueBookingTimelineArgs,
-} from './dto/find.args'
-import { CreateBookingTimelineInput } from './dto/create-booking-timeline.input'
-import { UpdateBookingTimelineInput } from './dto/update-booking-timeline.input'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
+import { checkRowLevelPermission } from 'src/common/guards'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from '../../common/types'
-import { checkRowLevelPermission } from 'src/common/guards'
+import { BookingTimelinesService } from './booking-timelines.service'
+import { CreateBookingTimelineInput } from './dto/create-booking-timeline.input'
+import {
+  FindManyBookingTimelineArgs,
+  FindUniqueBookingTimelineArgs,
+} from './dto/find.args'
+import { UpdateBookingTimelineInput } from './dto/update-booking-timeline.input'
+import { BookingTimeline } from './entities/booking-timeline.entity'
 
 @AllowAuthenticated('manager', 'admin')
 @Resolver(() => BookingTimeline)

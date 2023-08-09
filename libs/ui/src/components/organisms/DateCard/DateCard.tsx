@@ -1,9 +1,9 @@
-import { IconArrowRightRhombus } from '@tabler/icons-react'
 import {
   differenceInTime,
   formatDateCustom,
   getTimeUnits,
 } from '@autospace-org/util/date'
+import { IconArrowRightRhombus } from '@tabler/icons-react'
 
 export interface IDateCardProps {
   startTime: string

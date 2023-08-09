@@ -1,6 +1,6 @@
+import { FormProviderSearchGarage } from '@autospace-org/forms/src/searchGarages'
 import type { Meta, StoryObj } from '@storybook/react'
 import { FilterSidebar } from './FilterSidebar'
-import { FormProviderSearchGarage } from '@autospace-org/forms/src/searchGarages'
 
 const meta: Meta<typeof FilterSidebar> = {
   component: FilterSidebar,

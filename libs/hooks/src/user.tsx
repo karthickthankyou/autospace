@@ -1,7 +1,7 @@
 import { auth } from '@autospace-org/network/src/config/firebase'
 
-import { useAppDispatch, useAppSelector } from '@autospace-org/store'
-import { selectUid, resetUser, setUser } from '@autospace-org/store/user'
+import { useAppDispatch } from '@autospace-org/store'
+import { resetUser, setUser } from '@autospace-org/store/user'
 
 import { onAuthStateChanged } from 'firebase/auth'
 import { useEffect } from 'react'

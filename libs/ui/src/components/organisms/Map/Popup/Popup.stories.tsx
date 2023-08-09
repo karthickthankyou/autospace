@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Popup } from './Popup'
-import { Map } from '../Map'
 import { useState } from 'react'
 import { ShowHide } from '../../../molecules/ShowHide'
+import { Map } from '../Map'
+import { Popup } from './Popup'
 
 const meta: Meta<typeof Popup> = {
   component: Popup,

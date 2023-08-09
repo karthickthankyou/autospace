@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { PickupDropInfoCard } from './PickupDropInfoCard'
 import { BookingStatus } from '@autospace-org/network/src/generated'
-import { rest } from 'msw'
 import { toLocalISOString } from '@autospace-org/util'
+import type { Meta, StoryObj } from '@storybook/react'
+import { rest } from 'msw'
+import { PickupDropInfoCard } from './PickupDropInfoCard'
 
 const meta: Meta<typeof PickupDropInfoCard> = {
   component: PickupDropInfoCard,

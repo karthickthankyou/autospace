@@ -3,12 +3,12 @@ import { Button } from '../../atoms/Button'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import { ToggleButton } from '@mui/material'
 import { useFormSearchGaragesHome } from '@autospace-org/forms/src/searchGaragesHome'
-import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
-import { NextRouter } from 'next/router'
 import { toLocalISOString } from '@autospace-org/util'
+import { ToggleButton } from '@mui/material'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import { NextRouter } from 'next/router'
+import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 
 export interface IHeroSearchFormProps {
   router: NextRouter

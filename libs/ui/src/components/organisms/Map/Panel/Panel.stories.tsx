@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Panel } from './Panel'
-import { Map } from '../Map'
 import { useState } from 'react'
+import { Map } from '../Map'
+import { Panel } from './Panel'
 
 const meta: Meta<typeof Panel> = {
   component: Panel,

@@ -1,6 +1,6 @@
-import Head from 'next/head'
 import { AuthLayoutSimple } from '@autospace-org/ui/src/components/molecules/AuthLayoutSimple'
 import { LoginForm } from '@autospace-org/ui/src/components/templates/LoginForm'
+import Head from 'next/head'
 
 export default function Login() {
   return (

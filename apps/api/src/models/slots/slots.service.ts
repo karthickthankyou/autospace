@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { FindManySlotArgs, FindUniqueSlotArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateSlotInput } from './dto/create-slot.input'
+import { FindManySlotArgs, FindUniqueSlotArgs } from './dto/find.args'
 import { UpdateSlotInput } from './dto/update-slot.input'
 
 @Injectable()

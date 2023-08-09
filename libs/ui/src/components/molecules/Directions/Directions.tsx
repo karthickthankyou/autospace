@@ -1,6 +1,6 @@
 import { LatLng } from '@autospace-org/types'
-import { PlainButton } from '../../atoms/PlainButton'
 import { IconGps } from '@tabler/icons-react'
+import { PlainButton } from '../../atoms/PlainButton'
 
 export const Directions = ({ start, end }: { start: LatLng; end: LatLng }) => {
   const handleDirectionsClick = () => {

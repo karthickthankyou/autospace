@@ -1,6 +1,6 @@
 import { CarScene } from '@autospace-org/3d/src/scenes/CarScene'
-import Link from 'next/link'
 import { IconSearch } from '@tabler/icons-react'
+import Link from 'next/link'
 
 export default function Home() {
   return (

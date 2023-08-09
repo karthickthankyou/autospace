@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Vector3, Euler, CanvasTexture } from 'three'
+import { CanvasTexture, Euler, Vector3 } from 'three'
 import { radians } from './Camera'
 
 export const GradientPlane = ({

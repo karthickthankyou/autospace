@@ -1,6 +1,6 @@
+import { valets } from '@autospace-org/network/src/data'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ValetCard } from './ValetCard'
-import { valets } from '@autospace-org/network/src/data'
 
 const meta: Meta<typeof ValetCard> = {
   component: ValetCard,

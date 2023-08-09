@@ -1,26 +1,26 @@
+import { BadRequestException } from '@nestjs/common'
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { SlotsService } from './slots.service'
-import { ReturnCount, Slot } from './entities/slot.entity'
-import { FindManySlotArgs, FindUniqueSlotArgs } from './dto/find.args'
-import { CreateSlotInput } from './dto/create-slot.input'
-import { UpdateSlotInput } from './dto/update-slot.input'
-import { Garage } from '../garages/entities/garage.entity'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Booking } from '../bookings/entities/booking.entity'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { BadRequestException } from '@nestjs/common'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { GetUserType } from '../../common/types'
+import { Booking } from '../bookings/entities/booking.entity'
+import { Garage } from '../garages/entities/garage.entity'
+import { CreateSlotInput } from './dto/create-slot.input'
+import { FindManySlotArgs, FindUniqueSlotArgs } from './dto/find.args'
+import { UpdateSlotInput } from './dto/update-slot.input'
+import { ReturnCount, Slot } from './entities/slot.entity'
+import { SlotsService } from './slots.service'
 
 @Resolver(() => Slot)
 export class SlotsResolver {

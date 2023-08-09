@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Manager } from './Manager'
-import { graphql } from 'msw'
+import { myCompany } from '@autospace-org/network/src/data'
 import {
   MyCompanyQuery,
   namedOperations,
 } from '@autospace-org/network/src/generated'
-import { myCompany } from '@autospace-org/network/src/data'
 import { ReduxAddUid } from '@autospace-org/store/Provider'
+import type { Meta, StoryObj } from '@storybook/react'
+import { graphql } from 'msw'
+import { Manager } from './Manager'
 
 const meta: Meta<typeof Manager> = {
   component: Manager,

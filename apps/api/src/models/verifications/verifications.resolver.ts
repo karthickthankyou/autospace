@@ -1,20 +1,20 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
-import { VerificationsService } from './verifications.service'
-import { Verification } from './entities/verification.entity'
-import {
-  FindManyVerificationArgs,
-  FindUniqueVerificationArgs,
-} from './dto/find.args'
-import { CreateVerificationInput } from './dto/create-verification.input'
-import { UpdateVerificationInput } from './dto/update-verification.input'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
+import { checkRowLevelPermission } from 'src/common/guards'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from '../../common/types'
 import { AdminsService } from '../admins/admins.service'
-import { checkRowLevelPermission } from 'src/common/guards'
+import { CreateVerificationInput } from './dto/create-verification.input'
+import {
+  FindManyVerificationArgs,
+  FindUniqueVerificationArgs,
+} from './dto/find.args'
+import { UpdateVerificationInput } from './dto/update-verification.input'
+import { Verification } from './entities/verification.entity'
+import { VerificationsService } from './verifications.service'
 
 @AllowAuthenticated('admin')
 @Resolver(() => Verification)

@@ -1,5 +1,5 @@
-import { RenderScale } from './Typography'
 import type { Meta, StoryObj } from '@storybook/react'
+import { RenderScale } from './Typography'
 
 const meta: Meta<typeof RenderScale> = {
   component: RenderScale,

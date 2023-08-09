@@ -1,18 +1,18 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { CustomersService } from './customers.service'
-import { Customer } from './entities/customer.entity'
-import { FindManyCustomerArgs, FindUniqueCustomerArgs } from './dto/find.args'
-import { CreateCustomerInput } from './dto/create-customer.input'
-import { UpdateCustomerInput } from './dto/update-customer.input'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { Booking } from '../bookings/entities/booking.entity'
+import { CustomersService } from './customers.service'
+import { CreateCustomerInput } from './dto/create-customer.input'
+import { FindManyCustomerArgs, FindUniqueCustomerArgs } from './dto/find.args'
+import { UpdateCustomerInput } from './dto/update-customer.input'
+import { Customer } from './entities/customer.entity'
 
 @Resolver(() => Customer)
 export class CustomersResolver {

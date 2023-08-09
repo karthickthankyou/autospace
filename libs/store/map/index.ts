@@ -1,5 +1,5 @@
-import create from 'zustand'
 import { LocationInfo } from '@autospace-org/hooks/src/location'
+import create from 'zustand'
 
 export type ViewState = {
   latitude: number

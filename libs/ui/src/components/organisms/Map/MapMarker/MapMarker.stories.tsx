@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Marker } from './MapMarker'
-import { Map } from '../Map'
 import { useState } from 'react'
+import { Map } from '../Map'
+import { Marker } from './MapMarker'
 
 const meta: Meta<typeof Marker> = {
   component: Marker,

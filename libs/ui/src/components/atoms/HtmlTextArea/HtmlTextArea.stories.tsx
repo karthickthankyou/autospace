@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { HtmlTextArea } from './HtmlTextArea'
 import { HtmlLabel } from '../HtmlLabel'
+import { HtmlTextArea } from './HtmlTextArea'
 
 const meta: Meta<typeof HtmlTextArea> = {
   component: HtmlTextArea,

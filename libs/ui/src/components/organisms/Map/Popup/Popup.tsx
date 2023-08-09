@@ -1,7 +1,6 @@
-import { useKeypress } from '@autospace-org/util'
 import { IconX } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Dispatch, ReactNode, SetStateAction, useState } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Popup, PopupProps } from 'react-map-gl'
 
 const MapPopup = ({

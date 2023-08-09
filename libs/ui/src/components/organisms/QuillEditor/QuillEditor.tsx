@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactQuill, { ReactQuillProps } from 'react-quill'
 
 // import { ReactQuillProps } from 'react-quill'

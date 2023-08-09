@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Form } from './Form'
-import { HtmlLabel } from '../HtmlLabel'
-import { HtmlInput } from '../HtmlInput'
 import { Button } from '../Button'
+import { HtmlInput } from '../HtmlInput'
+import { HtmlLabel } from '../HtmlLabel'
+import { Form } from './Form'
 
 const meta: Meta<typeof Form> = {
   component: Form,

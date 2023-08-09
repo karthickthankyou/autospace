@@ -1,16 +1,16 @@
 import { useCreateCompanyForm } from '@autospace-org/forms/src/createManager'
-import { Dialog } from '../../atoms/Dialog'
-import { useState } from 'react'
 import {
   namedOperations,
   useCreateCompanyMutation,
 } from '@autospace-org/network/src/generated'
-import { Form } from '../../atoms/Form'
-import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { HtmlInput } from '../../atoms/HtmlInput'
-import { Button } from '../../atoms/Button'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
+import { useState } from 'react'
+import { Button } from '../../atoms/Button'
+import { Dialog } from '../../atoms/Dialog'
+import { Form } from '../../atoms/Form'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { HtmlLabel } from '../../atoms/HtmlLabel'
 
 export const CreateManagerDialog = () => {
   const {

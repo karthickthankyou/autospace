@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import { SearchPageTemplate } from '@autospace-org/ui/src/components/templates/SearchPageTemplate'
 import { FormProviderSearchGarage } from '@autospace-org/forms/src/searchGarages'
+import { SearchPageTemplate } from '@autospace-org/ui/src/components/templates/SearchPageTemplate'
+import Head from 'next/head'
 
 export default function Search() {
   return (

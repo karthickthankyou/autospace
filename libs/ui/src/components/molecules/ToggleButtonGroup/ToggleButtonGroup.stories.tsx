@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ToggleButton, ToggleButtonGroup } from './ToggleButtonGroup'
 import { IconBold, IconItalic, IconUnderline } from '@tabler/icons-react'
 import { useState } from 'react'
+import { ToggleButton, ToggleButtonGroup } from './ToggleButtonGroup'
 
 const meta: Meta<typeof ToggleButtonGroup> = {
   component: ToggleButtonGroup,

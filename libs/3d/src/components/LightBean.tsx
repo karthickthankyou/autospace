@@ -1,5 +1,5 @@
-import { DoubleSide, Vector3 } from 'three'
 import { useGradientTexture } from '@react-three/drei'
+import { DoubleSide, Vector3 } from 'three'
 
 const LightBeam = ({ position = new Vector3(0, 0, 0) }) => {
   const [texture] = useGradientTexture([

@@ -1,8 +1,8 @@
 import { ArgsType, Field, registerEnumType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
+import { RestrictProperties } from 'src/common/dtos/common.input'
 import { ValetOrderByWithRelationInput } from './orderBy.args'
 import { ValetWhereInput, ValetWhereUniqueInput } from './where.args'
-import { RestrictProperties } from 'src/common/dtos/common.input'
 
 registerEnumType(Prisma.ValetScalarFieldEnum, {
   name: 'ValetScalarFieldEnum',

@@ -1,16 +1,10 @@
 import { MapLink } from '../../atoms/MapLink'
 import { Reveal } from '../../molecules/Reveal'
 
-import { StartEndDateCard } from '../DateCard/DateCard'
 import { BookingsQuery } from '@autospace-org/network/src/generated'
-import { AutoImageChanger } from '../../molecules/AutoImageChanger'
 import { TitleStrongValue } from '../../atoms/TitleValue/TitleValue'
-import {
-  SimpleDate,
-  StaticMap,
-  StaticMapSimple,
-} from '../PickupDropInfoCard/PickupDropInfoCard'
-import { useMapboxDirections } from '@autospace-org/hooks/src/map'
+import { StartEndDateCard } from '../DateCard/DateCard'
+import { StaticMapSimple } from '../PickupDropInfoCard/PickupDropInfoCard'
 
 export interface IBookingCardProps {
   booking: NonNullable<BookingsQuery['bookings']>[number]

@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import { SlotType, Slot as SlotEnumType } from '@prisma/client'
+import { Slot as SlotEnumType, SlotType } from '@prisma/client'
 
 type RestrictProperties<T, U> = {
   [K in keyof T]: K extends keyof U ? T[K] : never

@@ -1,6 +1,5 @@
 import { ArgsType, Field, registerEnumType } from '@nestjs/graphql'
 import { Prisma } from '@prisma/client'
-import { WhereUniqueInputNumber } from 'src/common/dtos/common.input'
 import { VerificationOrderByWithRelationInput } from './orderBy.args'
 import {
   VerificationWhereInput,

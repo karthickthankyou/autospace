@@ -1,10 +1,9 @@
-import { useForm, FormProvider } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { SlotType } from '@autospace-org/network/src/generated'
-import { ReactNode, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { toLocalISOString } from '@autospace-org/util'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ReactNode, useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const minMaxTuple = z.tuple([z.number(), z.number()])
 

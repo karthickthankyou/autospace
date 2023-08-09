@@ -1,21 +1,21 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { ValetAssignmentsService } from './valet-assignments.service'
-import { ValetAssignment } from './entities/valet-assignment.entity'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { Valet } from '../valets/entities/valet.entity'
+import { CreateValetAssignmentInput } from './dto/create-valet-assignment.input'
 import {
   FindManyValetAssignmentArgs,
   FindUniqueValetAssignmentArgs,
 } from './dto/find.args'
-import { CreateValetAssignmentInput } from './dto/create-valet-assignment.input'
 import { UpdateValetAssignmentInput } from './dto/update-valet-assignment.input'
-import { Valet } from '../valets/entities/valet.entity'
-import { PrismaService } from 'src/common/prisma/prisma.service'
+import { ValetAssignment } from './entities/valet-assignment.entity'
+import { ValetAssignmentsService } from './valet-assignments.service'
 
 @Resolver(() => ValetAssignment)
 export class ValetAssignmentsResolver {

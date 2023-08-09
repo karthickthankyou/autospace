@@ -1,32 +1,32 @@
+import { BadRequestException } from '@nestjs/common'
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { BookingsService } from './bookings.service'
-import { Booking } from './entities/booking.entity'
-import { FindManyBookingArgs, FindUniqueBookingArgs } from './dto/find.args'
-import { CreateBookingInput } from './dto/create-booking.input'
-import { Slot } from '../slots/entities/slot.entity'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Customer } from '../customers/entities/customer.entity'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '../../common/types'
-import { checkRowLevelPermission } from 'src/common/guards'
 import {
   AggregateCountOutput,
   PaginationInput,
 } from 'src/common/dtos/common.input'
-import { BookingWhereInput } from './dto/where.args'
-import { BadRequestException } from '@nestjs/common'
+import { checkRowLevelPermission } from 'src/common/guards'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { GetUserType } from '../../common/types'
+import { Customer } from '../customers/entities/customer.entity'
+import { Slot } from '../slots/entities/slot.entity'
 import { ValetAssignment } from '../valet-assignments/entities/valet-assignment.entity'
 import { ValetsService } from '../valets/valets.service'
+import { BookingsService } from './bookings.service'
+import { CreateBookingInput } from './dto/create-booking.input'
+import { FindManyBookingArgs, FindUniqueBookingArgs } from './dto/find.args'
+import { BookingWhereInput } from './dto/where.args'
+import { Booking } from './entities/booking.entity'
 
 @Resolver(() => Booking)
 export class BookingsResolver {

@@ -1,9 +1,8 @@
+import { CarScene, RotatingCamera } from '@autospace-org/3d/src/scenes/CarScene'
+import { IconArrowBack } from '@tabler/icons-react'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 import { BrandIcon } from '../../atoms/BrandIcon'
-import { CarScene, RotatingCamera } from '@autospace-org/3d/src/scenes/CarScene'
-import Link from 'next/link'
-import { IconArrowBack } from '@tabler/icons-react'
-import { Container } from '../../atoms/Container'
 
 export interface IAuthLayoutProps {
   children: ReactNode

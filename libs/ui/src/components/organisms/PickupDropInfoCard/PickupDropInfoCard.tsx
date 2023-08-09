@@ -6,13 +6,13 @@ import {
   namedOperations,
   useAssignValetForCheckInCheckOutMutation,
 } from '@autospace-org/network/src/generated'
+import { LatLng } from '@autospace-org/types'
 import { format } from 'date-fns'
 import React, { ReactNode } from 'react'
-import { LatLng } from '@autospace-org/types'
 import { Button } from '../../atoms/Button'
-import { Reveal } from '../../molecules/Reveal'
 import { TitleStrongValue } from '../../atoms/TitleValue/TitleValue'
 import { Directions } from '../../molecules/Directions'
+import { Reveal } from '../../molecules/Reveal'
 
 export interface IPickupDropInfoCardProps {
   start: LatLng

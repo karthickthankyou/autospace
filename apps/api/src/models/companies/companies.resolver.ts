@@ -1,27 +1,26 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
 import { CompaniesService } from './companies.service'
-import { Company } from './entities/company.entity'
-import { FindManyCompanyArgs, FindUniqueCompanyArgs } from './dto/find.args'
 import { CreateCompanyInput } from './dto/create-company.input'
+import { FindManyCompanyArgs, FindUniqueCompanyArgs } from './dto/find.args'
 import { UpdateCompanyInput } from './dto/update-company.input'
+import { Company } from './entities/company.entity'
 
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Garage } from '../garages/entities/garage.entity'
-import { Manager } from '../managers/entities/manager.entity'
+import { AuthService } from 'src/common/auth/auth.service'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
+import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from '../../common/types'
-import { AuthService } from 'src/common/auth/auth.service'
-import { Valet } from '../valets/entities/valet.entity'
+import { Garage } from '../garages/entities/garage.entity'
+import { Manager } from '../managers/entities/manager.entity'
 
 @Resolver(() => Company)
 export class CompaniesResolver {

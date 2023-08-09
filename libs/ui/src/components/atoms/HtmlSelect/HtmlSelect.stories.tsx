@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { HtmlSelect } from './HtmlSelect'
 import { HtmlLabel } from '../HtmlLabel'
+import { HtmlSelect } from './HtmlSelect'
 
 const meta: Meta<typeof HtmlSelect> = {
   component: HtmlSelect,

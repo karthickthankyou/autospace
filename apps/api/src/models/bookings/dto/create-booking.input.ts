@@ -1,8 +1,8 @@
 import { Field, InputType, PickType } from '@nestjs/graphql'
 
-import { Booking } from '../entities/booking.entity'
 import { Garage, SlotType } from '@prisma/client'
 import { CreateValetAssignmentInputWithoutBookingId } from 'src/models/valet-assignments/dto/create-valet-assignment.input'
+import { Booking } from '../entities/booking.entity'
 
 @InputType()
 export class CreateBookingInput extends PickType(

@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { ImagePreview } from './ImagePreview'
-import { Controller } from 'react-hook-form'
-import { HtmlInput } from '../../atoms/HtmlInput'
 import { useState } from 'react'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { ImagePreview } from './ImagePreview'
 
 const meta: Meta<typeof ImagePreview> = {
   component: ImagePreview,

@@ -1,6 +1,6 @@
+import { garages } from '@autospace-org/network/src/data'
 import type { Meta, StoryObj } from '@storybook/react'
 import { GarageAdminCard } from './GarageAdminCard'
-import { garages } from '@autospace-org/network/src/data'
 
 const meta: Meta<typeof GarageAdminCard> = {
   component: GarageAdminCard,

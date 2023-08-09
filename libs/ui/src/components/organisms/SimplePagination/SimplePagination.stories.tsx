@@ -1,6 +1,6 @@
+import { useTakeSkip } from '@autospace-org/hooks/src/async'
 import type { Meta, StoryObj } from '@storybook/react'
 import { SimplePagination } from './SimplePagination'
-import { useTakeSkip } from '@autospace-org/hooks/src/async'
 
 const meta: Meta<typeof SimplePagination> = {
   component: SimplePagination,

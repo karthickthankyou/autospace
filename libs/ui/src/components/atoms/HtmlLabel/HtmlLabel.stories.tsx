@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { HtmlLabel } from './HtmlLabel'
 import { HtmlInput } from '../HtmlInput'
+import { HtmlLabel } from './HtmlLabel'
 
 const meta: Meta<typeof HtmlLabel> = {
   component: HtmlLabel,

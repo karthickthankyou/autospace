@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { useForm, Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { RangeSlider } from './RangeSlider'
 
 const meta: Meta<typeof RangeSlider> = {

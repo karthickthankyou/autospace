@@ -1,6 +1,6 @@
+import { SlotType } from '@autospace-org/network/src/generated'
 import type { Meta, StoryObj } from '@storybook/react'
 import { RadioOptionsSelectParkingSlotType } from './SelectParkingSlotType'
-import { SlotType } from '@autospace-org/network/src/generated'
 
 const meta: Meta<typeof RadioOptionsSelectParkingSlotType> = {
   component: RadioOptionsSelectParkingSlotType,

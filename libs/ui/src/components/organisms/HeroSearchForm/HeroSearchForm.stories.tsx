@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { HeroSearchForm } from './HeroSearchForm'
 import { useRouter } from 'next/router'
+import { HeroSearchForm } from './HeroSearchForm'
 
 const meta: Meta<typeof HeroSearchForm> = {
   component: HeroSearchForm,

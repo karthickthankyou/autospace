@@ -1,6 +1,6 @@
+import { toLocalISOString } from '@autospace-org/util'
 import type { Meta, StoryObj } from '@storybook/react'
 import { DateRangeBookingInfo } from './DateRangeBookingInfo'
-import { toLocalISOString } from '@autospace-org/util'
 
 const meta: Meta<typeof DateRangeBookingInfo> = {
   component: DateRangeBookingInfo,

@@ -1,16 +1,16 @@
+import { useTakeSkip } from '@autospace-org/hooks/src/async'
 import {
   BookingStatus,
   SortOrder,
   useMyDropTripsQuery,
   useMyPickupTripsQuery,
 } from '@autospace-org/network/src/generated'
-import { useTakeSkip } from '@autospace-org/hooks/src/async'
-import { MyTripCard } from '../../organisms/PickupDropInfoCard/PickupDropInfoCard'
-import { ShowDataSimple } from '../../organisms/ShowData/ShowData'
-import { Timeline } from '../../molecules/Timeline'
-import { TimelineItem } from '../../molecules/Timeline/Timeline'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUser } from '@autospace-org/store/user'
+import { Timeline } from '../../molecules/Timeline'
+import { TimelineItem } from '../../molecules/Timeline/Timeline'
+import { MyTripCard } from '../../organisms/PickupDropInfoCard/PickupDropInfoCard'
+import { ShowDataSimple } from '../../organisms/ShowData/ShowData'
 
 export const MyTrips = () => {
   return (

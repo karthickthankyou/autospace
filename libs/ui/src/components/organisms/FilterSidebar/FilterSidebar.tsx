@@ -1,21 +1,21 @@
 import { useState } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
-import { Button } from '../../atoms/Button'
-import { RangeSlider } from '../../molecules/RangeSlider'
-import { FilterHeading } from '../../molecules/FilterHeading'
-import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 import {
-  FormTypeSearchGarage,
   formDefaultValuesSearchGarages,
+  FormTypeSearchGarage,
 } from '@autospace-org/forms/src/searchGarages'
+import { Button } from '../../atoms/Button'
+import { FilterHeading } from '../../molecules/FilterHeading'
+import { RangeSlider } from '../../molecules/RangeSlider'
+import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 
 import { IconFilter } from '@tabler/icons-react'
-import { PulsingDot } from '../../atoms/Dot'
-import { Sidebar } from '../Sidebar'
 import { Brand } from '../../atoms/Brand'
+import { PulsingDot } from '../../atoms/Dot'
 import { ToggleButtonGroup } from '../../molecules/ToggleButtonGroup'
 import { ToggleButton } from '../../molecules/ToggleButtonGroup/ToggleButtonGroup'
+import { Sidebar } from '../Sidebar'
 
 export interface IFilterSidebarProps {}
 

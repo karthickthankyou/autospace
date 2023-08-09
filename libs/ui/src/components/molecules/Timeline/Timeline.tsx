@@ -1,17 +1,15 @@
-import * as React from 'react'
 import MuiTimeline, { TimelineProps } from '@mui/lab/Timeline'
-import MuiTimelineItem from '@mui/lab/TimelineItem'
-import TimelineSeparator from '@mui/lab/TimelineSeparator'
 import TimelineConnector from '@mui/lab/TimelineConnector'
 import TimelineContent from '@mui/lab/TimelineContent'
+import MuiTimelineItem from '@mui/lab/TimelineItem'
+import TimelineSeparator from '@mui/lab/TimelineSeparator'
 import {
   IconMoonStars,
   IconSun,
   IconSunrise,
   IconSunset,
 } from '@tabler/icons-react'
-import { format } from 'date-fns'
-import { SimpleDate } from '../../organisms/PickupDropInfoCard/PickupDropInfoCard'
+import * as React from 'react'
 
 export type TimelineStepType = {
   children: React.ReactNode

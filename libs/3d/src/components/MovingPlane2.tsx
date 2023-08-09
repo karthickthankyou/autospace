@@ -1,6 +1,6 @@
-import { Mesh, Vector3 } from 'three'
 import { useFrame } from '@react-three/fiber'
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
+import { Vector3 } from 'three'
 
 const random = (min: number, max: number) => Math.random() * (max - min) + min
 

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
 import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
-import { useWatch } from 'react-hook-form'
 import { differenceInTime } from '@autospace-org/util/date'
+import { useEffect, useState } from 'react'
+import { useWatch } from 'react-hook-form'
 
 export type TotalPriceType = {
   pricePerHour?: number

@@ -1,5 +1,5 @@
 import React from 'react'
-import MapGl, { useMap, Map as MapProps } from 'react-map-gl'
+import MapGl, { Map as MapProps, useMap } from 'react-map-gl'
 
 export type ViewState = {
   latitude: number

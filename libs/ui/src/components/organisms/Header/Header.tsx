@@ -3,8 +3,8 @@ import { Brand } from '../../atoms/Brand'
 import { Button } from '../../atoms/Button'
 import { Container } from '../../atoms/Container'
 
-import { NavSidebar, ShowMenuItems } from '../NavSidebar/NavSidebar'
 import { Suspense } from 'react'
+import { NavSidebar, ShowMenuItems } from '../NavSidebar/NavSidebar'
 
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'

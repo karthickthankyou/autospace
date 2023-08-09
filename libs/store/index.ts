@@ -1,8 +1,8 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { Observable } from 'rxjs'
 
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { composeWithDevTools } from '@redux-devtools/extension'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { userReducer } from './user'
 import { utilsReducer } from './utils'
 

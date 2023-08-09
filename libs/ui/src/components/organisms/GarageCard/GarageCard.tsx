@@ -1,29 +1,21 @@
+import { useFormCreateManySlots } from '@autospace-org/forms/src/createManySlots'
 import {
-  BookingStatus,
   CreateSlotInput,
   GaragesQuery,
-  SlotType,
   namedOperations,
-  useBookingsForGarageQuery,
-  useCreateBookingTimelineMutation,
+  SlotType,
   useCreateManySlotsMutation,
 } from '@autospace-org/network/src/generated'
-import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
-import { Dialog } from '../../atoms/Dialog'
-import { useState } from 'react'
-import { Form } from '../../atoms/Form'
-import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { useFormCreateManySlots } from '@autospace-org/forms/src/createManySlots'
-import { HtmlInput } from '../../atoms/HtmlInput'
-import { HtmlSelect } from '../../atoms/HtmlSelect'
-import { Button } from '../../atoms/Button'
-import { ShowData } from '../ShowData'
-import { Tab, Tabs } from '../../molecules/Tabs'
-import { TabPanel } from '../../molecules/Tabs/Tabs'
-import { Reveal } from '../../molecules/Reveal'
-import { PlainButton } from '../../atoms/PlainButton'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
+import { Button } from '../../atoms/Button'
+import { Dialog } from '../../atoms/Dialog'
+import { Form } from '../../atoms/Form'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { HtmlLabel } from '../../atoms/HtmlLabel'
+import { HtmlSelect } from '../../atoms/HtmlSelect'
+import { IconTypes } from '../../molecules/SelectParkingSlotType/SelectParkingSlotType'
 
 export interface IGarageCardProps {
   garage: GaragesQuery['garages'][number]

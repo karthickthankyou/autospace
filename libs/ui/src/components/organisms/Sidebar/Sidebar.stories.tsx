@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Sidebar } from './Sidebar'
 import { useState } from 'react'
+import { Sidebar } from './Sidebar'
 
 const meta: Meta<typeof Sidebar> = {
   component: Sidebar,

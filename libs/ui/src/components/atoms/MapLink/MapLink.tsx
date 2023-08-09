@@ -1,4 +1,4 @@
-import { IconMap, IconMap2 } from '@tabler/icons-react'
+import { IconMap2 } from '@tabler/icons-react'
 import Link from 'next/link'
 import { ReactNode } from 'react'
 

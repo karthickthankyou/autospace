@@ -1,27 +1,27 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { AdminsService } from './admins.service'
-import { Admin } from './entities/admin.entity'
-import { FindManyAdminArgs, FindUniqueAdminArgs } from './dto/find.args'
-import { UpdateAdminInput } from './dto/update-admin.input'
+import { AuthService } from 'src/common/auth/auth.service'
+import { RegisterInput } from 'src/common/auth/dto/auth.input'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
 import { AggregateCountOutput } from 'src/common/dtos/common.input'
-import { AdminWhereInput } from './dto/where.args'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { AuthService } from 'src/common/auth/auth.service'
-import { GetUserType } from '../../common/types'
-import { RegisterInput } from 'src/common/auth/dto/auth.input'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { GetUserType } from '../../common/types'
 import { Verification } from '../verifications/entities/verification.entity'
+import { AdminsService } from './admins.service'
+import { FindManyAdminArgs, FindUniqueAdminArgs } from './dto/find.args'
+import { UpdateAdminInput } from './dto/update-admin.input'
+import { AdminWhereInput } from './dto/where.args'
+import { Admin } from './entities/admin.entity'
 
 @AllowAuthenticated('admin')
 @Resolver(() => Admin)

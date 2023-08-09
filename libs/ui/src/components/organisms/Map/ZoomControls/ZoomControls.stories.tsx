@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import ZoomControls from './ZoomControls'
-import { Map } from '../Map'
 import { useState } from 'react'
+import { Map } from '../Map'
 import { Panel } from '../Panel'
+import ZoomControls from './ZoomControls'
 
 const meta: Meta<typeof ZoomControls> = {
   component: ZoomControls,

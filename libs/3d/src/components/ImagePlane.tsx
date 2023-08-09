@@ -1,9 +1,6 @@
-import React, { useMemo } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
 import { useTexture } from '@react-three/drei'
+import { BackSide, Vector3 } from 'three'
 import { radians } from './Camera'
-import { Vector3, BackSide } from 'three'
-import { randInt } from 'three/src/math/MathUtils'
 
 export const ImagePlane = ({
   src,

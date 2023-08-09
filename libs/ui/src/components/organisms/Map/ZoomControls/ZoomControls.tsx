@@ -1,15 +1,12 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import {
-  IconFloatCenter,
   IconMinus,
   IconParking,
   IconPlus,
-  IconSoup,
   TablerIconsProps,
 } from '@tabler/icons-react'
-import { LngLat, useMap } from 'react-map-gl'
-import { ParkingIcon } from '../../../atoms/ParkingIcon'
+import { useMap } from 'react-map-gl'
 
 export interface IZoomControlsProps {}
 

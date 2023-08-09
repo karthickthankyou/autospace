@@ -3,9 +3,9 @@ import {
   ValetFieldsFragment,
 } from '@autospace-org/network/src/generated'
 import Image from 'next/image'
-import { StartEndDateCard } from '../DateCard/DateCard'
 import { TitleStrongValue, TitleValue } from '../../atoms/TitleValue/TitleValue'
 import { Reveal } from '../../molecules/Reveal'
+import { StartEndDateCard } from '../DateCard/DateCard'
 
 export interface IManageBookingCardProps {
   booking: BookingsForGarageQuery['bookingsForGarage'][0]

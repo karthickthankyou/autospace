@@ -2,7 +2,7 @@
 
 import chalk from 'chalk'
 import fs from 'fs'
-import { component, story, barrel } from './templates.js'
+import { barrel, component, story } from './templates.js'
 
 // grab component componentName from terminal argument
 const [componentPath] = process.argv.slice(2, 3)

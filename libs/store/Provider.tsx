@@ -1,5 +1,5 @@
-import { Provider } from 'react-redux'
 import { ReactNode, useEffect } from 'react'
+import { Provider } from 'react-redux'
 import { store, useAppDispatch } from '.'
 import { resetUser, setUser } from './user'
 

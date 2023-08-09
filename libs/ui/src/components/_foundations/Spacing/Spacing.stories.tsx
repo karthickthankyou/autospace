@@ -1,5 +1,5 @@
-import { Spacing } from './Spacing'
 import type { Meta, StoryObj } from '@storybook/react'
+import { Spacing } from './Spacing'
 
 const meta: Meta<typeof Spacing> = {
   component: Spacing,

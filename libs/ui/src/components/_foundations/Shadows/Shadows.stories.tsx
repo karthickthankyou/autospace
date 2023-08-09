@@ -1,5 +1,5 @@
-import { Shadows } from './Shadows'
 import type { Meta, StoryObj } from '@storybook/react'
+import { Shadows } from './Shadows'
 
 const meta: Meta<typeof Shadows> = {
   component: Shadows,

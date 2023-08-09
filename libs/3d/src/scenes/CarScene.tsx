@@ -1,13 +1,13 @@
+import { OrbitControls, PerspectiveCamera, Plane } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Plane, OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import React from 'react'
 import { Car } from '../components/Car'
 
-import * as THREE from 'three'
-import { Spawner } from '../components/SpawnerWithPrewarm'
-import { BuildingSet } from '../components/MovingPlane3'
 import { useRef, useState } from 'react'
+import * as THREE from 'three'
 import { randInt } from 'three/src/math/MathUtils'
+import { BuildingSet } from '../components/MovingPlane3'
+import { Spawner } from '../components/SpawnerWithPrewarm'
 
 const radians = (degrees: number) => degrees * (Math.PI / 180)
 

@@ -1,7 +1,6 @@
-import React, { useRef, useState, useMemo, useEffect } from 'react'
-import { Box, PerspectiveCamera } from '@react-three/drei'
-import { useFrame, useThree } from '@react-three/fiber'
-import { Vector3 } from 'three'
+import { PerspectiveCamera } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
+import React, { useEffect } from 'react'
 
 interface CameraProps {}
 export const radians = (degrees: number) => degrees * (Math.PI / 180)

@@ -1,16 +1,16 @@
+import { register as registerUser } from '@autospace-org/network/src/auth'
+import Link from 'next/link'
 import { Button } from '../../atoms/Button'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
-import Link from 'next/link'
-import { register as registerUser } from '@autospace-org/network/src/auth'
 
-import { Form } from '../../atoms/Form'
 import {
   FormTypeRegister,
   useFormRegister,
 } from '@autospace-org/forms/src/register'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
+import { Form } from '../../atoms/Form'
 
 import { notification$ } from '@autospace-org/util/subjects'
 import { useRouter } from 'next/router'

@@ -1,6 +1,5 @@
-import Head from 'next/head'
 import { HowItWorksCustomer } from '@autospace-org/ui/src/components/templates/HowItWorksCustomer'
-import { Container } from '@autospace-org/ui/src/components/atoms/Container'
+import Head from 'next/head'
 
 export default function Search() {
   return (

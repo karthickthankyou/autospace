@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { ManageValets } from './ManageValets'
-import { graphql } from 'msw'
+import { companyValets } from '@autospace-org/network/src/data'
 import {
   CompanyValetsQuery,
   namedOperations,
 } from '@autospace-org/network/src/generated'
-import { companyValets } from '@autospace-org/network/src/data'
 import { ReduxAddUid } from '@autospace-org/store/Provider'
+import type { Meta, StoryObj } from '@storybook/react'
+import { graphql } from 'msw'
+import { ManageValets } from './ManageValets'
 
 const meta: Meta<typeof ManageValets> = {
   component: ManageValets,

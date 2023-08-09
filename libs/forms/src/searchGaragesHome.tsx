@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import {
-  getCurrentTimeAndOneHourLater,
-  formSchemaSearchGarage,
-} from './searchGarages'
 import { SlotType } from '@autospace-org/network/src/generated'
+import {
+  formSchemaSearchGarage,
+  getCurrentTimeAndOneHourLater,
+} from './searchGarages'
 
 export const formSchemaSearchGaragesHome = formSchemaSearchGarage.pick({
   startTime: true,

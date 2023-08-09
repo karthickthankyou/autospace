@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { CreateCompany } from './CreateCompany'
-import { graphql } from 'msw'
+import { myCompany } from '@autospace-org/network/src/data'
 import {
   CreateCompanyMutation,
   MyCompanyQuery,
   namedOperations,
 } from '@autospace-org/network/src/generated'
-import { myCompany } from '@autospace-org/network/src/data'
+import type { Meta, StoryObj } from '@storybook/react'
+import { graphql } from 'msw'
+import { CreateCompany } from './CreateCompany'
 
 const meta: Meta<typeof CreateCompany> = {
   component: CreateCompany,

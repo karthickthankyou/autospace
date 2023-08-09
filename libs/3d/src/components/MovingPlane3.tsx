@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react'
-import * as THREE from 'three'
-import { radians } from './Camera'
-import { GradientCube } from './GradientCube'
+import React, { useEffect, useState } from 'react'
 import { randInt } from 'three/src/math/MathUtils'
-import React from 'react'
+import { radians } from './Camera'
 import { randExp } from './MovingPlane2'
-import { Building, ParkingSlot, floorHeight } from './ParkingSlot'
+import { Building, floorHeight } from './ParkingSlot'
 
 const random = (min: number, max: number) => Math.random() * (max - min) + min
 

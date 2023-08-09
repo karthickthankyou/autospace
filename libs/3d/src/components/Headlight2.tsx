@@ -1,4 +1,4 @@
-import { Plane, GradientTexture, Float } from '@react-three/drei'
+import { GradientTexture, Plane } from '@react-three/drei'
 import * as THREE from 'three'
 import { Vector3 } from 'three'
 import { radians } from './Camera'

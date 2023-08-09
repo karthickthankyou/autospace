@@ -1,10 +1,7 @@
 import { IconMoodSad } from '@tabler/icons-react'
 
-import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import Head from 'next/head'
-import { Container } from '@autospace-org/ui/src/components/atoms/Container'
+import Link from 'next/link'
 
 export default function BookingFailed() {
   return (

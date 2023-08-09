@@ -1,20 +1,18 @@
+import { useFormRegister } from '@autospace-org/forms'
 import {
   namedOperations,
   useAdminsQuery,
   useCreateAdminMutation,
   useRemoveAdminMutation,
 } from '@autospace-org/network/src/generated'
-import { ShowData } from '../../organisms/ShowData'
+import { IconTrash } from '@tabler/icons-react'
 import { useState } from 'react'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
-import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { HtmlInput } from '../../atoms/HtmlInput'
 import { Form } from '../../atoms/Form'
-import { useFormRegister } from '@autospace-org/forms'
-import { IconTrash } from '@tabler/icons-react'
-import { useAppSelector } from '@autospace-org/store'
-import { selectUid } from '@autospace-org/store/user'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { HtmlLabel } from '../../atoms/HtmlLabel'
+import { ShowData } from '../../organisms/ShowData'
 
 import { AdminCard } from '../../organisms/AdminCard'
 

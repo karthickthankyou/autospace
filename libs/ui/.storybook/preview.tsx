@@ -1,14 +1,13 @@
-import '../src/index.css'
-import 'react-quill/dist/quill.snow.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { initialize, mswLoader } from 'msw-storybook-addon'
+import 'react-quill/dist/quill.snow.css'
+import '../src/index.css'
 
-import type { Preview } from '@storybook/react'
 import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
 import { ReduxProvider } from '@autospace-org/store/Provider'
-import * as NextImage from 'next/image'
+import type { Preview } from '@storybook/react'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
-import React from 'react'
+import * as NextImage from 'next/image'
 
 // Initialize MSW
 initialize({

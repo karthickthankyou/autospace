@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Admin } from './Admin'
-import { graphql } from 'msw'
+import { garages } from '@autospace-org/network/src/data'
 import {
   CreateVerificationMutation,
   GaragesQuery,
   namedOperations,
 } from '@autospace-org/network/src/generated'
-import { garages } from '@autospace-org/network/src/data'
+import type { Meta, StoryObj } from '@storybook/react'
+import { graphql } from 'msw'
+import { Admin } from './Admin'
 
 const meta: Meta<typeof Admin> = {
   component: Admin,

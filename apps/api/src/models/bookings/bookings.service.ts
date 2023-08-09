@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
-import { FindManyBookingArgs, FindUniqueBookingArgs } from './dto/find.args'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateBookingInput } from './dto/create-booking.input'
-import { generateSixDigitNumber } from 'src/common/util'
 import { SlotType } from '@prisma/client'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { generateSixDigitNumber } from 'src/common/util'
+import { CreateBookingInput } from './dto/create-booking.input'
+import { FindManyBookingArgs, FindUniqueBookingArgs } from './dto/find.args'
 
 @Injectable()
 export class BookingsService {

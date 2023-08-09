@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { ParkingSlot, ParkingSlotProps } from './ParkingSlot'
+import { useEffect, useState } from 'react'
 import { radians } from './Camera'
-import { Html } from '@react-three/drei'
-import { IconSearch } from '@tabler/icons-react'
-import { LensIcon } from './Lens'
 import { yellow } from './Car'
+import { ParkingSlot, ParkingSlotProps } from './ParkingSlot'
 
 interface BlinkingParkingSlotProps extends ParkingSlotProps {
   blinkDuration?: number

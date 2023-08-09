@@ -1,12 +1,10 @@
-import { useState } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { useState } from 'react'
 import {
+  Controller,
+  useFieldArray,
   useFormContext,
   useWatch,
-  useFieldArray,
-  Controller,
 } from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
@@ -18,32 +16,32 @@ import {
 } from '@autospace-org/forms/src/createGarage'
 import { Marker } from '../../organisms/Map/MapMarker'
 
-import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { HtmlInput } from '../../atoms/HtmlInput'
-import { Form } from '../../atoms/Form'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
+import { Form } from '../../atoms/Form'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { HtmlLabel } from '../../atoms/HtmlLabel'
 
-import { IconPlus } from '@tabler/icons-react'
-import {
-  CenterOfMap,
-  DefaultZoomControls,
-} from '../../organisms/Map/ZoomControls/ZoomControls'
-import { useMap } from 'react-map-gl'
-import { SearchPlaceBox } from '../../organisms/SearchPlaceBox'
-import { Panel } from '../../organisms/Map/Panel'
-import { ParkingIcon } from '../../atoms/ParkingIcon'
-import { Accordion } from '../../molecules/Accordion'
-import { HtmlSelect } from '../../atoms/HtmlSelect'
 import {
   SlotType,
   useCreateGarageMutation,
 } from '@autospace-org/network/src/generated'
-import { HtmlTextArea } from '../../atoms/HtmlTextArea'
-import { notification$ } from '@autospace-org/util/subjects'
 import { useImageUpload } from '@autospace-org/util'
+import { notification$ } from '@autospace-org/util/subjects'
+import { IconPlus } from '@tabler/icons-react'
+import { useMap } from 'react-map-gl'
+import { HtmlSelect } from '../../atoms/HtmlSelect'
+import { HtmlTextArea } from '../../atoms/HtmlTextArea'
+import { ParkingIcon } from '../../atoms/ParkingIcon'
 import { ProgressBar } from '../../atoms/ProgressBar'
+import { Accordion } from '../../molecules/Accordion'
 import { AutoImageChanger } from '../../molecules/AutoImageChanger'
+import { Panel } from '../../organisms/Map/Panel'
+import {
+  CenterOfMap,
+  DefaultZoomControls,
+} from '../../organisms/Map/ZoomControls/ZoomControls'
+import { SearchPlaceBox } from '../../organisms/SearchPlaceBox'
 export interface ICreateGarageProps {}
 
 export const CreateGarage = () => {

@@ -1,11 +1,7 @@
-import Head from 'next/head'
+import { Container } from '@autospace-org/ui/src/components/atoms/Container'
 import { CustomerBookings } from '@autospace-org/ui/src/components/templates/CustomerBookings'
 import { WhileLoggedIn } from '@autospace-org/ui/src/components/templates/WhileLoggedIn'
-import { Container } from '@autospace-org/ui/src/components/atoms/Container'
-
-import { AlertSection } from '@autospace-org/ui/src/components/organisms/AlertSection'
-import Link from 'next/link'
-import { LoaderPanel } from '@autospace-org/ui/src/components/molecules/Loader'
+import Head from 'next/head'
 
 export default function Bookings() {
   return (

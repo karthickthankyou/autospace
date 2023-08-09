@@ -1,8 +1,4 @@
-import React from 'react'
 import { ParkingSlot } from './ParkingSlot'
-import { randInt } from 'three/src/math/MathUtils'
-import { radians } from './Camera'
-import { Vector3 } from 'three'
 
 interface ParkingLotProps {
   parentPosition?: [number, number, number]

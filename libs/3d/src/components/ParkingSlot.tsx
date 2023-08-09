@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import { MeshProps } from '@react-three/fiber'
+import React, { useEffect, useState } from 'react'
 import { randFloat, randInt } from 'three/src/math/MathUtils'
 import { yellow } from './Car'
 

@@ -1,5 +1,5 @@
-import TabsMui, { TabsProps } from '@mui/material/Tabs'
 import TabMui, { TabProps } from '@mui/material/Tab'
+import TabsMui, { TabsProps } from '@mui/material/Tabs'
 
 export const Tabs = (props: TabsProps) => {
   return (

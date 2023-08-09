@@ -11,8 +11,8 @@ import {
   RegisterInput,
 } from './dto/auth.input'
 
-import { GetUserType, Role } from '../../common/types'
 import { FirebaseService } from 'src/common/firebase/firebase.service'
+import { GetUserType, Role } from '../../common/types'
 
 @Injectable()
 export class AuthService {

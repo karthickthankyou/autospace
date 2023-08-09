@@ -1,4 +1,4 @@
-import { OnModuleInit, Module, Injectable } from '@nestjs/common'
+import { Injectable, Module, OnModuleInit } from '@nestjs/common'
 import * as Sentry from '@sentry/node'
 
 @Injectable()

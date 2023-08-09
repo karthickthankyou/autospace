@@ -1,9 +1,9 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
-import { ReviewsService } from './reviews.service'
-import { Review } from './entities/review.entity'
-import { FindManyReviewArgs, FindUniqueReviewArgs } from './dto/find.args'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { CreateReviewInput } from './dto/create-review.input'
+import { FindManyReviewArgs, FindUniqueReviewArgs } from './dto/find.args'
 import { UpdateReviewInput } from './dto/update-review.input'
+import { Review } from './entities/review.entity'
+import { ReviewsService } from './reviews.service'
 
 @Resolver(() => Review)
 export class ReviewsResolver {

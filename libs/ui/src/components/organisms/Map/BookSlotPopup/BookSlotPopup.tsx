@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { Map } from '@autospace-org/ui/src/components/organisms/Map'
+import axios from 'axios'
 
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -11,7 +11,7 @@ import {
   IconTir,
   IconUser,
 } from '@tabler/icons-react'
-import { Source, Layer } from 'react-map-gl'
+import { Layer, Source } from 'react-map-gl'
 
 import { useFormContext, useWatch } from 'react-hook-form'
 
@@ -20,32 +20,32 @@ import {
   SearchGaragesQuery,
   SlotType,
 } from '@autospace-org/network/src/generated'
-import { Button } from '../../../atoms/Button'
 import { Controller } from 'react-hook-form'
+import { Button } from '../../../atoms/Button'
 
-import { DateRangeBookingInfo } from '../../../molecules/DateRangeBookingInfo'
-import { useTotalPrice } from '@autospace-org/hooks/src/useTotalPrice'
-import { HtmlLabel } from '../../../atoms/HtmlLabel'
-import { HtmlInput } from '../../../atoms/HtmlInput'
-import { Form } from '../../../atoms/Form'
 import { FormTypeBookSlot } from '@autospace-org/forms/src/bookSlot'
-import { notification$ } from '@autospace-org/util/subjects'
+import { useTotalPrice } from '@autospace-org/hooks/src/useTotalPrice'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
+import { notification$ } from '@autospace-org/util/subjects'
+import { Form } from '../../../atoms/Form'
+import { HtmlInput } from '../../../atoms/HtmlInput'
+import { HtmlLabel } from '../../../atoms/HtmlLabel'
+import { DateRangeBookingInfo } from '../../../molecules/DateRangeBookingInfo'
 
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 
-import { Switch } from '../../../atoms/Switch'
-import { Panel } from '../Panel'
-import { CenterOfMap, DefaultZoomControls } from '../ZoomControls/ZoomControls'
-import { Marker } from '../MapMarker'
-import { ParkingIcon } from '../../../atoms/ParkingIcon'
-import { LatLng, TotalPrice } from '@autospace-org/types'
 import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 import { LngLatTuple } from '@autospace-org/store/map'
-import React from 'react'
-import { AutoImageChanger } from '../../../molecules/AutoImageChanger'
+import { LatLng, TotalPrice } from '@autospace-org/types'
 import { toLocalISOString } from '@autospace-org/util'
+import React from 'react'
+import { ParkingIcon } from '../../../atoms/ParkingIcon'
+import { Switch } from '../../../atoms/Switch'
+import { AutoImageChanger } from '../../../molecules/AutoImageChanger'
+import { Marker } from '../MapMarker'
+import { Panel } from '../Panel'
+import { CenterOfMap, DefaultZoomControls } from '../ZoomControls/ZoomControls'
 
 const IconTypes = {
   [SlotType.Bicycle]: <IconBike />,

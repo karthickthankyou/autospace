@@ -1,19 +1,17 @@
-import { CustomerBookingCard } from '../../organisms/BookingCard/BookingCard'
 import { useAppSelector } from '@autospace-org/store'
 import { selectUid } from '@autospace-org/store/user'
+import { CustomerBookingCard } from '../../organisms/BookingCard/BookingCard'
 
 import {
-  BookingStatus,
   SortOrder,
   useBookingsLazyQuery,
 } from '@autospace-org/network/src/generated'
 import { useEffect, useState } from 'react'
-import { ShowData } from '../../organisms/ShowData'
 import { Tab, Tabs } from '../../molecules/Tabs'
 import { TabPanel } from '../../molecules/Tabs/Tabs'
 import { Timeline } from '../../molecules/Timeline'
 import { TimelineItem } from '../../molecules/Timeline/Timeline'
-import { toLocalISOString } from '@autospace-org/util'
+import { ShowData } from '../../organisms/ShowData'
 
 export interface ICustomerBookingsProps {}
 

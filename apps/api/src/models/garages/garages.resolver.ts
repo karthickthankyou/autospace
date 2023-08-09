@@ -1,37 +1,37 @@
+import { BadRequestException } from '@nestjs/common'
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { GaragesService } from './garages.service'
-import { Garage, SlotTypeCount } from './entities/garage.entity'
-import { FindManyGarageArgs, FindUniqueGarageArgs } from './dto/find.args'
-import { CreateGarageInput } from './dto/create-garage.input'
-import { UpdateGarageInput } from './dto/update-garage.input'
-import { Company } from '../companies/entities/company.entity'
+import {
+  AllowAuthenticated,
+  GetUser,
+} from 'src/common/decorators/auth/auth.decorator'
+import { AggregateCountOutput } from 'src/common/dtos/common.input'
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Slot } from '../slots/entities/slot.entity'
+import { GetUserType } from '../../common/types'
 import { Address } from '../addresses/entities/address.entity'
+import { Company } from '../companies/entities/company.entity'
+import { Service } from '../services/entities/service.entity'
+import { SlotWhereInput } from '../slots/dto/where.args'
+import { Slot } from '../slots/entities/slot.entity'
+import { Verification } from '../verifications/entities/verification.entity'
+import { CreateGarageInput } from './dto/create-garage.input'
+import { MinimalSlotGroupBy } from './dto/entities.output'
+import { FindManyGarageArgs, FindUniqueGarageArgs } from './dto/find.args'
 import {
   DateFilterInput,
   GarageFilter,
   LocationFilterInput,
 } from './dto/search-filter.input'
-import { SlotWhereInput } from '../slots/dto/where.args'
-import { MinimalSlotGroupBy } from './dto/entities.output'
-import { AggregateCountOutput } from 'src/common/dtos/common.input'
+import { UpdateGarageInput } from './dto/update-garage.input'
 import { GarageWhereInput } from './dto/where.args'
-import {
-  AllowAuthenticated,
-  GetUser,
-} from 'src/common/decorators/auth/auth.decorator'
-import { GetUserType } from '../../common/types'
-import { BadRequestException } from '@nestjs/common'
-import { Verification } from '../verifications/entities/verification.entity'
-import { Service } from '../services/entities/service.entity'
+import { Garage, SlotTypeCount } from './entities/garage.entity'
+import { GaragesService } from './garages.service'
 
 @Resolver(() => Garage)
 export class GaragesResolver {

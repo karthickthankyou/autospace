@@ -1,14 +1,14 @@
+import { useDebouncedValue } from '@autospace-org/hooks/src/async'
+import { SearchGaragesQueryVariables } from '@autospace-org/network/src/generated'
+import { useEffect, useState } from 'react'
 import {
   FieldNamesMarkedBoolean,
-  UseFormSetError,
   UseFormClearErrors,
   useFormContext,
+  UseFormSetError,
   useWatch,
 } from 'react-hook-form'
-import { useState, useEffect } from 'react'
 import { FormTypeSearchGarage } from '../searchGarages'
-import { SearchGaragesQueryVariables } from '@autospace-org/network/src/generated'
-import { useDebouncedValue } from '@autospace-org/hooks/src/async'
 
 type FormData = Partial<
   Pick<

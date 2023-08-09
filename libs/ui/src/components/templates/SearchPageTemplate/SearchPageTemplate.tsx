@@ -6,36 +6,36 @@ import {
   LocationInfo,
   useSearchLocation,
 } from '@autospace-org/hooks/src/location'
-import { Button } from '../../atoms/Button'
 import {
   IconCurrentLocation,
   IconExclamationCircle,
   IconInfoCircle,
   IconRefresh,
 } from '@tabler/icons-react'
-import { useFormContext, useWatch } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
+import { Button } from '../../atoms/Button'
 
-import { FormTypeSearchGarage } from '@autospace-org/forms/src/searchGarages'
 import { useConvertSearchFormToVariables } from '@autospace-org/forms/src/adapters/searchFormAdapter'
-import { FilterSidebar } from '../../organisms/FilterSidebar'
-import { Panel } from '../../organisms/Map/Panel'
-import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
+import { FormProviderBookSlot } from '@autospace-org/forms/src/bookSlot'
+import { FormTypeSearchGarage } from '@autospace-org/forms/src/searchGarages'
 import {
   SearchGaragesQuery,
   useSearchGaragesCountLazyQuery,
   useSearchGaragesLazyQuery,
 } from '@autospace-org/network/src/generated'
-import { Marker } from '../../organisms/Map/MapMarker'
-import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
-import { HtmlLabel } from '../../atoms/HtmlLabel'
-import { HtmlInput } from '../../atoms/HtmlInput'
-import { ViewStateChangeEvent, useMap } from 'react-map-gl'
 import { toLocalISOString, useKeypress } from '@autospace-org/util'
-import { ParkingIcon } from '../../atoms/ParkingIcon'
+import { useMap, ViewStateChangeEvent } from 'react-map-gl'
 import { Autocomplete } from '../../atoms/Autocomplete'
-import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
 import { Dialog } from '../../atoms/Dialog'
-import { FormProviderBookSlot } from '@autospace-org/forms/src/bookSlot'
+import { HtmlInput } from '../../atoms/HtmlInput'
+import { HtmlLabel } from '../../atoms/HtmlLabel'
+import { ParkingIcon } from '../../atoms/ParkingIcon'
+import { FilterSidebar } from '../../organisms/FilterSidebar'
+import { BookSlotPopup } from '../../organisms/Map/BookSlotPopup'
+import { Marker } from '../../organisms/Map/MapMarker'
+import { Panel } from '../../organisms/Map/Panel'
+import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
+import { majorCitiesLocationInfo } from '../../organisms/SearchPlaceBox/SearchPlaceBox'
 
 export interface ISearchPageTemplateProps {
   initialProps: {

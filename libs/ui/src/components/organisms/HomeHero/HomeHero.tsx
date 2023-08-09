@@ -1,6 +1,6 @@
+import { useRouter } from 'next/router'
 import { Container } from '../../atoms/Container'
 import { HeroSearchForm } from '../HeroSearchForm'
-import { useRouter } from 'next/router'
 export interface IHomeHeroProps {}
 
 export const HomeHero = ({}: IHomeHeroProps) => {

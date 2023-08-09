@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
 import { Admin as AdminType } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 

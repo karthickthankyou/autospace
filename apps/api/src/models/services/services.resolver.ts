@@ -1,9 +1,9 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
-import { ServicesService } from './services.service'
-import { Service } from './entities/service.entity'
-import { FindManyServiceArgs, FindUniqueServiceArgs } from './dto/find.args'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { CreateServiceInput } from './dto/create-service.input'
+import { FindManyServiceArgs, FindUniqueServiceArgs } from './dto/find.args'
 import { UpdateServiceInput } from './dto/update-service.input'
+import { Service } from './entities/service.entity'
+import { ServicesService } from './services.service'
 
 @Resolver(() => Service)
 export class ServicesResolver {

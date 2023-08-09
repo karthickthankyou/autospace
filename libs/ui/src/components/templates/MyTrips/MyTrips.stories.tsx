@@ -1,16 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { MyTrips } from './MyTrips'
-import { graphql } from 'msw'
+import {
+  myDropTripsQueryData,
+  myPickupTripsQueryData,
+} from '@autospace-org/network/src/data'
 import {
   MyDropTripsQuery,
   MyPickupTripsQuery,
   namedOperations,
 } from '@autospace-org/network/src/generated'
-import {
-  bookings,
-  myDropTripsQueryData,
-  myPickupTripsQueryData,
-} from '@autospace-org/network/src/data'
+import type { Meta, StoryObj } from '@storybook/react'
+import { graphql } from 'msw'
+import { MyTrips } from './MyTrips'
 
 const meta: Meta<typeof MyTrips> = {
   component: MyTrips,

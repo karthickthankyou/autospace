@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { FindManyValetArgs, FindUniqueValetArgs } from './dto/find.args'
+import { AuthService } from 'src/common/auth/auth.service'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import { CreateValetInput } from './dto/create-valet.input'
+import { FindManyValetArgs, FindUniqueValetArgs } from './dto/find.args'
 import { UpdateValetInput } from './dto/update-valet.input'
-import { AuthService } from 'src/common/auth/auth.service'
 
 @Injectable()
 export class ValetsService {

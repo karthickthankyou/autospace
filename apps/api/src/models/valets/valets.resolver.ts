@@ -1,19 +1,18 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
-import { ValetsService } from './valets.service'
-import { Valet } from './entities/valet.entity'
-import { FindManyValetArgs, FindUniqueValetArgs } from './dto/find.args'
-import { CreateValetInput } from './dto/create-valet.input'
-import { UpdateValetInput } from './dto/update-valet.input'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { BookingStatus } from '@prisma/client'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { Booking } from '../bookings/entities/booking.entity'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { BookingStatus } from '@prisma/client'
-import { GetUserType } from '../../common/types'
 import { checkRowLevelPermission } from 'src/common/guards'
-import { FindManyBookingArgs } from '../bookings/dto/find.args'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { GetUserType } from '../../common/types'
+import { Booking } from '../bookings/entities/booking.entity'
+import { CreateValetInput } from './dto/create-valet.input'
+import { FindManyValetArgs, FindUniqueValetArgs } from './dto/find.args'
+import { UpdateValetInput } from './dto/update-valet.input'
+import { Valet } from './entities/valet.entity'
+import { ValetsService } from './valets.service'
 
 @AllowAuthenticated()
 @Resolver(() => Valet)

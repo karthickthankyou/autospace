@@ -1,5 +1,5 @@
-import { CreateManagerInput } from './create-manager.input'
 import { Field, InputType, PartialType } from '@nestjs/graphql'
+import { CreateManagerInput } from './create-manager.input'
 
 @InputType()
 export class UpdateManagerInput extends PartialType(CreateManagerInput) {

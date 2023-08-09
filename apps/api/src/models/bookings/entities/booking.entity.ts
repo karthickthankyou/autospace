@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql'
-import { BookingStatus, Booking as BookingObjectType } from '@prisma/client'
+import { Booking as BookingObjectType, BookingStatus } from '@prisma/client'
 import { RestrictProperties } from 'src/common/dtos/common.input'
 
 registerEnumType(BookingStatus, { name: 'BookingStatus' })

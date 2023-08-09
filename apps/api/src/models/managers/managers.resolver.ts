@@ -1,24 +1,24 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
   Args,
-  ResolveField,
+  Mutation,
   Parent,
+  Query,
+  ResolveField,
+  Resolver,
 } from '@nestjs/graphql'
-import { ManagersService } from './managers.service'
-import { Manager } from './entities/manager.entity'
-import { FindManyManagerArgs, FindUniqueManagerArgs } from './dto/find.args'
-import { CreateManagerInput } from './dto/create-manager.input'
-import { UpdateManagerInput } from './dto/update-manager.input'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { Company } from '../companies/entities/company.entity'
+import { AuthService } from 'src/common/auth/auth.service'
 import {
   AllowAuthenticated,
   GetUser,
 } from 'src/common/decorators/auth/auth.decorator'
-import { AuthService } from 'src/common/auth/auth.service'
+import { PrismaService } from 'src/common/prisma/prisma.service'
 import { GetUserType } from '../../common/types'
+import { Company } from '../companies/entities/company.entity'
+import { CreateManagerInput } from './dto/create-manager.input'
+import { FindManyManagerArgs, FindUniqueManagerArgs } from './dto/find.args'
+import { UpdateManagerInput } from './dto/update-manager.input'
+import { Manager } from './entities/manager.entity'
+import { ManagersService } from './managers.service'
 
 @Resolver(() => Manager)
 export class ManagersResolver {

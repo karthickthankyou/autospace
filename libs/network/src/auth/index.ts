@@ -1,11 +1,11 @@
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-  signOut as firebaseSignOut,
-  sendPasswordResetEmail,
   GoogleAuthProvider,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
   signInWithPopup,
+  signOut as firebaseSignOut,
+  updateProfile,
   UserCredential,
 } from 'firebase/auth'
 import { auth } from '../config/firebase'

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
-import { BookingsService } from './bookings.service'
-import { BookingsResolver } from './bookings.resolver'
 import { ValetsService } from '../valets/valets.service'
+import { BookingsResolver } from './bookings.resolver'
+import { BookingsService } from './bookings.service'
 
 @Module({
   providers: [BookingsResolver, BookingsService, ValetsService],

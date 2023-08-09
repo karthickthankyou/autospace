@@ -1,6 +1,5 @@
 import { IconArrowRightCircle } from '@tabler/icons-react'
 import { useEffect, useState } from 'react'
-import { useWatch } from 'react-hook-form'
 
 import {
   differenceInTime,
@@ -8,7 +7,6 @@ import {
   formatTime,
   getTimeUnits,
 } from '@autospace-org/util/date'
-import { FormTypeSearchGarage } from '@autospace-org/forms/src/searchGarages'
 
 export interface IDateRangeBookingInfoProps {
   startTime?: string

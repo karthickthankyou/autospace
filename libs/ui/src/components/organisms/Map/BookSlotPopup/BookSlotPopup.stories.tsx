@@ -1,7 +1,7 @@
+import { FormProviderBookSlot } from '@autospace-org/forms/src/bookSlot'
+import { searchGarages } from '@autospace-org/network/src/data'
 import type { Meta, StoryObj } from '@storybook/react'
 import { BookSlotPopup } from './BookSlotPopup'
-import { searchGarages } from '@autospace-org/network/src/data'
-import { FormProviderBookSlot } from '@autospace-org/forms/src/bookSlot'
 
 const meta: Meta<typeof BookSlotPopup> = {
   component: BookSlotPopup,

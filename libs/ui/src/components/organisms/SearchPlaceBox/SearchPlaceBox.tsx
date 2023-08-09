@@ -1,11 +1,10 @@
-import { useMapStore } from '@autospace-org/store/map'
 import {
   LocationInfo,
   useSearchLocation,
 } from '@autospace-org/hooks/src/location'
 
-import { Autocomplete } from '../../atoms/Autocomplete'
 import { useEffect } from 'react'
+import { Autocomplete } from '../../atoms/Autocomplete'
 
 export interface ISearchPlaceBoxProps {
   setLocationInfo: (locationInfo: LocationInfo) => void

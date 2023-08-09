@@ -1,9 +1,6 @@
-import {
-  ValetsLazyQueryHookResult,
-  ValetsQuery,
-} from '@autospace-org/network/src/generated'
-import Image from 'next/image'
+import { ValetsQuery } from '@autospace-org/network/src/generated'
 import { format } from 'date-fns'
+import Image from 'next/image'
 
 export interface IValetCardProps {
   valet: ValetsQuery['valets'][0]

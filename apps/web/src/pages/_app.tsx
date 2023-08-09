@@ -1,15 +1,15 @@
 import '@/styles/globals.css'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import type { AppProps } from 'next/app'
-import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
-import { AppLevelListeners } from '@autospace-org/ui/src/components/atoms/AppLevelListeners'
-import { Notifications } from '@autospace-org/ui/src/components/organisms/Notifications'
 import { useIsPathInArray } from '@autospace-org/hooks/src'
+import { ApolloProvider } from '@autospace-org/network/src/config/apollo'
+import { ReduxProvider } from '@autospace-org/store/Provider'
+import { MenuItem } from '@autospace-org/types'
+import { AppLevelListeners } from '@autospace-org/ui/src/components/atoms/AppLevelListeners'
 import { Footer } from '@autospace-org/ui/src/components/organisms/Footer'
 import { Header } from '@autospace-org/ui/src/components/organisms/Header'
-import { MenuItem } from '@autospace-org/types'
-import { ReduxProvider } from '@autospace-org/store/Provider'
+import { Notifications } from '@autospace-org/ui/src/components/organisms/Notifications'
+import type { AppProps } from 'next/app'
 
 const MENUITEMS: MenuItem[] = [
   { label: 'About', href: '/about', loggedIn: false },

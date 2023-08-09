@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { FormError } from './FormError'
-import { HtmlLabel } from '../HtmlLabel/HtmlLabel'
 
 const meta: Meta<typeof FormError> = {
   component: FormError,

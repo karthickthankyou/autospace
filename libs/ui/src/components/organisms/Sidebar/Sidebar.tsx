@@ -1,3 +1,5 @@
+import { Dialog, Transition } from '@headlessui/react'
+import { usePathname } from 'next/navigation'
 import {
   Dispatch,
   Fragment,
@@ -5,8 +7,6 @@ import {
   SetStateAction,
   useEffect,
 } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { usePathname } from 'next/navigation'
 
 import { IconX } from '@tabler/icons-react'
 

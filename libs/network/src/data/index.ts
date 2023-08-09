@@ -1,7 +1,8 @@
+import { toLocalISOString } from '@autospace-org/util'
 import {
   AdminsQuery,
-  BookingStatus,
   BookingsQuery,
+  BookingStatus,
   CompanyValetsQuery,
   MyDropTripsQuery,
   MyPickupTripsQuery,
@@ -9,7 +10,6 @@ import {
   ValetDropsQuery,
   ValetPickupsQuery,
 } from '../generated'
-import { toLocalISOString } from '@autospace-org/util'
 
 export const garages = {
   garages: [

@@ -1,6 +1,6 @@
 // ... other imports
 import { useFrame } from '@react-three/fiber'
-import { useMemo, useState, useRef, useEffect } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { Mover, SpawnedElement, useTabVisible } from './Spawner'
 

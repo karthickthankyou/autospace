@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircleGeometry, MeshBasicMaterial, BoxGeometry } from 'three'
+import { BoxGeometry, CircleGeometry, MeshBasicMaterial } from 'three'
 
 export const LensIcon: React.FC = () => {
   const circleGeometry = new CircleGeometry(1, 32)

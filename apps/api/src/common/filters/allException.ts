@@ -1,12 +1,12 @@
 import {
+  ArgumentsHost,
   Catch,
   ExceptionFilter,
-  ArgumentsHost,
   HttpException,
   HttpStatus,
 } from '@nestjs/common'
-import * as Sentry from '@sentry/node'
 import { GqlArgumentsHost } from '@nestjs/graphql'
+import * as Sentry from '@sentry/node'
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyGarageArgs, FindUniqueGarageArgs } from './dto/find.args'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateGarageInput } from './dto/create-garage.input'
-import { UpdateGarageInput } from './dto/update-garage.input'
-import { CreateSlotInputWithoutGarageId } from '../slots/dto/create-slot.input'
 import { Prisma } from '@prisma/client'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { CreateSlotInputWithoutGarageId } from '../slots/dto/create-slot.input'
+import { CreateGarageInput } from './dto/create-garage.input'
+import { FindManyGarageArgs, FindUniqueGarageArgs } from './dto/find.args'
+import { UpdateGarageInput } from './dto/update-garage.input'
 
 const groupSlotsByType = (
   slots: CreateSlotInputWithoutGarageId[],

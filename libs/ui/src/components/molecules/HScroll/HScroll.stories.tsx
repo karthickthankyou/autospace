@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { HScroll } from './HScroll'
 import { Button } from '../../atoms/Button'
+import { HScroll } from './HScroll'
 
 const meta: Meta<typeof HScroll> = {
   component: HScroll,

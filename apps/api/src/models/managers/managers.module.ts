@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { ManagersService } from './managers.service'
 import { ManagersResolver } from './managers.resolver'
+import { ManagersService } from './managers.service'
 
 @Module({
   providers: [ManagersResolver, ManagersService],

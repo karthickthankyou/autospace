@@ -1,13 +1,7 @@
+import { TAKE_COUNT } from '@autospace-org/hooks/src/async'
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react'
 import React from 'react'
 import { PlainButton } from '../../atoms/PlainButton'
-import {
-  IconArrowBadgeLeft,
-  IconArrowLeft,
-  IconArrowLeftCircle,
-  IconArrowRight,
-  IconArrowRightCircle,
-} from '@tabler/icons-react'
-import { TAKE_COUNT } from '@autospace-org/hooks/src/async'
 
 export interface SimplePaginationProps {
   setSkip: React.Dispatch<React.SetStateAction<number>>

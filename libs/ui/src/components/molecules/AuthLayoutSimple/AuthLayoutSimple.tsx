@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 import { BrandIcon } from '../../atoms/BrandIcon'
 
-import Link from 'next/link'
 import { IconArrowBack } from '@tabler/icons-react'
+import Link from 'next/link'
 
 export interface IAuthLayoutProps {
   children: ReactNode

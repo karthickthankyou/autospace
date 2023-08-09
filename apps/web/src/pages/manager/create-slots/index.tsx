@@ -1,14 +1,14 @@
+import { useFormCreateManySlots } from '@autospace-org/forms/src/createManySlots'
+import { useMutation } from '@autospace-org/network'
 import {
   CreateManySlotsDocument,
   SlotType,
 } from '@autospace-org/network/src/generated'
-import { HtmlLabel } from '@autospace-org/ui/src/components/atoms/HtmlLabel'
-import { HtmlInput } from '@autospace-org/ui/src/components/atoms/HtmlInput'
-import { HtmlSelect } from '@autospace-org/ui/src/components/atoms/HtmlSelect'
-import { Form } from '@autospace-org/ui/src/components/atoms/Form'
 import { Button } from '@autospace-org/ui/src/components/atoms/Button'
-import { useMutation } from '@autospace-org/network'
-import { useFormCreateManySlots } from '@autospace-org/forms/src/createManySlots'
+import { Form } from '@autospace-org/ui/src/components/atoms/Form'
+import { HtmlInput } from '@autospace-org/ui/src/components/atoms/HtmlInput'
+import { HtmlLabel } from '@autospace-org/ui/src/components/atoms/HtmlLabel'
+import { HtmlSelect } from '@autospace-org/ui/src/components/atoms/HtmlSelect'
 
 const CreateSlotsPage = () => {
   const [createManySlots, { data, loading }] = useMutation(

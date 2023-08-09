@@ -1,20 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import {
-  Box,
-  Text,
-  GradientTexture,
-  Plane,
-  Center,
-  Text3D,
-  Html,
-} from '@react-three/drei'
-import { radians } from './Camera'
-import { CarTrail } from './Headlights'
+import { Box, Html } from '@react-three/drei'
 import { Color } from '@react-three/fiber'
+import React, { useEffect, useState } from 'react'
 import { Euler, Vector3 } from 'three'
 import { randFloat } from 'three/src/math/MathUtils'
-import { GradientPlane } from './GradientPlane'
 import { BlinkingParkingSlot } from './BlinkingParkingSlot'
+import { radians } from './Camera'
+import { GradientPlane } from './GradientPlane'
 
 export const yellow = 'hsl(52, 100%, 50%)'
 

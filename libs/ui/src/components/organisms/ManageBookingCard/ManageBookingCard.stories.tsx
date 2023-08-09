@@ -1,6 +1,6 @@
+import { bookings } from '@autospace-org/network/src/data'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ManageBookingCard } from './ManageBookingCard'
-import { bookings } from '@autospace-org/network/src/data'
 
 const meta: Meta<typeof ManageBookingCard> = {
   component: ManageBookingCard,

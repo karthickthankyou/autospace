@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
-import { ValetsService } from './valets.service'
 import { ValetsResolver } from './valets.resolver'
+import { ValetsService } from './valets.service'
 
 @Module({
   providers: [ValetsResolver, ValetsService],

@@ -1,6 +1,6 @@
+import { RotatingCamera } from '@autospace-org/3d/src/scenes/CarScene'
 import { ParkingSlotScene } from '@autospace-org/3d/src/scenes/ParkingSlotScene'
 import { Container } from '../../atoms/Container'
-import { RotatingCamera } from '@autospace-org/3d/src/scenes/CarScene'
 
 export interface IHowItWorksCustomerProps {}
 

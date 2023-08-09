@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
-import { FindManyCompanyArgs, FindUniqueCompanyArgs } from './dto/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateCompanyInput } from './dto/create-company.input'
-import { UpdateCompanyInput } from './dto/update-company.input'
 import { GetUserType } from '../../common/types'
+import { CreateCompanyInput } from './dto/create-company.input'
+import { FindManyCompanyArgs, FindUniqueCompanyArgs } from './dto/find.args'
+import { UpdateCompanyInput } from './dto/update-company.input'
 
 @Injectable()
 export class CompaniesService {

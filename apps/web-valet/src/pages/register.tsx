@@ -1,6 +1,6 @@
-import Head from 'next/head'
 import { AuthLayoutSimple } from '@autospace-org/ui/src/components/molecules/AuthLayoutSimple'
 import { AlertSection } from '@autospace-org/ui/src/components/organisms/AlertSection'
+import Head from 'next/head'
 
 export default function Login() {
   return (

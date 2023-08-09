@@ -1,6 +1,6 @@
+import { useTakeSkip } from '@autospace-org/hooks/src/async'
 import type { Meta, StoryObj } from '@storybook/react'
 import { ShowData } from './ShowData'
-import { useTakeSkip } from '@autospace-org/hooks/src/async'
 
 const meta: Meta<typeof ShowData> = {
   component: ShowData,

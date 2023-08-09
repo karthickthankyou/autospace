@@ -1,9 +1,9 @@
+import { useAppSelector } from '@autospace-org/store'
+import { selectUid } from '@autospace-org/store/user'
 import { notification$ } from '@autospace-org/util/subjects'
+import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { RefObject, useEffect, useRef, useState } from 'react'
-import { selectUid } from '@autospace-org/store/user'
-import { usePathname } from 'next/navigation'
-import { useAppSelector } from '@autospace-org/store'
 
 export const useRedirectLoggedInUsers = () => {
   const uid = useAppSelector(selectUid)

@@ -1,5 +1,5 @@
 import { LatLng } from '@autospace-org/types'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export const useMapboxDirections = (start: LatLng, end: LatLng) => {
   const [data, setData] = useState<[number, number][]>([])

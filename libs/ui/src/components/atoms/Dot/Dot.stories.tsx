@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { PulsingDot } from './Dot'
 import { IconShoppingBag } from '@tabler/icons-react'
+import { PulsingDot } from './Dot'
 
 const meta: Meta<typeof PulsingDot> = {
   component: PulsingDot,

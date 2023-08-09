@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { catchError, debounceTime, EMPTY, Subject, tap } from 'rxjs'
 
 export const useDebounce = (delay: number = 1000) => {

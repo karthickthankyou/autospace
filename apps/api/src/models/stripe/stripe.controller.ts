@@ -1,10 +1,10 @@
-import { Controller, Post, Body, Get, Query, Res } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common'
+import { Response } from 'express'
+import { CreateBookingInput } from 'prisma/seed/generated/graphql'
+import { PrismaService } from 'src/common/prisma/prisma.service'
+import { BookingsService } from '../bookings/bookings.service'
 import { CreateStripeDto } from './dto/create-stripe-session.dto'
 import StripeService from './stripe.service'
-import { PrismaService } from 'src/common/prisma/prisma.service'
-import { CreateBookingInput } from 'prisma/seed/generated/graphql'
-import { Response } from 'express'
-import { BookingsService } from '../bookings/bookings.service'
 
 @Controller('stripe')
 export class StripeController {

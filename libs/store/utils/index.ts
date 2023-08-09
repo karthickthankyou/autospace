@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { NotificationType } from '@autospace-org/types'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { RootState } from '..'
 

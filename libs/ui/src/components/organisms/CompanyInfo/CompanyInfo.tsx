@@ -3,13 +3,13 @@ import {
   useGaragesQuery,
   useMyCompanyQuery,
 } from '@autospace-org/network/src/generated'
-import { LoaderPanel } from '../../molecules/Loader'
-import { AlertSection } from '../AlertSection'
 import Link from 'next/link'
+import { useState } from 'react'
+import { LoaderPanel } from '../../molecules/Loader'
 import { CreateCompany } from '../../templates/CreateCompany'
+import { AlertSection } from '../AlertSection'
 import { GarageCard } from '../GarageCard'
 import { ShowData } from '../ShowData'
-import { useState } from 'react'
 
 export const CompanyInfo = () => {
   const { data, loading } = useMyCompanyQuery()

@@ -1,8 +1,5 @@
-import { Plane, GradientTexture, Float } from '@react-three/drei'
-import React, { useEffect, useRef, useState } from 'react'
+import { GradientTexture, Plane } from '@react-three/drei'
 import * as THREE from 'three'
-import { randInt } from 'three/src/math/MathUtils'
-import { ImagePlane } from './ImagePlane'
 
 type Plane = {
   rotation: [number, number, number]

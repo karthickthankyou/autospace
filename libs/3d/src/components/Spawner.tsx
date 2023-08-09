@@ -1,5 +1,5 @@
-import { useState, ReactNode, useEffect, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 
 interface MoverProps {

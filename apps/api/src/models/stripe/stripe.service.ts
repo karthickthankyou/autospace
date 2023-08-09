@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
+import { toTitleCase } from 'src/common/util'
 import Stripe from 'stripe'
 import { CreateStripeDto } from './dto/create-stripe-session.dto'
-import { toTitleCase } from 'src/common/util'
 
 @Injectable()
 export default class StripeService {
