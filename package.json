@@ -32,6 +32,7 @@
     "start:web-manager": "yarn nx dev @autospace-org/web-manager",
     "start:web-admin": "yarn nx dev @autospace-org/web-admin",
     "start:all": "run-p start:api start:web start:web-manager start:web-admin",
+    "reinstall": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' + && yarn install",
     "cloc": "npx cloc --exclude-dir=node_modules,dist,build,yarn.lock,package.json,@generated,generated,.next ."
   }
 }

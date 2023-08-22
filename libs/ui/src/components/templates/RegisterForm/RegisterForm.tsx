@@ -51,9 +51,8 @@ export const RegisterForm = ({ className }: ISignupFormProps) => {
 
   return (
     <Form
-      onSubmit={handleSubmit(async (data) => {
-        const { email, password } = data
-        const user = await callAsyncFn({ email, password })
+      onSubmit={handleSubmit(async ({ email, password, displayName }) => {
+        const user = await callAsyncFn({ email, password, displayName })
       })}
     >
       <HtmlLabel title="Email" error={errors.email?.message}>

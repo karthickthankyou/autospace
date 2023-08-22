@@ -3,7 +3,9 @@ import {
   namedOperations,
   useCreateCompanyMutation,
 } from '@autospace-org/network/src/generated'
-import { useState } from 'react'
+import { useAppSelector } from '@autospace-org/store'
+import { selectDisplayName } from '@autospace-org/store/user'
+import { useEffect, useState } from 'react'
 import { Button } from '../../atoms/Button'
 import { Dialog } from '../../atoms/Dialog'
 import { Form } from '../../atoms/Form'
@@ -18,11 +20,20 @@ export const CreateCompany = ({}: ICreateCompanyProps) => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useCreateCompanyForm()
 
   const [createCompany, { loading, data }] = useCreateCompanyMutation()
 
   const [open, setOpen] = useState(false)
+
+  const displayName = useAppSelector(selectDisplayName)
+
+  useEffect(() => {
+    if (displayName) {
+      setValue('managerName', displayName)
+    }
+  }, [displayName])
 
   return (
     <div>
