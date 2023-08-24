@@ -23,6 +23,7 @@ export type NotificationType = {
     | 'bottom-right'
     | 'bottom-left'
     | 'bottom-center'
+  duration?: number
 }
 
 export type LatLng = {

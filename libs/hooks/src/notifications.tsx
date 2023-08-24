@@ -1,19 +1,20 @@
 import { addNotification, removeNotification } from '@autospace-org/store/utils'
 
 import { useAppDispatch } from '@autospace-org/store'
-import {} from '@autospace-org/store/utils'
+
 import { makeId } from '@autospace-org/util'
 import { notification$ } from '@autospace-org/util/subjects'
 import { useEffect } from 'react'
 import {
   catchError,
   debounceTime,
-  delay,
   distinctUntilChanged,
   EMPTY,
   map,
   tap,
+  timer,
 } from 'rxjs'
+import { delayWhen } from 'rxjs/operators'
 
 export const useNotification = () => {
   const dispatch = useAppDispatch()
@@ -26,7 +27,7 @@ export const useNotification = () => {
         tap((v) => {
           dispatch(addNotification(v))
         }),
-        delay(4000),
+        delayWhen((v) => timer(v.duration || 4000)),
         tap((v) => {
           dispatch(removeNotification(v.id))
         }),

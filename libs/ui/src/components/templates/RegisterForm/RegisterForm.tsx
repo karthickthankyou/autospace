@@ -4,18 +4,14 @@ import { Button } from '../../atoms/Button'
 import { HtmlInput } from '../../atoms/HtmlInput'
 import { HtmlLabel } from '../../atoms/HtmlLabel'
 
-import {
-  FormTypeRegister,
-  useFormRegister,
-} from '@autospace-org/forms/src/register'
-import { useAppSelector } from '@autospace-org/store'
-import { selectUid } from '@autospace-org/store/user'
+import { useFormRegister } from '@autospace-org/forms/src/register'
 import { Form } from '../../atoms/Form'
 
 import { notification$ } from '@autospace-org/util/subjects'
 import { useRouter } from 'next/router'
 
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
+import { useEffect } from 'react'
 
 export interface ISignupFormProps {
   className?: string
@@ -29,12 +25,11 @@ export const RegisterForm = ({ className }: ISignupFormProps) => {
   } = useFormRegister()
 
   const { loading, error, success, callAsyncFn } = useAsync(
-    (data: FormTypeRegister) => registerUser(data),
+    registerUser,
     (err: any) => {
-      if (err.code === 'auth/user-not-found') {
-        return 'Invalid email.'
-      } else if (err.code === 'auth/wrong-password') {
-        return 'Invalid password.'
+      console.log('err', err)
+      if (err.code === 'auth/email-already-in-use') {
+        return "Email already in use! Just kidding, or am I? Honestly, I'm not sure if that email exists or not. Maybe I've said too much. Forget I said anything!"
       }
       return 'Something went wrong. Please try again.'
     },
@@ -42,19 +37,16 @@ export const RegisterForm = ({ className }: ISignupFormProps) => {
 
   const router = useRouter()
 
-  const uid = useAppSelector(selectUid)
+  useEffect(() => {
+    if (success) router.push('/')
+  }, [success])
 
-  if (uid) {
-    notification$.next({ message: 'Authenticated. ' })
-    router.push('/')
-  }
+  useEffect(() => {
+    if (error) notification$.next({ message: error, duration: 8000 })
+  }, [error])
 
   return (
-    <Form
-      onSubmit={handleSubmit(async ({ email, password, displayName }) => {
-        const user = await callAsyncFn({ email, password, displayName })
-      })}
-    >
+    <Form onSubmit={handleSubmit(callAsyncFn)}>
       <HtmlLabel title="Email" error={errors.email?.message}>
         <HtmlInput
           className="text-black"
