@@ -40,6 +40,11 @@ export class GaragesService {
     images,
     slots,
   }: CreateGarageInput & { companyId: number }) {
+    // Check if any slot has a count greater than 20
+    if (slots.some((slot) => slot.count > 20)) {
+      throw new Error('Slot count cannot be more than 20 for any slot type.')
+    }
+
     const garage = await this.prisma.garage.create({
       data: {
         address: { create: address },
