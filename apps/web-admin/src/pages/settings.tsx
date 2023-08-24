@@ -1,4 +1,5 @@
 import { Container } from '@autospace-org/ui/src/components/atoms/Container'
+import Link from 'next/link'
 
 export default function SettingsPage() {
   return (
@@ -15,9 +16,17 @@ export default function SettingsPage() {
             optimized that to perfection.
           </p>
           <p>
-            Plus, our developer has been working tirelessly to ensure that your
-            Autospace experience is like cruising in a self-driving car -
-            smooth, effortless, and kind of magical. So, he took a
+            Plus, our developer (psst...{' '}
+            <Link
+              target="_blank"
+              className="underline underline-offset-4"
+              href="https://www.linkedin.com/in/iamkarthickr/"
+            >
+              me
+            </Link>
+            ) has been working tirelessly to ensure that your Autospace
+            experience is like cruising in a self-driving car - smooth,
+            effortless, and kind of magical. So, he took a
             <span className="font-bold">well-deserved break</span> when it came
             to the settings page. Can you blame him?
           </p>
