@@ -22,9 +22,7 @@ export const Accordion = ({
           className={`flex justify-between w-full py-2 font-medium ${className}`}
         >
           <span
-            className={`text-left ${
-              open ? 'text-primary-600' : 'text-gray-600'
-            }`}
+            className={`text-left ${open ? 'font-semibold' : 'text-gray-600'}`}
           >
             {title}
           </span>

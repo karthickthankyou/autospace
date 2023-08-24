@@ -23,6 +23,8 @@ export const ToggleButton = (props: ToggleButtonProps) => (
       //   standard: 'bg-gray-50 ',
     }}
     disableRipple
+    disableTouchRipple
+    disableFocusRipple
     {...props}
   />
 )

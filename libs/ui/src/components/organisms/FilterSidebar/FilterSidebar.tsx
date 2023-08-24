@@ -59,20 +59,12 @@ export const FilterSidebar = () => {
                     onChange={(event, value) => {
                       onChange(value.sort())
                     }}
-                    // classes={{ root: 'block mt-2' }}
                     aria-label="text formatting"
                   >
                     {defaultValues?.type?.map((val) => {
                       if (!val) return null
                       return (
                         <ToggleButton
-                          disableRipple
-                          disableTouchRipple
-                          disableFocusRipple
-                          //   classes={{
-                          //     root: 'rounded-none',
-                          //     selected: 'border border-black',
-                          //   }}
                           key={val}
                           value={val}
                           selected={value.includes(val)}

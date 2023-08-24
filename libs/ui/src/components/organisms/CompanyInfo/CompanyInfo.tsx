@@ -15,7 +15,7 @@ export const CompanyInfo = () => {
   const { data, loading } = useMyCompanyQuery()
 
   if (loading) {
-    return <LoaderPanel />
+    return <LoaderPanel text="Loading company..." />
   }
 
   if (!data?.myCompany)

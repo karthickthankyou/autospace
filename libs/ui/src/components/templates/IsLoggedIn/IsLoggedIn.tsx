@@ -17,7 +17,7 @@ export const IsLoggedIn = ({
   const { uid, loaded } = useAppSelector(selectUser)
 
   if (!loaded) {
-    return <LoaderPanel />
+    return <LoaderPanel text="Loading user..." />
   }
 
   if (!uid) {
