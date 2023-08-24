@@ -37,11 +37,20 @@ export class AdminsResolver {
   async createAdmin(
     @Args('createAdminInput')
     { displayName, email, password }: RegisterInput,
-    @GetUser() user: GetUserType,
   ) {
     const newAdmin = await this.auth.register({ email, displayName, password })
 
-    await this.auth.setRole(user, 'admin')
+    await this.auth.setRole(
+      {
+        displayName,
+        email,
+        roles: [],
+        uid: newAdmin.uid,
+        emailVerified: newAdmin.emailVerified,
+        phoneNumber: newAdmin.phoneNumber,
+      },
+      'admin',
+    )
     return this.adminsService.create({ displayName, uid: newAdmin.uid })
   }
 
