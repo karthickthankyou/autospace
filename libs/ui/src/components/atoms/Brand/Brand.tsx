@@ -1,9 +1,10 @@
+import { Role } from '@autospace-org/types'
 import { BrandIcon } from '../BrandIcon'
 
 export interface IBrandProps {
   shortForm?: boolean
   className?: string
-  type?: 'admin' | 'manager' | 'valet'
+  type?: Role
 }
 
 export const Brand = ({

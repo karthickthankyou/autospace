@@ -16,6 +16,39 @@ export const createCustomer = gql`
   }
 `
 
+export const createAdmin = gql`
+  mutation createAdmin($createAdminInput: RegisterInput!) {
+    createAdmin(createAdminInput: $createAdminInput) {
+      createdAt
+      displayName
+      uid
+      updatedAt
+    }
+  }
+`
+
+export const createValet = gql`
+  mutation createValet($createValetInput: CreateValetInput!) {
+    createValet(createValetInput: $createValetInput) {
+      uid
+      displayName
+      createdAt
+      updatedAt
+      companyId
+    }
+  }
+`
+export const removeAdmin = gql`
+  mutation removeAdmin($where: AdminWhereUniqueInput) {
+    removeAdmin(where: $where) {
+      createdAt
+      displayName
+      updatedAt
+      uid
+    }
+  }
+`
+
 export const createVerification = gql`
   mutation createVerification(
     $createVerificationInput: CreateVerificationInput!
@@ -356,27 +389,6 @@ export const createGarage = gql`
   }
 `
 
-export const createAdmin = gql`
-  mutation createAdmin($createAdminInput: RegisterInput!) {
-    createAdmin(createAdminInput: $createAdminInput) {
-      createdAt
-      displayName
-      uid
-      updatedAt
-    }
-  }
-`
-export const removeAdmin = gql`
-  mutation removeAdmin($where: AdminWhereUniqueInput) {
-    removeAdmin(where: $where) {
-      createdAt
-      displayName
-      updatedAt
-      uid
-    }
-  }
-`
-
 export const admins = gql`
   query admins(
     $distinct: [AdminScalarFieldEnum!]
@@ -580,18 +592,6 @@ export const companyValets = gql`
       updatedAt
       companyId
       image
-    }
-  }
-`
-
-export const createValet = gql`
-  mutation createValet($createValetInput: CreateValetInput!) {
-    createValet(createValetInput: $createValetInput) {
-      uid
-      displayName
-      createdAt
-      updatedAt
-      companyId
     }
   }
 `

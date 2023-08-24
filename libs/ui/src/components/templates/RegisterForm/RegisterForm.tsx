@@ -11,20 +11,23 @@ import { notification$ } from '@autospace-org/util/subjects'
 import { useRouter } from 'next/router'
 
 import { useAsync } from '@autospace-org/hooks/src/fetcher'
+import { useCreateCustomerMutation } from '@autospace-org/network/src/generated'
+import { Role } from '@autospace-org/types'
 import { useEffect } from 'react'
 
 export interface ISignupFormProps {
   className?: string
+  role?: Role
 }
 
-export const RegisterForm = ({ className }: ISignupFormProps) => {
+export const RegisterForm = ({ className, role }: ISignupFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useFormRegister()
 
-  const { loading, error, success, callAsyncFn } = useAsync(
+  const { data, loading, error, success, callAsyncFn } = useAsync(
     registerUser,
     (err: any) => {
       console.log('err', err)
@@ -37,9 +40,24 @@ export const RegisterForm = ({ className }: ISignupFormProps) => {
 
   const router = useRouter()
 
+  const [createCustomer] = useCreateCustomerMutation()
+
   useEffect(() => {
+    if (role === 'customer' && data?.user.uid) {
+      ;(async () => {
+        await createCustomer({
+          variables: {
+            createCustomerInput: {
+              displayName: data?.user.displayName || '',
+              uid: data?.user.uid,
+            },
+          },
+        })
+      })()
+    }
+
     if (success) router.push('/')
-  }, [success])
+  }, [data, success, role, createCustomer, router])
 
   useEffect(() => {
     if (error) notification$.next({ message: error, duration: 8000 })

@@ -1,7 +1,7 @@
+import { Role } from '@autospace-org/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '..'
 
-export type Role = 'admin' | 'agent'
 export type UserSliceType = {
   uid?: string
   displayName?: string
