@@ -1,5 +1,5 @@
 import { FormTypeCreateGarage } from '@autospace-org/forms/src/createGarage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form'
 import { Button } from '../../atoms/Button'
 
@@ -11,6 +11,7 @@ import { HtmlSelect } from '../../atoms/HtmlSelect'
 import { ParkingIcon } from '../../atoms/ParkingIcon'
 import { Accordion } from '../../molecules/Accordion'
 import { AutoImageChanger } from '../../molecules/AutoImageChanger'
+import { ViewState } from '../../organisms/Map/Map'
 import { Marker } from '../../organisms/Map/MapMarker'
 
 export const AddSlots = () => {
@@ -54,95 +55,91 @@ export const AddSlots = () => {
           </div>
 
           <div
-            className={`flex flex-col gap-2 ${
+            className={`grid grid-cols-3 gap-2 ${
               hovered === item.id ? 'bg-strip' : null
             }`}
           >
-            <div className="grid grid-cols-3 gap-2">
-              <HtmlLabel
-                title="Length"
-                optional
-                error={errors.slotTypes?.[slotIndex]?.length?.message}
+            <HtmlLabel
+              title="Vehicle type"
+              error={errors.slotTypes?.[slotIndex]?.type?.toString()}
+            >
+              <HtmlSelect
+                placeholder="vehicle type"
+                {...register(`slotTypes.${slotIndex}.type`)}
               >
-                <HtmlInput
-                  type="number"
-                  placeholder="Enter the description"
-                  {...register(`slotTypes.${slotIndex}.length`, {
-                    valueAsNumber: true,
-                  })}
-                />
-              </HtmlLabel>
-              <HtmlLabel
-                title="Width"
-                optional
-                error={errors.slotTypes?.[slotIndex]?.width?.message}
-              >
-                <HtmlInput
-                  type="number"
-                  placeholder="Enter the description"
-                  {...register(`slotTypes.${slotIndex}.width`, {
-                    valueAsNumber: true,
-                  })}
-                />
-              </HtmlLabel>
-              <HtmlLabel
-                title="Height"
-                optional
-                error={errors.slotTypes?.[slotIndex]?.height?.message}
-              >
-                <HtmlInput
-                  type="number"
-                  placeholder="Enter the description"
-                  {...register(`slotTypes.${slotIndex}.height`, {
-                    valueAsNumber: true,
-                  })}
-                />
-              </HtmlLabel>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              <HtmlLabel
-                title="Price/hr"
-                optional
-                error={errors.slotTypes?.[slotIndex]?.pricePerHour?.message}
-              >
-                <HtmlInput
-                  type="number"
-                  placeholder="Price per hour"
-                  {...register(`slotTypes.${slotIndex}.pricePerHour`, {
-                    valueAsNumber: true,
-                  })}
-                />
-              </HtmlLabel>
-              <HtmlLabel
-                title="Number of slots"
-                optional
-                error={errors.slotTypes?.[slotIndex]?.count?.message}
-              >
-                <HtmlInput
-                  type="number"
-                  placeholder="Enter the number of slots"
-                  {...register(`slotTypes.${slotIndex}.count`, {
-                    valueAsNumber: true,
-                  })}
-                />
-              </HtmlLabel>
+                {Object.values(SlotType).map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </HtmlSelect>
+            </HtmlLabel>
+            <HtmlLabel
+              title="Price/hr"
+              optional
+              error={errors.slotTypes?.[slotIndex]?.pricePerHour?.message}
+            >
+              <HtmlInput
+                type="number"
+                placeholder="Price per hour"
+                {...register(`slotTypes.${slotIndex}.pricePerHour`, {
+                  valueAsNumber: true,
+                })}
+              />
+            </HtmlLabel>
+            <HtmlLabel
+              title="Number of slots"
+              optional
+              error={errors.slotTypes?.[slotIndex]?.count?.message}
+            >
+              <HtmlInput
+                type="number"
+                placeholder="Enter the number of slots"
+                {...register(`slotTypes.${slotIndex}.count`, {
+                  valueAsNumber: true,
+                })}
+              />
+            </HtmlLabel>
 
-              <HtmlLabel
-                title="Projection type"
-                error={errors.slotTypes?.[slotIndex]?.type?.toString()}
-              >
-                <HtmlSelect
-                  placeholder="projection type"
-                  {...register(`slotTypes.${slotIndex}.type`)}
-                >
-                  {Object.values(SlotType).map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </HtmlSelect>
-              </HtmlLabel>
-            </div>
+            <HtmlLabel
+              title="Length"
+              optional
+              error={errors.slotTypes?.[slotIndex]?.length?.message}
+            >
+              <HtmlInput
+                type="number"
+                placeholder="Enter the description"
+                {...register(`slotTypes.${slotIndex}.length`, {
+                  valueAsNumber: true,
+                })}
+              />
+            </HtmlLabel>
+            <HtmlLabel
+              title="Width"
+              optional
+              error={errors.slotTypes?.[slotIndex]?.width?.message}
+            >
+              <HtmlInput
+                type="number"
+                placeholder="Enter the description"
+                {...register(`slotTypes.${slotIndex}.width`, {
+                  valueAsNumber: true,
+                })}
+              />
+            </HtmlLabel>
+            <HtmlLabel
+              title="Height"
+              optional
+              error={errors.slotTypes?.[slotIndex]?.height?.message}
+            >
+              <HtmlInput
+                type="number"
+                placeholder="Enter the description"
+                {...register(`slotTypes.${slotIndex}.height`, {
+                  valueAsNumber: true,
+                })}
+              />
+            </HtmlLabel>
           </div>
         </Accordion>
       ))}
@@ -178,9 +175,20 @@ export const ShowFormImages = () => {
   return <AutoImageChanger images={images} />
 }
 
-export const MapMarker = () => {
+export const MapMarker = ({
+  initialLocation,
+}: {
+  initialLocation?: ViewState
+}) => {
   const { location } = useWatch<FormTypeCreateGarage>()
   const { setValue } = useFormContext<FormTypeCreateGarage>()
+
+  useEffect(() => {
+    if (initialLocation) {
+      const { latitude, longitude } = initialLocation
+      setValue('location', { lat: latitude, lng: longitude, address: '' })
+    }
+  }, [initialLocation])
 
   return (
     <Marker

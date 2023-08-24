@@ -19,6 +19,7 @@ import { useImageUpload } from '@autospace-org/util'
 import { notification$ } from '@autospace-org/util/subjects'
 import { HtmlTextArea } from '../../atoms/HtmlTextArea'
 import { ProgressBar } from '../../atoms/ProgressBar'
+import { ViewState } from '../../organisms/Map/Map'
 import { Panel } from '../../organisms/Map/Panel'
 import {
   CenterOfMap,
@@ -34,6 +35,12 @@ export const CreateGarage = () => {
       <CreateGarageContent />
     </FormProviderCreateGarage>
   )
+}
+
+export const initialViewState = {
+  longitude: 80.2,
+  latitude: 12.9,
+  zoom: 10,
 }
 
 export const CreateGarageContent = ({}: ICreateGarageProps) => {
@@ -56,11 +63,13 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
     <div className="grid grid-cols-2 gap-2">
       <Dialog open={open} setOpen={setOpen} title={'Success.'}>
         <div>Garage created successfully.</div>
-        <div className="flex gap-1 mt-4">
+        <div className="flex items-center justify-between gap-4 mt-4">
+          <Link href="/" className="underline underline-offset-4">
+            Go to garages
+          </Link>
           <Button variant="outlined" onClick={() => setOpen(false)}>
             Create more
           </Button>
-          <Link href="/">Go to garages</Link>
         </div>
       </Dialog>
       <Form
@@ -122,17 +131,16 @@ export const CreateGarageContent = ({}: ICreateGarageProps) => {
           Create garage
         </Button>
       </Form>
-      <Map
-        initialViewState={{
-          longitude: 80.2,
-          latitude: 12.9,
-          zoom: 8,
-        }}
-      >
-        <MapMarker />
+      <Map initialViewState={initialViewState}>
+        <MapMarker initialLocation={initialViewState} />
 
         <Panel position="left-top">
-          <SearchPlaceBox />
+          <SearchPlaceBox
+            onLocationChange={(location: ViewState) => {
+              setValue('location.lat', location.latitude)
+              setValue('location.lng', location.longitude)
+            }}
+          />
           <DefaultZoomControls>
             <CenterOfMap
               onClick={(latLng) => {

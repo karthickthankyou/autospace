@@ -1,6 +1,6 @@
 import { Map } from '../../organisms/Map'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import {
   IconExclamationCircle,
@@ -30,6 +30,7 @@ import { Marker } from '../../organisms/Map/MapMarker'
 import { Panel } from '../../organisms/Map/Panel'
 import { DefaultZoomControls } from '../../organisms/Map/ZoomControls/ZoomControls'
 import { SearchPlaceBox } from '../../organisms/SearchPlaceBox'
+import { initialViewState } from '../CreateGarage/CreateGarage'
 
 export interface ISearchPageTemplateProps {
   initialProps: {
@@ -49,21 +50,30 @@ export const SearchPageTemplate = () => {
     formState: { errors },
   } = useFormContext<FormTypeSearchGarage>()
 
-  function handleMapChange(event: ViewStateChangeEvent) {
-    const bounds = event.target.getBounds()
+  const handleMapChange = useCallback(
+    (target: ViewStateChangeEvent['target']) => {
+      const bounds = target.getBounds()
 
-    const locationFilter = {
-      nw_lat: bounds?.getNorthWest().lat || 0,
-      nw_lng: bounds?.getNorthWest().lng || 0,
-      se_lat: bounds?.getSouthEast().lat || 0,
-      se_lng: bounds?.getSouthEast().lng || 0,
-    }
+      const locationFilter = {
+        nw_lat: bounds?.getNorthWest().lat || 0,
+        nw_lng: bounds?.getNorthWest().lng || 0,
+        se_lat: bounds?.getSouthEast().lat || 0,
+        se_lng: bounds?.getSouthEast().lng || 0,
+      }
 
-    setValue('locationFilter', locationFilter)
-  }
+      setValue('locationFilter', locationFilter)
+    },
+    [setValue],
+  )
 
   return (
-    <Map pitch={30} onZoomEnd={handleMapChange} onDragEnd={handleMapChange}>
+    <Map
+      pitch={30}
+      onLoad={(e) => handleMapChange(e.target)}
+      onZoomEnd={(e) => handleMapChange(e.target)}
+      onDragEnd={(e) => handleMapChange(e.target)}
+      initialViewState={initialViewState}
+    >
       {/* Query and display garages */}
       <ShowMarkers />
       <Panel position="left-top" className="bg-white/50">

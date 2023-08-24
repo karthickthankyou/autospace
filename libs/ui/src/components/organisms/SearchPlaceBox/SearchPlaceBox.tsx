@@ -5,6 +5,7 @@ import {
 
 import { useMap } from 'react-map-gl'
 import { Autocomplete } from '../../atoms/Autocomplete'
+import { ViewState } from '../Map/Map'
 export interface ISearchPlaceBoxProps {
   setLocationInfo: (locationInfo: LocationInfo) => void
   value?: string
@@ -52,7 +53,11 @@ export const majorCitiesLocationInfo: LocationInfo[] = [
     latLng: [39.9042, 116.4074],
   },
 ]
-export const SearchPlaceBox = () => {
+export const SearchPlaceBox = ({
+  onLocationChange,
+}: {
+  onLocationChange?: (location: ViewState) => void
+}) => {
   const { current: map } = useMap()
   const { loading, setLoading, searchText, setSearchText, locationInfo } =
     useSearchLocation()
@@ -70,10 +75,17 @@ export const SearchPlaceBox = () => {
         setSearchText(v)
       }}
       loading={loading}
-      onChange={(_, v) => {
+      onChange={async (_, v) => {
         if (v) {
           const { latLng, placeName } = v
-          map?.flyTo({ center: { lat: latLng[0], lng: latLng[1] }, zoom: 10 })
+          await map?.flyTo({
+            center: { lat: latLng[0], lng: latLng[1] },
+            zoom: 14,
+            essential: true,
+          })
+          if (onLocationChange) {
+            onLocationChange({ latitude: latLng[0], longitude: latLng[1] })
+          }
         }
       }}
     />
