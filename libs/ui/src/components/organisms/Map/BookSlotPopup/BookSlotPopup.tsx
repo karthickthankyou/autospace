@@ -40,6 +40,7 @@ import { LngLatTuple } from '@autospace-org/store/map'
 import { LatLng, TotalPrice } from '@autospace-org/types'
 import { toLocalISOString } from '@autospace-org/util'
 import React from 'react'
+import { Badge } from '../../../atoms/Badge'
 import { ParkingIcon } from '../../../atoms/ParkingIcon'
 import { Switch } from '../../../atoms/Switch'
 import { AutoImageChanger } from '../../../molecules/AutoImageChanger'
@@ -133,7 +134,18 @@ export const BookSlotPopup = ({
           }
         })}
       >
-        <div className="mb-2 text-lg font-bold">{garage.displayName}</div>
+        <div className="flex items-start gap-2">
+          <div className="mb-2 text-lg font-bold">{garage.displayName}</div>
+          {garage.verification?.verified ? (
+            <Badge variant="green" size="sm">
+              Verified
+            </Badge>
+          ) : (
+            <Badge variant="gray" size="sm">
+              Not verified
+            </Badge>
+          )}
+        </div>
         <div className="mb-2 text-2xl font-extralight">
           {garage.address.address}
         </div>

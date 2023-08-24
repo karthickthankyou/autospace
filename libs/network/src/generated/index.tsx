@@ -2018,6 +2018,7 @@ export type SearchGaragesQuery = {
       count: number
       pricePerHour: number
     }>
+    verification?: { __typename?: 'Verification'; verified: boolean } | null
   }>
   searchGaragesCount: { __typename?: 'AggregateCountOutput'; count: number }
 }
@@ -3034,6 +3035,9 @@ export const SearchGaragesDocument = /*#__PURE__*/ gql`
         type
         count
         pricePerHour
+      }
+      verification {
+        verified
       }
     }
     searchGaragesCount(

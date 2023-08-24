@@ -121,6 +121,9 @@ export const searchGarages = gql`
         count
         pricePerHour
       }
+      verification {
+        verified
+      }
     }
     searchGaragesCount(
       dateFilter: $dateFilter

@@ -90,7 +90,6 @@ export class GaragesResolver {
         const updatedEndDate = new Date(startDate)
         updatedEndDate.setSeconds(updatedEndDate.getSeconds() + 3600)
         endDate = updatedEndDate
-        //   throw new Error('Start date must be before end date')
       }
 
       const { where = {}, ...garageFilters } = args || {}
@@ -99,7 +98,7 @@ export class GaragesResolver {
         ...garageFilters,
         where: {
           ...where,
-          verification: { verified: true },
+          //   verification: { verified: true },
           address: {
             lat: { lte: nw_lat, gte: se_lat },
             lng: { gte: nw_lng, lte: se_lng },
