@@ -94,7 +94,7 @@ export const AddValet = () => {
                   {...register('email')}
                 />
               </HtmlLabel>
-              <HtmlLabel title="Password" error={errors.email?.message}>
+              <HtmlLabel title="Password" error={errors.password?.message}>
                 <HtmlInput
                   type="password"
                   placeholder="******"
