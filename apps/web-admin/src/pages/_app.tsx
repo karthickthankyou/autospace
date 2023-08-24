@@ -15,10 +15,7 @@ const MENUITEMS: MenuItem[] = [
   { label: 'Admins', href: '/manageAdmins', loggedIn: true },
   { label: 'Settings', href: '/settings', loggedIn: true },
 ]
-const SUBMENUITEMS: MenuItem[] = [
-  ...MENUITEMS,
-  { label: 'Settings', href: '/settings', loggedIn: false },
-]
+const SUBMENUITEMS: MenuItem[] = [...MENUITEMS]
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ReduxProvider>
