@@ -21,13 +21,13 @@ export const useUserListener = () => {
 
         const tokenResult = await auth.currentUser?.getIdTokenResult()
         const roles = tokenResult?.claims.roles || []
-        const { displayName, email, uid } = user
-
+        // Issue: displayName exists in user but user.displayName is null.
+        console.log(user, user.displayName)
         dispatch(
           setUser({
-            uid,
-            email: email || '',
-            displayName: displayName || '',
+            uid: user.uid,
+            email: user.email || '',
+            displayName: user.displayName || '',
             roles,
             token: tokenResult?.token,
           }),
