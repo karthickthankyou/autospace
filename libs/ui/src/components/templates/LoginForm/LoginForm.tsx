@@ -74,7 +74,7 @@ export const LoginForm = ({ className }: ILoginFormProps) => {
       </Button>
       {error ? <FormError error={error.message} /> : null}
       <div className="mt-4 text-sm">
-        Do not have a common kitchen account?
+        Do not have an autospace account?
         <br />
         <Link
           href="/register"

@@ -32,7 +32,7 @@ export const Accordion = ({
             } w-5 h-5 `}
           />
         </Disclosure.Button>
-        <Disclosure.Panel className="w-full px-2 pb-4 text-gray-600">
+        <Disclosure.Panel className="w-full max-w-md px-2 pb-4 text-gray-600">
           {children}
         </Disclosure.Panel>
       </>
